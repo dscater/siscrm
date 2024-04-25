@@ -1,0 +1,309 @@
+<template>
+    <!-- Modal1 -->
+    <div
+        class="wrap-modal1 js-modal1 p-t-60 p-b-20"
+        :class="[muestra ? 'show-modal1' : '']"
+    >
+        <div class="overlay-modal1 js-hide-modal1" @click="cerrar"></div>
+
+        <div class="container">
+            <div class="bg-dark p-t-60 p-b-30 p-lr-15-lg how-pos3-parent">
+                <button
+                    class="how-pos3 hov3 trans-04 js-hide-modal1"
+                    @click="cerrar"
+                >
+                    <img src="images/icons/icon-close.png" alt="CLOSE" />
+                </button>
+                <div
+                    class="row"
+                    v-if="cargando_producto == false && oProducto.id != 0"
+                >
+                    <div class="col-md-6 col-lg-7 p-b-30">
+                        <div class="p-l-25 p-r-30 p-lr-0-lg">
+                            <div class="wrap-slick3 d-block bg-dark">
+                                <div
+                                    class="wrap-slick3-arrows flex-sb-m flex-w"
+                                ></div>
+                                <div class="slick3 gallery-lb">
+                                    <div
+                                        class="item-slick3"
+                                        :data-thumb="oProducto.url_imagen"
+                                    >
+                                        <div class="wrap-pic-w pos-relative">
+                                            <img
+                                                :src="oProducto.url_imagen"
+                                                alt="IMG-PRODUCT"
+                                            />
+
+                                            <a
+                                                class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                                                :href="oProducto.url_imagen"
+                                            >
+                                                <i class="fa fa-expand"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-5 p-b-30">
+                        <div class="p-r-50 p-t-5 p-lr-0-lg">
+                            .
+                            <div class="card">
+                                <div class="card-body bg-dark">
+                                    <h4
+                                        class="mtext-105 cl2 js-name-detail text-warning p-b-14 font-weight-bold"
+                                    >
+                                        {{ oProducto.nombre }}
+                                    </h4>
+                                    <span
+                                        class="text-md cl0 js-name-detail rounded p-3 bg-dark d-block mb-2 border border-warning"
+                                    >
+                                        {{ oProducto.categoria.nombre }}
+                                    </span>
+
+                                    <span
+                                        class="text-md cl0 rounded p-3 bg-warning d-block font-weight-bold"
+                                    >
+                                        Bs. {{ oProducto.precio }}
+                                    </span>
+
+                                    <p class="stext-104 cl12 p-t-23">
+                                        <span class="mtext-106"
+                                            >{{
+                                                oProducto.stock_actual
+                                            }}
+                                            Unidad(es) disponibles</span
+                                        >
+                                    </p>
+
+                                    <p class="stext-102 cl12 p-t-23">
+                                        {{ oProducto.descripcion }}
+                                    </p>
+
+                                    <!--  -->
+                                    <div class="p-t-33">
+                                        <div class="contenedor_agregar_carrito">
+                                            <div
+                                                class="wrap-num-product flex-w m-r-20 m-tb-10"
+                                            >
+                                                <div
+                                                    class="bg-white btn-num-product-down cl8 trans-04 flex-c-m"
+                                                    @click="restaCantidad"
+                                                >
+                                                    <i
+                                                        class="fs-16 zmdi zmdi-minus"
+                                                    ></i>
+                                                </div>
+
+                                                <input
+                                                    class="mtext-104 cl3 txt-center num-product"
+                                                    type="number"
+                                                    name="num-product"
+                                                    min="1"
+                                                    value="1"
+                                                    @keyup="validaCantidad"
+                                                    v-model="cantidad_agregar"
+                                                />
+
+                                                <div
+                                                    class="bg-white btn-num-product-up cl8 trans-04 flex-c-m"
+                                                    @click="sumaCantidad"
+                                                >
+                                                    <i
+                                                        class="fs-16 zmdi zmdi-plus"
+                                                    ></i>
+                                                </div>
+                                            </div>
+
+                                            <button
+                                                class="stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail"
+                                                @click="agregarCarrito"
+                                            >
+                                                Añadir al carrito
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" v-else>
+                    <div class="col-md-12">
+                        <h4 class="w-100 text-center">CARGANDO PRODUCTO...</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+export default {
+    props: ["id", "mostrar_modal"],
+    data() {
+        return {
+            oProducto: {
+                id: 0,
+                nombre: "",
+                descripcion: "",
+                precio: "",
+                stock_actual: "",
+                url_imagen: "",
+                catalogo: { nombre: "", descripcion: "" },
+            },
+            cargando_producto: true,
+            muestra: false,
+            cantidad_agregar: 1,
+        };
+    },
+    watch: {
+        mostrar_modal(newVal) {
+            this.muestra = newVal;
+            if (this.id != 0) {
+                this.cantidad_agregar = 1;
+                this.getProducto();
+            }
+        },
+    },
+    mounted() {},
+    methods: {
+        getProducto() {
+            this.cargando_producto = true;
+            axios
+                .get(main_url + "/portal/getProducto/" + this.id)
+                .then((response) => {
+                    let self = this;
+                    this.oProducto = response.data.producto;
+                    setTimeout(function () {
+                        self.initSlick3();
+                        self.cargando_producto = false;
+                    }, 500);
+                });
+        },
+        agregarCarrito() {
+            if (this.$refs.input_cantidad.value > 0) {
+                let carrito = [];
+                if (localStorage.getItem("carrito_qhana")) {
+                    carrito = JSON.parse(localStorage.getItem("carrito_qhana"));
+                }
+                let subtotal =
+                    parseFloat(this.$refs.input_cantidad.value) *
+                    parseFloat(this.oProducto.precio);
+                subtotal = subtotal.toFixed(2);
+
+                // let cantidad_agregada = this.$refs.input_cantidad.value;
+
+                // if (cantidad_agregada > this.oProducto.stock_actual) {
+                //     cantidad_agregada = this.oProducto.stock_actual;
+                // }
+
+                carrito.push({
+                    producto_id: this.oProducto.id,
+                    nombre: this.oProducto.nombre,
+                    cantidad: this.cantidad_agregar,
+                    subtotal: subtotal,
+                    url_imagen: this.oProducto.url_imagen,
+                    precio: this.oProducto.precio,
+                    catalogo: this.oProducto.categoria,
+                });
+                localStorage.setItem("carrito_qhana", JSON.stringify(carrito));
+                this.$refs.input_cantidad.value = 1;
+                EventBus.$emit("producto_agregado");
+                this.cerrar();
+                Swal.fire({
+                    icon: "success",
+                    title: "Correcto",
+                    html: "Producto agregado correctamente",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    html: "La cantidad no debe ser menor a 1",
+                    showConfirmButton: true,
+                    confirmButtonColor: "#c57a40",
+                    confirmButtonText: "Aceptar",
+                });
+            }
+        },
+        cerrar() {
+            this.oProducto = {
+                id: 0,
+                nombre: "",
+                descripcion: "",
+                precio: "",
+                stock_actual: "",
+                url_imagen: "",
+                catalogo: { nombre: "", descripcion: "" },
+            };
+            this.$emit("close");
+        },
+        initSlick3() {
+            $(document).ready(function () {
+                $(".wrap-slick3").each(function () {
+                    $(this).find(".slick3").slick({
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        fade: true,
+                        infinite: true,
+                        autoplay: false,
+                    });
+                });
+
+                // GALERIA
+                $(".gallery-lb").each(function () {
+                    // the containers for all your galleries
+                    $(this).magnificPopup({
+                        delegate: "a", // the selector for gallery item
+                        type: "image",
+                        gallery: {
+                            enabled: true,
+                        },
+                        mainClass: "mfp-fade",
+                    });
+                });
+            });
+        },
+
+        validaCantidad() {
+            if (this.oProducto.id != 0) {
+                if (this.cantidad_agregar > this.oProducto.stock_actual) {
+                    this.cantidad_agregar = this.oProducto.stock_actual;
+                } else if (this.cantidad_agregar < 1) {
+                    this.cantidad_agregar = 1;
+                }
+            } else {
+                this.cantidad_agregar = "";
+            }
+        },
+
+        sumaCantidad() {
+            if (this.oProducto.id != 0) {
+                if (this.cantidad_agregar < this.oProducto.stock_actual) {
+                    this.cantidad_agregar++;
+                } else {
+                    this.cantidad_agregar = this.oProducto.stock_actual;
+                }
+            } else {
+                this.cantidad_agregar = "";
+            }
+        },
+        restaCantidad() {
+            if (this.oProducto.id != 0) {
+                if (this.cantidad_agregar > 1) {
+                    this.cantidad_agregar--;
+                } else {
+                    this.cantidad_agregar = 1;
+                }
+            } else {
+                this.cantidad_agregar = "";
+            }
+        },
+    },
+};
+</script>
