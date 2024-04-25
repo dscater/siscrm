@@ -1,6 +1,6 @@
 <template>
     <div>
-        <HeaderDos></HeaderDos>
+        <HeaderDos :configuracion="oConfiguracion"></HeaderDos>
         <Sidebar></Sidebar>
         <CarritoLateral></CarritoLateral>
         <transition name="fade" mode="out-in">

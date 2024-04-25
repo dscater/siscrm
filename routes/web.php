@@ -38,6 +38,7 @@ Route::get('/cache_clear', function () {
     return 'Cache borrada correctamente<br/><a href="' . url("/") . '">Volver al inicio<a>';
 });
 
+Route::get('/auth', [LoginController::class, 'auth']);
 
 // LOGIN
 Route::post('/login', [LoginController::class, 'login']);

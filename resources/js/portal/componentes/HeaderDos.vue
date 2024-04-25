@@ -7,7 +7,7 @@
                 <nav class="limiter-menu-desktop p-l-45">
                     <!-- Logo desktop -->
                     <a href="#" class="logo">
-                        <strong>QHANA</strong> BOLIVIA
+                        <strong>{{ configuracion?.razon_social }}</strong>
                     </a>
 
                     <!-- Menu desktop -->
@@ -44,6 +44,15 @@
 
                         <div class="flex-c-m h-full p-l-18 p-r-25 bor5">
                             <a
+                                v-if="oUser"
+                                href="/administracion"
+                                class="cl2 text-sm"
+                            >
+                                <i class="fa fa-user"></i> {{ oUser.full_name }}
+                            </a>
+
+                            <a
+                                v-if="!oUser"
                                 href="/administracion"
                                 class="icon-header-item cl2 hov-cl1 trans-04 p-lr-11"
                             >
@@ -133,6 +142,14 @@
 </template>
 <script>
 export default {
+    props: {
+        configuracion: {
+            type: Object,
+            default: {
+                razon_social: "",
+            },
+        },
+    },
     data() {
         return {
             fullscreenLoading: false,
@@ -148,9 +165,11 @@ export default {
             ],
             cantidad_carrito: 0,
             carrito: [],
+            oUser: null,
         };
     },
     mounted() {
+        this.getAuth();
         this.animacionHeader();
         this.getCarrito();
         EventBus.$on("producto_agregado", () => {
@@ -162,6 +181,11 @@ export default {
         }, 300);
     },
     methods: {
+        getAuth() {
+            axios.get(main_url + "/auth").then((response) => {
+                this.oUser = response.data;
+            });
+        },
         getCarrito() {
             if (localStorage.getItem("carrito_qhana")) {
                 this.carrito = JSON.parse(

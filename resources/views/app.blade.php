@@ -38,6 +38,7 @@
             </Auth>
         @endif
     </div>
+    <script src="{{ asset('js/jquery.js') }}"></script>
     <script src="{{ mix('js/app.js') }}"></script>
     <script src="{{ mix('js/plantilla.js') }}"></script>
     <script>
