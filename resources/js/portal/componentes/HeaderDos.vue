@@ -44,7 +44,7 @@
 
                         <div class="flex-c-m h-full p-l-18 p-r-25 bor5">
                             <a
-                                v-if="oUser"
+                                v-if="oUser && oUser.id"
                                 href="/administracion"
                                 class="cl2 text-sm"
                             >
@@ -52,8 +52,8 @@
                             </a>
 
                             <a
-                                v-if="!oUser"
-                                href="/administracion"
+                                v-else
+                                href="/administracion/login"
                                 class="icon-header-item cl2 hov-cl1 trans-04 p-lr-11"
                             >
                                 <i class="zmdi zmdi-sign-in"></i>
@@ -187,9 +187,9 @@ export default {
             });
         },
         getCarrito() {
-            if (localStorage.getItem("carrito_qhana")) {
+            if (localStorage.getItem("carrito_siscrm")) {
                 this.carrito = JSON.parse(
-                    localStorage.getItem("carrito_qhana")
+                    localStorage.getItem("carrito_siscrm")
                 );
                 this.cantidad_carrito = this.carrito.length;
             } else {

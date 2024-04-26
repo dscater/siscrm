@@ -56237,7 +56237,7 @@ a.text-muted:hover {
 
 /*# sourceMappingURL=adminlte.css.map */
 :root {
-    --principal: #149FDA;
+    --principal: #149fda;
     --secundario: #ffc107;
     --correcto: #d2e7c9;
     --secondary: #da1900;
@@ -56260,7 +56260,6 @@ a.text-muted:hover {
     background-color: #e0a800 !important;
     border-color: #d39e00 !important;
 }
-
 
 .el-button--warning.is-disabled,
 .el-button--warning.is-disabled:active,
@@ -56294,7 +56293,7 @@ a.text-muted:hover {
     overflow: auto;
 }
 
-.el-avatar>img {
+.el-avatar > img {
     width: 100%;
 }
 
@@ -56323,7 +56322,6 @@ input.form-control {
 .el-input__inner:read-only {
     cursor: not-allowed;
 }
-
 
 .readonly .el-input__inner {
     background: rgb(237, 246, 250);

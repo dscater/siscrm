@@ -51,19 +51,22 @@
                                         ) in oPedido.detalle_pedidos"
                                     >
                                         <td class="column-1 text-white">
-                                            <div class="how-itemcart1">
+                                            <div class="">
                                                 <img
-                                                    :src="item.url_imagen"
+                                                    :src="
+                                                        item.producto.url_imagen
+                                                    "
+                                                    width="60px"
                                                     alt="IMG"
                                                 />
                                             </div>
                                         </td>
                                         <td class="column-2 text-white">
-                                            {{ item.nombre }}<br />
+                                            {{ item.producto.nombre }}<br />
                                             <span
                                                 class="text-xs text-warning"
                                                 >{{
-                                                    item.catalogo.nombre
+                                                    item.categoria.nombre
                                                 }}</span
                                             >
                                         </td>
@@ -73,10 +76,51 @@
                                         <td
                                             class="column-4 text-white text-center"
                                         >
-                                            {{ item.cantidad }}
+                                            <div
+                                                class="wrap-num-product flex-w m-l-auto m-r-0"
+                                            >
+                                                <div
+                                                    class="btn-num-product-down cl8 hov-btn1 trans-04 flex-c-m"
+                                                    @click="
+                                                        actualizaCantidadMenos(
+                                                            index
+                                                        )
+                                                    "
+                                                >
+                                                    <i
+                                                        class="fs-16 zmdi zmdi-minus"
+                                                    ></i>
+                                                </div>
+
+                                                <input
+                                                    class="mtext-104 cl3 txt-center num-product"
+                                                    type="number"
+                                                    name="num-product1"
+                                                    :value="item.cantidad"
+                                                    @keyup="
+                                                        detectaCambio(
+                                                            $event,
+                                                            index
+                                                        )
+                                                    "
+                                                />
+
+                                                <div
+                                                    class="btn-num-product-up cl8 hov-btn1 trans-04 flex-c-m"
+                                                    @click="
+                                                        actualizaCantidadMas(
+                                                            index
+                                                        )
+                                                    "
+                                                >
+                                                    <i
+                                                        class="fs-16 zmdi zmdi-plus"
+                                                    ></i>
+                                                </div>
+                                            </div>
                                         </td>
                                         <td class="column-5 text-white">
-                                            Bs. {{ item.subtotal }}
+                                            Bs. {{ item.precio_total }}
                                         </td>
                                         <td
                                             class="column-6 text-white text-right pr-1"
@@ -173,6 +217,10 @@
                                     v-text="errors.pec[0]"
                                 ></span>
                             </div>
+                            <div class="col-12 mt-3">
+                                <label class="text-white">Selecciona tu ubicación:</label>
+                                <div id="google_map"></div>
+                            </div>
                             <div class="form-group col-md-12">
                                 <label class="text-white"
                                     >Teléfono/Celular*</label
@@ -232,15 +280,19 @@ export default {
                 fullscreen: this.fullscreenLoading,
             }),
             oPedido: {
-                nombres: "",
-                apellidos: "",
-                pec: "",
-                correo: "",
+                configuracion_pago_id: "",
+                celular: "",
+                comprobante: null,
+                lat: "",
+                lng: "",
+                estado: "PENDIENTE",
                 monto_total: "0.00",
                 detalle_pedidos: [],
             },
             errors: [],
+            listConfiguracionPagos: [],
             enviando: false,
+            marker_map: null,
         };
     },
     computed: {
@@ -253,15 +305,17 @@ export default {
     },
     mounted() {
         this.loadingWindow.close();
+        this.getConfiguracionPedidos();
+        this.cargaMapaGoogle("-16.496059", "-68.133345", true);
         this.getCarrito();
         $(".js-panel-cart").removeClass("show-header-cart");
         $(".js-sidebar").removeClass("show-sidebar");
     },
     methods: {
         getCarrito() {
-            if (localStorage.getItem("carrito_qhana")) {
+            if (localStorage.getItem("carrito_siscrm")) {
                 this.oPedido.detalle_pedidos = JSON.parse(
-                    localStorage.getItem("carrito_qhana")
+                    localStorage.getItem("carrito_siscrm")
                 );
                 this.cantidad_carrito = this.oPedido.detalle_pedidos.length;
             } else {
@@ -270,15 +324,15 @@ export default {
             this.getTotal();
         },
         getTotal() {
-            if (localStorage.getItem("carrito_qhana")) {
+            if (localStorage.getItem("carrito_siscrm")) {
                 this.oPedido.detalle_pedidos = JSON.parse(
-                    localStorage.getItem("carrito_qhana")
+                    localStorage.getItem("carrito_siscrm")
                 );
                 let sum_total = this.oPedido.detalle_pedidos.reduce(function (
                     acumulador,
                     objeto
                 ) {
-                    return acumulador + parseFloat(objeto.subtotal);
+                    return acumulador + parseFloat(objeto.precio_total);
                 },
                 0);
                 this.oPedido.monto_total = parseFloat(sum_total).toFixed(2);
@@ -287,12 +341,12 @@ export default {
             }
         },
         eliminarProducto(index) {
-            let nombre = this.oPedido.detalle_pedidos[index].nombre;
+            let nombre = this.oPedido.detalle_pedidos[index].producto.nombre;
             Swal.fire({
                 title: "¿Quierés eliminar este producto del carrito?",
                 html: `<strong>${nombre}</strong>`,
                 showCancelButton: true,
-                confirmButtonColor: "#c57a40",
+                confirmButtonColor: "#dc3545",
                 confirmButtonText: "Si, eliminar",
                 cancelButtonText: "No, cancelar",
                 denyButtonText: `No, cancelar`,
@@ -301,13 +355,87 @@ export default {
                 if (result.isConfirmed) {
                     this.oPedido.detalle_pedidos.splice(index, 1);
                     localStorage.setItem(
-                        "carrito_qhana",
+                        "carrito_siscrm",
                         JSON.stringify(this.oPedido.detalle_pedidos)
                     );
                     this.getCarrito();
                     EventBus.$emit("producto_agregado");
                 }
             });
+        },
+        actualizaCantidadMas(index) {
+            let cantidad = this.oPedido.detalle_pedidos[index].cantidad;
+            cantidad++;
+            if (
+                cantidad <
+                this.oPedido.detalle_pedidos[index].producto.stock_actual
+            ) {
+                this.oPedido.detalle_pedidos[index].cantidad = cantidad;
+            } else {
+                this.oPedido.detalle_pedidos[index].cantidad =
+                    this.oPedido.detalle_pedidos[index].producto.stock_actual;
+            }
+            this.oPedido.detalle_pedidos[index].precio_total =
+                parseFloat(this.oPedido.detalle_pedidos[index].cantidad) *
+                parseFloat(this.oPedido.detalle_pedidos[index].precio);
+            this.oPedido.detalle_pedidos[index].precio_total = parseFloat(
+                this.oPedido.detalle_pedidos[index].precio_total
+            ).toFixed(2);
+            localStorage.setItem(
+                "carrito_siscrm",
+                JSON.stringify(this.oPedido.detalle_pedidos)
+            );
+            this.getTotal();
+        },
+        actualizaCantidadMenos(index) {
+            let cantidad = this.oPedido.detalle_pedidos[index].cantidad;
+            cantidad--;
+            if (cantidad > 1) {
+                this.oPedido.detalle_pedidos[index].cantidad = cantidad;
+            } else {
+                this.oPedido.detalle_pedidos[index].cantidad = 1;
+            }
+
+            this.oPedido.detalle_pedidos[index].precio_total =
+                parseFloat(this.oPedido.detalle_pedidos[index].cantidad) *
+                parseFloat(this.oPedido.detalle_pedidos[index].precio);
+            this.oPedido.detalle_pedidos[index].precio_total = parseFloat(
+                this.oPedido.detalle_pedidos[index].precio_total
+            ).toFixed(2);
+            localStorage.setItem(
+                "carrito_siscrm",
+                JSON.stringify(this.oPedido.detalle_pedidos)
+            );
+            this.getTotal();
+        },
+        detectaCambio(e, index) {
+            let valor = e.target.value;
+            if (valor != "") {
+                let maximo = parseFloat(
+                    this.oPedido.detalle_pedidos[index].producto.stock_actual
+                );
+                let minimo = 1;
+                let cantidad = parseFloat(valor);
+                this.oPedido.detalle_pedidos[index].cantidad = valor;
+                if (cantidad < minimo) {
+                    this.oPedido.detalle_pedidos[index].cantidad = 1;
+                }
+                if (cantidad > maximo) {
+                    this.oPedido.detalle_pedidos[index].cantidad = maximo;
+                }
+
+                this.oPedido.detalle_pedidos[index].precio_total =
+                    parseFloat(this.oPedido.detalle_pedidos[index].cantidad) *
+                    parseFloat(this.oPedido.detalle_pedidos[index].precio);
+                this.oPedido.detalle_pedidos[index].precio_total = parseFloat(
+                    this.oPedido.detalle_pedidos[index].precio_total
+                ).toFixed(2);
+                localStorage.setItem(
+                    "carrito_siscrm",
+                    JSON.stringify(this.oPedido.detalle_pedidos)
+                );
+                this.getTotal();
+            }
         },
         prepararEnvio() {
             this.enviando = true;
@@ -317,9 +445,55 @@ export default {
                 self.enviarPedido();
             }, 500);
         },
-        enviarPedido() {
+        getConfiguracionPedidos() {
             axios
-                .post(main_url + "/portal/solicitudPedido", this.oPedido)
+                .get(main_url + "/admin/configuracion_pagos_portal")
+                .then((response) => {
+                    this.listConfiguracionPagos =
+                        response.data.configuracion_pagos;
+                });
+        },
+        enviarPedido() {
+            this.enviando = true;
+
+            let formData = new FormData();
+            formData.append(
+                "configuracion_pago_id",
+                this.oPedido.configuracion_pago_id
+                    ? this.oPedido.configuracion_pago_id
+                    : ""
+            );
+            formData.append(
+                "celular",
+                this.oPedido.celular ? this.oPedido.celular : ""
+            );
+            formData.append(
+                "comprobante",
+                this.oPedido.comprobante ? this.oPedido.comprobante : ""
+            );
+            formData.append("lat", this.oPedido.lat ? this.oPedido.lat : "");
+            formData.append("lng", this.oPedido.lng ? this.oPedido.lng : "");
+            formData.append("total_sc", carrito_store.total_final);
+            formData.append("total", carrito_store.total_final);
+            formData.append(
+                "estado",
+                this.oPedido.estado ? this.oPedido.estado : ""
+            );
+            this.oPedido.detalle_pedidos.forEach((elem) => {
+                formData.append("productos[]", elem.producto.id);
+                formData.append("cantidades[]", elem.cantidad);
+                formData.append("precios[]", elem.precio);
+                formData.append("precio_total[]", elem.precio_total);
+            });
+
+            let config = {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            };
+
+            axios
+                .post(main_url + "/portal/solicitudPedido", formData, config)
                 .then((response) => {
                     Swal.fire({
                         icon: "success",
@@ -329,7 +503,7 @@ export default {
                         timer: 2000,
                     });
                     this.oPedido.detalle_pedidos = [];
-                    localStorage.removeItem("carrito_qhana");
+                    localStorage.removeItem("carrito_siscrm");
                     EventBus.$emit("producto_agregado");
                     this.enviando = false;
                 })
@@ -351,7 +525,77 @@ export default {
                     }
                 });
         },
+        async cargaMapaGoogle(lat, lng, drag = false, dir = "") {
+            this.oPedido.lat = lat;
+            this.oPedido.lng = lng;
+            lat = parseFloat(lat);
+            lng = parseFloat(lng);
+            // Inicializa el mapa
+            const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+            const { AdvancedMarkerElement } = await google.maps.importLibrary(
+                "marker"
+            );
+            const map = new Map(document.getElementById("google_map"), {
+                zoom: 18,
+                center: { lat: lat, lng: lng },
+                mapId: mapa_id,
+            });
+            const infoWindow = new InfoWindow();
+
+            // Crea un marcador en el centro del mapa
+            this.marker_map = new AdvancedMarkerElement({
+                map,
+                position: { lat: lat, lng: lng },
+                gmpDraggable: drag,
+                // title:""
+            });
+
+            // Evento click sobre el mapa
+            map.addListener("click", (event) => {
+                const newPosition = event.latLng.toJSON();
+                if (this.marker_map && this.marker_map.setMap) {
+                    this.marker_map.setMap(null); // Eliminar el marcador anterior si existe
+                }
+                this.marker_map = new AdvancedMarkerElement({
+                    map,
+                    position: newPosition,
+                    gmpDraggable: drag,
+                });
+                this.oPedido.lat = "" + newPosition.lat;
+                this.oPedido.lng = "" + newPosition.lng;
+                infoWindow.close();
+            });
+
+            // Escucha el evento de arrastrar del marcador
+            this.marker_map.addListener("dragend", (event) => {
+                const position = this.marker_map.position;
+                // console.log(position.lat);
+                // console.log(position.lng);
+                this.oPedido.lat = "" + position.lat;
+                this.oPedido.lng = "" + position.lng;
+                console.log(this.oPedido.lat);
+                console.log(this.oPedido.lng);
+                // infoWindow.close();
+                // infoWindow.setContent(
+                //     `Pin dropped at: ${position.lat}, ${position.lng}`
+                // );
+                // infoWindow.open(AME.map, AME);
+            });
+
+            // evento click sobre el marcador
+            infoWindow.close();
+            infoWindow.setContent("Ubicación Entrega");
+            this.marker_map.addListener("click", () => {
+                infoWindow.open(this.marker_map.map, this.marker_map);
+            });
+        },
     },
 };
 </script>
-<style></style>
+
+<style>
+#google_map {
+    width: 100%;
+    height: 300px;
+}
+</style>

@@ -20,6 +20,9 @@
 
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="stylesheet" href="{{ mix('css/plantilla.css') }}">
+    <script>
+        var main_url = "{{ url('') }}";
+    </script>
 </head>
 
 <body class="sidebar-mini layout-fixed control-sidebar-slide-open layout-navbar-fixed text-sm">
@@ -34,7 +37,8 @@
             @endif
         @else
             <Auth ruta="{{ route('base_path') }}" logo="{{ asset('imgs/' . $configuracion->first()->logo) }}"
-                empresa="{{ $configuracion->first()->razon_social }}" configuracion="{{ $configuracion->first() }}">
+                empresa="{{ $configuracion->first()->razon_social }}" configuracion="{{ $configuracion->first() }}"
+                url_registro="{{ route('registro') }}">
             </Auth>
         @endif
     </div>

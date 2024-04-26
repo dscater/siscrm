@@ -152,7 +152,7 @@ export default {
                 precio: "",
                 stock_actual: "",
                 url_imagen: "",
-                catalogo: { nombre: "", descripcion: "" },
+                categoria: { nombre: "", descripcion: "" },
             },
             cargando_producto: true,
             muestra: false,
@@ -184,33 +184,35 @@ export default {
                 });
         },
         agregarCarrito() {
-            if (this.$refs.input_cantidad.value > 0) {
+            if (this.cantidad_agregar > 0) {
                 let carrito = [];
-                if (localStorage.getItem("carrito_qhana")) {
-                    carrito = JSON.parse(localStorage.getItem("carrito_qhana"));
+                if (localStorage.getItem("carrito_siscrm")) {
+                    carrito = JSON.parse(
+                        localStorage.getItem("carrito_siscrm")
+                    );
                 }
-                let subtotal =
-                    parseFloat(this.$refs.input_cantidad.value) *
+                let precio_total =
+                    parseFloat(this.cantidad_agregar) *
                     parseFloat(this.oProducto.precio);
-                subtotal = subtotal.toFixed(2);
+                precio_total = precio_total.toFixed(2);
 
-                // let cantidad_agregada = this.$refs.input_cantidad.value;
+                // let cantidad_agregada = this.cantidad_agregar;
 
                 // if (cantidad_agregada > this.oProducto.stock_actual) {
                 //     cantidad_agregada = this.oProducto.stock_actual;
                 // }
 
                 carrito.push({
+                    orden_pedido_id: 0,
                     producto_id: this.oProducto.id,
-                    nombre: this.oProducto.nombre,
                     cantidad: this.cantidad_agregar,
-                    subtotal: subtotal,
-                    url_imagen: this.oProducto.url_imagen,
                     precio: this.oProducto.precio,
-                    catalogo: this.oProducto.categoria,
+                    precio_total: precio_total,
+                    categoria: this.oProducto.categoria,
+                    producto: this.oProducto,
                 });
-                localStorage.setItem("carrito_qhana", JSON.stringify(carrito));
-                this.$refs.input_cantidad.value = 1;
+                localStorage.setItem("carrito_siscrm", JSON.stringify(carrito));
+                this.cantidad_agregar = 1;
                 EventBus.$emit("producto_agregado");
                 this.cerrar();
                 Swal.fire({
@@ -239,7 +241,7 @@ export default {
                 precio: "",
                 stock_actual: "",
                 url_imagen: "",
-                catalogo: { nombre: "", descripcion: "" },
+                categoria: { nombre: "", descripcion: "" },
             };
             this.$emit("close");
         },

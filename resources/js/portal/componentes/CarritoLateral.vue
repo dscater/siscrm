@@ -20,11 +20,17 @@
                     v-if="carrito.length > 0"
                 >
                     <li
-                        v-for="item in carrito"
+                        v-for="(item, index) in carrito"
                         class="header-cart-item flex-w flex-t m-b-12"
                     >
                         <div class="header-cart-item-img">
-                            <img :src="item.url_imagen" alt="IMG" />
+                            <button
+                                class="quitar"
+                                @click="quitarProducto(index)"
+                            >
+                                X
+                            </button>
+                            <img :src="item.producto.url_imagen" alt="IMG" />
                         </div>
 
                         <div class="header-cart-item-txt p-t-8">
@@ -32,7 +38,7 @@
                                 href="#"
                                 class="header-cart-item-name m-b-18 hov-cl0 trans-04"
                             >
-                                {{ item.nombre }}
+                                {{ item.producto.nombre }}
                             </a>
 
                             <span class="header-cart-item-info">
@@ -79,9 +85,9 @@ export default {
     },
     methods: {
         getCarrito() {
-            if (localStorage.getItem("carrito_qhana")) {
+            if (localStorage.getItem("carrito_siscrm")) {
                 this.carrito = JSON.parse(
-                    localStorage.getItem("carrito_qhana")
+                    localStorage.getItem("carrito_siscrm")
                 );
                 this.cantidad_carrito = this.carrito.length;
             } else {
@@ -91,20 +97,33 @@ export default {
             this.getTotal();
         },
         getTotal() {
-            if (localStorage.getItem("carrito_qhana")) {
+            if (localStorage.getItem("carrito_siscrm")) {
                 this.carrito = JSON.parse(
-                    localStorage.getItem("carrito_qhana")
+                    localStorage.getItem("carrito_siscrm")
                 );
                 let sum_total = this.carrito.reduce(function (
                     acumulador,
                     objeto
                 ) {
-                    return acumulador + parseFloat(objeto.subtotal);
+                    return acumulador + parseFloat(objeto.precio_total);
                 },
                 0);
                 this.total = parseFloat(sum_total).toFixed(2);
             } else {
                 this.total = "0.00";
+            }
+        },
+        quitarProducto(index) {
+            if (localStorage.getItem("carrito_siscrm")) {
+                this.carrito = JSON.parse(
+                    localStorage.getItem("carrito_siscrm")
+                );
+                this.carrito.splice(index, 1);
+                localStorage.setItem(
+                    "carrito_siscrm",
+                    JSON.stringify(this.carrito)
+                );
+                this.getTotal();
             }
         },
     },

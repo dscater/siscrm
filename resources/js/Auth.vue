@@ -11,7 +11,8 @@
                 </div>
                 <div class="card-body">
                     <p class="login-box-msg text-white font-weight-bold">
-                        Ingresa tu usuario y contraseña para inicar sesión
+                        Ingresa tu Correo/Usuario y Contraseña para inicar
+                        sesión
                     </p>
 
                     <div>
@@ -19,7 +20,7 @@
                             <input
                                 type="text"
                                 class="form-control"
-                                placeholder="Usuario"
+                                placeholder="Correo/Usuario"
                                 v-model="usuario"
                                 @keypress.enter="login()"
                                 autofocus
@@ -68,6 +69,27 @@
                                     Acceder
                                 </button>
                             </div>
+                            <div class="col-12 mt-2">
+                                <a
+                                    :href="url_registro"
+                                    class="btn btn-outline-primary btn-block btn-flat font-weight-bold"
+                                    v-loading.fullscreen.lock="
+                                        fullscreenLoading
+                                    "
+                                >
+                                    Registrarme
+                                </a>
+                            </div>
+                            <div class="col-12 mt-2 text-center">
+                                <a href="" class="w-100 text-center">
+                                    ¿Olvidaste tú contraseña?
+                                </a>
+                            </div>
+                            <div class="col-12 mt-2 text-center">
+                                <a href="/" class="w-100 text-center text-info">
+                                    Volver al portal
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -88,6 +110,10 @@ export default {
         configuracion: {
             String,
             default: "",
+        },
+        url_registro: {
+            type: String,
+            default: "/registro",
         },
     },
     data() {

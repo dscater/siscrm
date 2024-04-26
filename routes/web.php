@@ -4,12 +4,14 @@ use App\Http\Controllers\AnalisisBiController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ConfiguracionController;
+use App\Http\Controllers\ConfiguracionPagoController;
 use App\Http\Controllers\HistorialAccionController;
 use App\Http\Controllers\IngresoProductoController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\SalidaProductoController;
 use App\Http\Controllers\TipoIngresoController;
@@ -43,6 +45,13 @@ Route::get('/auth', [LoginController::class, 'auth']);
 // LOGIN
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
+
+// REGISTRO
+Route::get('/administracion/registro', [RegistroController::class, 'registro'])->name("registro");
+Route::post('/administracion/registro', [RegistroController::class, 'store']);
+
+// LISTAS PORTAL
+Route::get("configuracion_pagos_portal", [ConfiguracionPagoController::class, 'listado'])->name("configuracion_pagos.portal");
 
 // CONFIGURACIÓN
 Route::get('/configuracion/getConfiguracion', [ConfiguracionController::class, 'getConfiguracion']);
@@ -108,6 +117,11 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('clientes', ClienteController::class)->only([
             'index', 'store', 'update', 'destroy', 'show'
         ]);
+
+        // CONFIGURACION PAGOS
+        Route::resource("configuracion_pagos", ConfiguracionPagoController::class)->only(
+            ["index", "store", "update", "show", "destroy"]
+        );
 
         // Ventas
         Route::post("ventas/pdf/{venta}", [VentaController::class, 'pdf']);

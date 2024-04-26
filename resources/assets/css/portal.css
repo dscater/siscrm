@@ -1,5 +1,5 @@
 :root {
-    --principal: #149FDA;
+    --principal: #149fda;
     --principal_hover: #00b3ff;
     --principal_transparent: #149fdabe;
     --secundario: #222222;
@@ -50,6 +50,12 @@ a.logo strong {
     font-weight: bold;
 }
 
+.show-search:hover:after,
+.show-filter:hover:after {
+    background-color: var(--principal);
+    border-color: var(--principal);
+}
+
 .cl2:hover {
     color: black;
     font-weight: bold;
@@ -70,6 +76,28 @@ a.logo strong {
 
 .header-cart-item-info {
     color: var(--secundario);
+}
+.header-cart-item .header-cart-item-img {
+    padding: 10px;
+}
+
+.header-cart-item .header-cart-item-img {
+    position: relative;
+}
+
+.header-cart-item .header-cart-item-img .quitar {
+    position: absolute;
+    z-index: 2000;
+    top: 0px;
+    left: 0px;
+    background-color: red;
+    color: white;
+    padding: 2px 5px;
+    font-size: 0.7em;
+}
+
+.header-cart-item-img::after {
+    content: "";
 }
 
 /* SLIDER */
@@ -173,7 +201,13 @@ a.cl7:hover,
     stroke-linecap: round;
 }
 
-.hov-btn1:hover {
+.hov-btn1:hover,
+.hov-btn1:focus,
+.hov-btn1:active,
+.show-search,
+.show-filter,
+.show-search::after,
+.show-filter::after {
     background-color: var(--principal);
 }
 

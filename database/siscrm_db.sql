@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 25-04-2024 a las 19:24:03
+-- Tiempo de generación: 26-04-2024 a las 17:39:46
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 7.4.19
 
@@ -34,6 +34,13 @@ CREATE TABLE `api_maps` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `api_maps`
+--
+
+INSERT INTO `api_maps` (`id`, `google_maps`, `map_id`, `created_at`, `updated_at`) VALUES
+(1, 'AIzaSyDhJquXCekb8guwEiX1aLHvPePi3SMkKis', '1fb896f332f7b53c', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -84,7 +91,8 @@ CREATE TABLE `clientes` (
 INSERT INTO `clientes` (`id`, `nombre`, `ci`, `ci_exp`, `nit`, `fono`, `correo`, `dir`, `user_id`, `fecha_registro`, `created_at`, `updated_at`) VALUES
 (1, 'PEDRO MARTINEZ', '231231', 'LP', '', '', 'pedro@gmail.com', 'LOS OLIVOS', 3, '2023-04-26', '2023-04-26 20:00:10', '2024-04-25 16:22:17'),
 (2, 'MARIA GONZALES CASAS', '1231231', 'CB', '34324111', '666666; 7777777', 'maria@gmail.com', 'LOS OLIVOS', 7, '2023-04-26', '2023-04-26 20:05:20', '2024-04-25 16:22:20'),
-(6, 'PABLO SANCHEZ', '3223423', 'LP', '', '', 'pablo@gmail.com', '', 9, '2024-04-25', '2024-04-25 16:20:39', '2024-04-25 16:22:23');
+(6, 'PABLO SANCHEZ', '3223423', 'LP', '', '', 'pablo@gmail.com', '', 9, '2024-04-25', '2024-04-25 16:20:39', '2024-04-25 16:22:23'),
+(7, 'MARCOS MAMANI', '434334', 'LP', '8888888888', '77777777', 'marcos@gmail.com', 'LOS OLIVOS', 10, '2024-04-26', '2024-04-26 16:17:30', '2024-04-26 16:17:30');
 
 -- --------------------------------------------------------
 
@@ -663,7 +671,8 @@ INSERT INTO `users` (`id`, `usuario`, `nombre`, `paterno`, `materno`, `ci`, `ci_
 (2, 'JPERES', 'JUAN', 'PERES', 'MAMANI', '1234', 'LP', 'LOS OLIVOS', '', '777777', 'SUPERVISOR', 'default.png', '$2y$10$ZTabc8GZiG/WlSL4nJbloe3WMay9P10kVUOlfsW/aFjhqzA9mi/jS', 1, '2023-04-24', '2023-04-24 20:23:30', '2023-04-28 21:12:44'),
 (3, 'PEDRO@GMAIL.COM', 'PEDRO MARTINEZ', NULL, NULL, '231231', 'LP', 'LOS OLIVOS', 'PEDRO@GMAIL.COM', '', 'CLIENTE', NULL, '$2y$10$pRPnVk30Zbozb2.th9uVoexsiou4LpY3PvnyYMwO34NBsKaIknb0e', 1, '2024-04-25', '2024-04-25 16:12:18', '2024-04-25 16:22:17'),
 (7, 'MARIA@GMAIL.COM', 'MARIA GONZALES CASAS', NULL, NULL, '1231231', 'CB', 'LOS OLIVOS', 'MARIA@GMAIL.COM', '666666; 7777777', 'CLIENTE', NULL, '$2y$10$mg4L/sMzxECOmwT5rnrx6.ySbewLNN1OjgGVv/R62HIWhuElU0o0G', 1, '2024-04-25', '2024-04-25 16:19:01', '2024-04-25 16:22:20'),
-(9, 'pablo@gmail.com', 'PABLO SANCHEZ', NULL, NULL, '3223423', 'LP', '', 'pablo@gmail.com', '', 'CLIENTE', NULL, '$2y$10$7Y0BzYvUzgAymO0EZxbT3.jEBiAuau/vOql46Q5K/E.sRAqCHhbSS', 1, '2024-04-25', '2024-04-25 16:20:39', '2024-04-25 16:22:23');
+(9, 'pablo@gmail.com', 'PABLO SANCHEZ', NULL, NULL, '3223423', 'LP', '', 'pablo@gmail.com', '', 'CLIENTE', NULL, '$2y$10$7Y0BzYvUzgAymO0EZxbT3.jEBiAuau/vOql46Q5K/E.sRAqCHhbSS', 1, '2024-04-25', '2024-04-25 16:20:39', '2024-04-25 16:22:23'),
+(10, 'marcos@gmail.com', 'MARCOS MAMANI', NULL, NULL, '434334', 'LP', 'LOS OLIVOS', 'marcos@gmail.com', '77777777', 'CLIENTE', NULL, '$2y$10$9XLoUjSp.xrZbDZODhsAf.zH8UYCnloHP4kv8wRGqOo5FJQYOu7lm', 1, '2024-04-26', '2024-04-26 16:17:30', '2024-04-26 16:17:30');
 
 -- --------------------------------------------------------
 
@@ -857,7 +866,7 @@ ALTER TABLE `ventas`
 -- AUTO_INCREMENT de la tabla `api_maps`
 --
 ALTER TABLE `api_maps`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `categorias`
@@ -869,7 +878,7 @@ ALTER TABLE `categorias`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `configuracions`
@@ -977,7 +986,7 @@ ALTER TABLE `tipo_salidas`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `ventas`

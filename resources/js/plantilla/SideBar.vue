@@ -414,17 +414,20 @@ export default {
         return {
             user: JSON.parse(localStorage.getItem("user")),
             fullscreenLoading: false,
-            permisos: localStorage.getItem("permisos"),
+            permisos: localStorage.getItem("permisos")
+                ? localStorage.getItem("permisos")
+                : [],
         };
     },
     methods: {
         logout() {
             this.fullscreenLoading = true;
             axios.post("/logout").then((res) => {
+                let self = this;
                 setTimeout(function () {
+                    self.$router.push({ name: "login" });
                     localStorage.clear();
                     location.reload();
-                    this.$router.push({ name: "login" });
                 }, 500);
             });
         },

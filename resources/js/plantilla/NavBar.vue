@@ -14,7 +14,9 @@
                     ></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <router-link :to="{ name: 'inicio' }" class="nav-link text-white"
+                    <router-link
+                        :to="{ name: 'inicio' }"
+                        class="nav-link text-white"
                         >Inicio</router-link
                     >
                 </li>
@@ -65,7 +67,9 @@ export default {
     data() {
         return {
             fullscreenLoading: false,
-            permisos: localStorage.getItem("permisos"),
+            permisos: localStorage.getItem("permisos")
+                ? localStorage.getItem("permisos")
+                : [],
         };
     },
     mounted() {
@@ -77,10 +81,11 @@ export default {
         logout() {
             this.fullscreenLoading = true;
             axios.post("/logout").then((res) => {
+                let self = this;
                 setTimeout(function () {
+                    self.$router.push({ name: "login" });
                     localStorage.clear();
                     location.reload();
-                    this.$router.push({ name: "login" });
                 }, 500);
             });
         },
