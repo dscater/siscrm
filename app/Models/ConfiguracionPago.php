@@ -16,9 +16,14 @@ class ConfiguracionPago extends Model
         "fecha_registro",
     ];
 
-    protected $appends = ["fecha_registro_t"];
+    protected $appends = ["fecha_registro_t", "url_qr"];
 
-    public function getFechaRegistroT()
+    public function getUrlQrAttribute()
+    {
+        return asset("imgs/configuracion_pagos/" . $this->qr);
+    }
+
+    public function getFechaRegistroTAttribute()
     {
         return date("d/m/Y", strtotime($this->fecha_registro));
     }

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 26-04-2024 a las 17:39:46
+-- Tiempo de generación: 26-04-2024 a las 21:15:45
 -- Versión del servidor: 8.0.30
--- Versión de PHP: 7.4.19
+-- Versión de PHP: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -122,7 +122,7 @@ CREATE TABLE `configuracions` (
 --
 
 INSERT INTO `configuracions` (`id`, `nombre_sistema`, `alias`, `razon_social`, `nit`, `ciudad`, `dir`, `fono`, `web`, `actividad`, `correo`, `logo`, `created_at`, `updated_at`) VALUES
-(1, 'SISTEMA DE INVENTARIO Y VENTAS', 'SISTEMABI', 'EMPRESA FARMACIA', '10000000000', 'LA PAZ', 'LA PAZ', '222222', '', 'ACTIVIDAD', '', '1682712649_logo.jpg', NULL, '2023-04-28 20:10:49');
+(1, 'SISTEMA DE INVENTARIO Y VENTAS', 'SISCRM', 'EMPRESA PRUEBA S.A.', '10000000000', 'LA PAZ', 'LA PAZ', '222222', '', 'ACTIVIDAD', '', '1682712649_logo.jpg', NULL, '2024-04-26 19:13:00');
 
 -- --------------------------------------------------------
 
@@ -139,6 +139,14 @@ CREATE TABLE `configuracion_pagos` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `configuracion_pagos`
+--
+
+INSERT INTO `configuracion_pagos` (`id`, `banco`, `nro_cuenta`, `qr`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(1, 'BANCO UNION', '10000000222222', '1714158718_1.png', '2024-04-26', '2024-04-26 19:11:50', '2024-04-26 19:11:58'),
+(2, 'BANCO #2', '22222222222', '1714158736_2.png', '2024-04-26', '2024-04-26 19:12:12', '2024-04-26 19:12:16');
 
 -- --------------------------------------------------------
 
@@ -345,7 +353,26 @@ INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `dato
 (103, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CLIENTE', 'id: 1<br/>nombre: PEDRO MARTINEZ<br/>ci: 231231<br/>ci_exp: LP<br/>nit: <br/>fono: <br/>correo: pedro@gmail.com<br/>dir: LOS OLIVOS<br/>user_id: 3<br/>fecha_registro: 2023-04-26<br/>created_at: 2023-04-26 16:00:10<br/>updated_at: 2024-04-25 12:22:00<br/>', 'id: 1<br/>nombre: PEDRO MARTINEZ<br/>ci: 231231<br/>ci_exp: LP<br/>nit: <br/>fono: <br/>correo: pedro@gmail.com<br/>dir: LOS OLIVOS<br/>user_id: 3<br/>fecha_registro: 2023-04-26<br/>created_at: 2023-04-26 16:00:10<br/>updated_at: 2024-04-25 12:22:17<br/>', 'CLIENTES', '2024-04-25', '12:22:17', '2024-04-25 16:22:17', '2024-04-25 16:22:17'),
 (104, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CLIENTE', 'id: 2<br/>nombre: MARIA GONZALES CASAS<br/>ci: 1231231<br/>ci_exp: CB<br/>nit: 34324111<br/>fono: 666666; 7777777<br/>correo: maria@gmail.com<br/>dir: LOS OLIVOS<br/>user_id: 7<br/>fecha_registro: 2023-04-26<br/>created_at: 2023-04-26 16:05:20<br/>updated_at: 2024-04-25 12:19:01<br/>', 'id: 2<br/>nombre: MARIA GONZALES CASAS<br/>ci: 1231231<br/>ci_exp: CB<br/>nit: 34324111<br/>fono: 666666; 7777777<br/>correo: maria@gmail.com<br/>dir: LOS OLIVOS<br/>user_id: 7<br/>fecha_registro: 2023-04-26<br/>created_at: 2023-04-26 16:05:20<br/>updated_at: 2024-04-25 12:22:20<br/>', 'CLIENTES', '2024-04-25', '12:22:20', '2024-04-25 16:22:20', '2024-04-25 16:22:20'),
 (105, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CLIENTE', 'id: 6<br/>nombre: PABLO SANCHEZ<br/>ci: 3223423<br/>ci_exp: LP<br/>nit: <br/>fono: <br/>correo: pablo@gmail.com<br/>dir: <br/>user_id: 9<br/>fecha_registro: 2024-04-25<br/>created_at: 2024-04-25 12:20:39<br/>updated_at: 2024-04-25 12:20:39<br/>', 'id: 6<br/>nombre: PABLO SANCHEZ<br/>ci: 3223423<br/>ci_exp: LP<br/>nit: <br/>fono: <br/>correo: pablo@gmail.com<br/>dir: <br/>user_id: 9<br/>fecha_registro: 2024-04-25<br/>created_at: 2024-04-25 12:20:39<br/>updated_at: 2024-04-25 12:22:21<br/>', 'CLIENTES', '2024-04-25', '12:22:21', '2024-04-25 16:22:21', '2024-04-25 16:22:21'),
-(106, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CLIENTE', 'id: 6<br/>nombre: PABLO SANCHEZ<br/>ci: 3223423<br/>ci_exp: LP<br/>nit: <br/>fono: <br/>correo: pablo@gmail.com<br/>dir: <br/>user_id: 9<br/>fecha_registro: 2024-04-25<br/>created_at: 2024-04-25 12:20:39<br/>updated_at: 2024-04-25 12:22:21<br/>', 'id: 6<br/>nombre: PABLO SANCHEZ<br/>ci: 3223423<br/>ci_exp: LP<br/>nit: <br/>fono: <br/>correo: pablo@gmail.com<br/>dir: <br/>user_id: 9<br/>fecha_registro: 2024-04-25<br/>created_at: 2024-04-25 12:20:39<br/>updated_at: 2024-04-25 12:22:23<br/>', 'CLIENTES', '2024-04-25', '12:22:23', '2024-04-25 16:22:23', '2024-04-25 16:22:23');
+(106, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CLIENTE', 'id: 6<br/>nombre: PABLO SANCHEZ<br/>ci: 3223423<br/>ci_exp: LP<br/>nit: <br/>fono: <br/>correo: pablo@gmail.com<br/>dir: <br/>user_id: 9<br/>fecha_registro: 2024-04-25<br/>created_at: 2024-04-25 12:20:39<br/>updated_at: 2024-04-25 12:22:21<br/>', 'id: 6<br/>nombre: PABLO SANCHEZ<br/>ci: 3223423<br/>ci_exp: LP<br/>nit: <br/>fono: <br/>correo: pablo@gmail.com<br/>dir: <br/>user_id: 9<br/>fecha_registro: 2024-04-25<br/>created_at: 2024-04-25 12:20:39<br/>updated_at: 2024-04-25 12:22:23<br/>', 'CLIENTES', '2024-04-25', '12:22:23', '2024-04-25 16:22:23', '2024-04-25 16:22:23'),
+(107, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UNA CONFIGURACION DE PAGO', 'id: 1<br/>banco: BANCO #UNION<br/>nro_cuenta: 100000001111<br/>qr: 1714158455_1.png<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:07:35<br/>updated_at: 2024-04-26 15:07:35<br/>', NULL, 'CONFIGURACION DE PAGOS', '2024-04-26', '15:07:35', '2024-04-26 19:07:35', '2024-04-26 19:07:35'),
+(108, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA CONFIGURACION DE PAGO', 'id: 1<br/>banco: BANCO #UNION<br/>nro_cuenta: 100000001111<br/>qr: 1714158455_1.png<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:07:35<br/>updated_at: 2024-04-26 15:07:35<br/>', 'id: 1<br/>banco: BANCO #UNION<br/>nro_cuenta: 100000001111SS<br/>qr: <br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:07:35<br/>updated_at: 2024-04-26 15:09:24<br/>', 'CONFIGURACION DE PAGOS', '2024-04-26', '15:09:24', '2024-04-26 19:09:24', '2024-04-26 19:09:24'),
+(109, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA CONFIGURACION DE PAGO', 'id: 1<br/>banco: BANCO #UNION<br/>nro_cuenta: 100000001111SS<br/>qr: <br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:07:35<br/>updated_at: 2024-04-26 15:09:24<br/>', 'id: 1<br/>banco: BANCO #UNION<br/>nro_cuenta: 100000001111SS<br/>qr: <br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:07:35<br/>updated_at: 2024-04-26 15:09:24<br/>', 'CONFIGURACION DE PAGOS', '2024-04-26', '15:10:47', '2024-04-26 19:10:47', '2024-04-26 19:10:47'),
+(110, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA CONFIGURACION DE PAGO', 'id: 1<br/>banco: BANCO #UNION<br/>nro_cuenta: 100000001111SS<br/>qr: <br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:07:35<br/>updated_at: 2024-04-26 15:09:24<br/>', 'id: 1<br/>banco: BANCO #UNION<br/>nro_cuenta: 100000001111SS<br/>qr: 1714158657_1.png<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:07:35<br/>updated_at: 2024-04-26 15:10:57<br/>', 'CONFIGURACION DE PAGOS', '2024-04-26', '15:10:57', '2024-04-26 19:10:57', '2024-04-26 19:10:57'),
+(111, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA CONFIGURACION DE PAGO', 'id: 1<br/>banco: BANCO #UNION<br/>nro_cuenta: 100000001111SS<br/>qr: 1714158657_1.png<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:07:35<br/>updated_at: 2024-04-26 15:10:57<br/>', 'id: 1<br/>banco: BANCO #UNION<br/>nro_cuenta: 100000001111SS<br/>qr: 1714158673_1.png<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:07:35<br/>updated_at: 2024-04-26 15:11:13<br/>', 'CONFIGURACION DE PAGOS', '2024-04-26', '15:11:13', '2024-04-26 19:11:13', '2024-04-26 19:11:13'),
+(112, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA CONFIGURACION DE PAGO', 'id: 1<br/>banco: BANCO #UNION<br/>nro_cuenta: 100000001111SS<br/>qr: 1714158673_1.png<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:07:35<br/>updated_at: 2024-04-26 15:11:13<br/>', 'id: 1<br/>banco: BANCO #UNION<br/>nro_cuenta: 100000001111SS<br/>qr: 1714158676_1.png<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:07:35<br/>updated_at: 2024-04-26 15:11:16<br/>', 'CONFIGURACION DE PAGOS', '2024-04-26', '15:11:16', '2024-04-26 19:11:16', '2024-04-26 19:11:16'),
+(113, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA CONFIGURACION DE PAGO', 'id: 1<br/>banco: BANCO #UNION<br/>nro_cuenta: 100000001111SS<br/>qr: 1714158676_1.png<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:07:35<br/>updated_at: 2024-04-26 15:11:16<br/>', 'id: 1<br/>banco: BANCO #UNIONS<br/>nro_cuenta: 100000001111<br/>qr: 1714158681_1.png<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:07:35<br/>updated_at: 2024-04-26 15:11:21<br/>', 'CONFIGURACION DE PAGOS', '2024-04-26', '15:11:21', '2024-04-26 19:11:21', '2024-04-26 19:11:21'),
+(114, 1, 'ELIMINACIÓN', 'EL USUARIO admin ELIMINÓ UNA CONFIGURACION DE PAGO', 'id: 1<br/>banco: BANCO #UNIONS<br/>nro_cuenta: 100000001111<br/>qr: 1714158681_1.png<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:07:35<br/>updated_at: 2024-04-26 15:11:21<br/>', NULL, 'CONFIGURACION DE PAGOS', '2024-04-26', '15:11:35', '2024-04-26 19:11:35', '2024-04-26 19:11:35'),
+(115, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UNA CONFIGURACION DE PAGO', 'id: 1<br/>banco: BANCO UNION<br/>nro_cuenta: 10000000222222<br/>qr: 1714158710_1.png<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:11:50<br/>updated_at: 2024-04-26 15:11:50<br/>', NULL, 'CONFIGURACION DE PAGOS', '2024-04-26', '15:11:50', '2024-04-26 19:11:50', '2024-04-26 19:11:50'),
+(116, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA CONFIGURACION DE PAGO', 'id: 1<br/>banco: BANCO UNION<br/>nro_cuenta: 10000000222222<br/>qr: 1714158710_1.png<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:11:50<br/>updated_at: 2024-04-26 15:11:50<br/>', 'id: 1<br/>banco: BANCO UNION<br/>nro_cuenta: 10000000222222S<br/>qr: 1714158714_1.png<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:11:50<br/>updated_at: 2024-04-26 15:11:54<br/>', 'CONFIGURACION DE PAGOS', '2024-04-26', '15:11:54', '2024-04-26 19:11:54', '2024-04-26 19:11:54'),
+(117, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA CONFIGURACION DE PAGO', 'id: 1<br/>banco: BANCO UNION<br/>nro_cuenta: 10000000222222S<br/>qr: 1714158714_1.png<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:11:50<br/>updated_at: 2024-04-26 15:11:54<br/>', 'id: 1<br/>banco: BANCO UNION<br/>nro_cuenta: 10000000222222<br/>qr: 1714158718_1.png<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:11:50<br/>updated_at: 2024-04-26 15:11:58<br/>', 'CONFIGURACION DE PAGOS', '2024-04-26', '15:11:58', '2024-04-26 19:11:58', '2024-04-26 19:11:58'),
+(118, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UNA CONFIGURACION DE PAGO', 'id: 2<br/>banco: BANCO #2<br/>nro_cuenta: 22222222222<br/>qr: 1714158732_2.png<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:12:12<br/>updated_at: 2024-04-26 15:12:12<br/>', NULL, 'CONFIGURACION DE PAGOS', '2024-04-26', '15:12:12', '2024-04-26 19:12:12', '2024-04-26 19:12:12'),
+(119, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA CONFIGURACION DE PAGO', 'id: 2<br/>banco: BANCO #2<br/>nro_cuenta: 22222222222<br/>qr: 1714158732_2.png<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:12:12<br/>updated_at: 2024-04-26 15:12:12<br/>', 'id: 2<br/>banco: BANCO #2<br/>nro_cuenta: 22222222222<br/>qr: 1714158736_2.png<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:12:12<br/>updated_at: 2024-04-26 15:12:16<br/>', 'CONFIGURACION DE PAGOS', '2024-04-26', '15:12:16', '2024-04-26 19:12:16', '2024-04-26 19:12:16'),
+(120, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ LA CONFIGURACIÓN DEL SISTEMA', 'id: 1<br/>nombre_sistema: SISTEMA DE INVENTARIO Y VENTAS<br/>alias: SISTEMABI<br/>razon_social: EMPRESA FARMACIA<br/>nit: 10000000000<br/>ciudad: LA PAZ<br/>dir: LA PAZ<br/>fono: 222222<br/>web: <br/>actividad: ACTIVIDAD<br/>correo: <br/>logo: 1682712649_logo.jpg<br/>created_at: <br/>updated_at: 2023-04-28 16:10:49<br/>', 'id: 1<br/>nombre_sistema: SISTEMA DE INVENTARIO Y VENTAS<br/>alias: SISCRM<br/>razon_social: EMPRESA PRUEBA S.A.<br/>nit: 10000000000<br/>ciudad: LA PAZ<br/>dir: LA PAZ<br/>fono: 222222<br/>web: <br/>actividad: ACTIVIDAD<br/>correo: <br/>logo: 1682712649_logo.jpg<br/>created_at: <br/>updated_at: 2024-04-26 15:13:00<br/>', 'CONFIGURACIÓN', '2024-04-26', '15:13:00', '2024-04-26 19:13:00', '2024-04-26 19:13:00'),
+(123, 10, 'CREACIÓN', 'EL USUARIO  REGISTRO UNA ORDEN DE PEDIDO', 'id: 3<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 77777777<br/>comprobante: C:\\USERS\\VICTO\\APPDATA\\LOCAL\\TEMP\\PHPCEB2.TMP<br/>lat: -16.49712657103268<br/>lng: -68.13191764351133<br/>total: 136.00<br/>estado: PENDIENTE<br/>user_id: 10<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 15:55:40<br/>updated_at: 2024-04-26 15:55:40<br/>', NULL, 'ORDEN DE PEDIDOS', '2024-04-26', '15:55:40', '2024-04-26 19:55:40', '2024-04-26 19:55:40'),
+(124, 10, 'CREACIÓN', 'EL USUARIO  REGISTRO UNA ORDEN DE PEDIDO', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 77575373<br/>comprobante: C:\\USERS\\VICTO\\APPDATA\\LOCAL\\TEMP\\PHP2AAC.TMP<br/>lat: -16.496808823347422<br/>lng: -68.13268932180621<br/>total: 324.00<br/>estado: PEDIDO PENDIENTE<br/>user_id: 10<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 16:39:45<br/>updated_at: 2024-04-26 16:39:45<br/>', NULL, 'ORDEN DE PEDIDOS', '2024-04-26', '16:39:45', '2024-04-26 20:39:45', '2024-04-26 20:39:45'),
+(125, 1, 'MODIFICACIÓN', 'EL USUARIO  MODIFICÓ UNA ORDEN DE PEDIDO', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 77575373<br/>comprobante: 1714163985_1.pdf<br/>lat: -16.496808823347422<br/>lng: -68.13268932180621<br/>total: 324.00<br/>estado: PEDIDO PENDIENTE<br/>user_id: 10<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 16:39:45<br/>updated_at: 2024-04-26 16:39:45<br/>', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 77575373<br/>comprobante: 1714163985_1.pdf<br/>lat: -16.496808823347422<br/>lng: -68.13268932180621<br/>total: 324.00<br/>estado: ORDEN PROCESADA<br/>user_id: 10<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 16:39:45<br/>updated_at: 2024-04-26 17:13:26<br/>', 'ORDEN DE PEDIDOS', '2024-04-26', '17:13:26', '2024-04-26 21:13:26', '2024-04-26 21:13:26'),
+(126, 1, 'MODIFICACIÓN', 'EL USUARIO  MODIFICÓ UNA ORDEN DE PEDIDO', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 77575373<br/>comprobante: 1714163985_1.pdf<br/>lat: -16.496808823347422<br/>lng: -68.13268932180621<br/>total: 324.00<br/>estado: PEDIDO PENDIENTE<br/>user_id: 10<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 16:39:45<br/>updated_at: 2024-04-26 17:13:26<br/>', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 77575373<br/>comprobante: 1714163985_1.pdf<br/>lat: -16.496808823347422<br/>lng: -68.13268932180621<br/>total: 324.00<br/>estado: ORDEN PROCESADA<br/>user_id: 10<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 16:39:45<br/>updated_at: 2024-04-26 17:14:03<br/>', 'ORDEN DE PEDIDOS', '2024-04-26', '17:14:03', '2024-04-26 21:14:03', '2024-04-26 21:14:03'),
+(127, 1, 'ELIMINACIÓN', 'EL USUARIO  ELIMINÓ UNA ORDEN DE PEDIDO', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 77575373<br/>comprobante: 1714163985_1.pdf<br/>lat: -16.496808823347422<br/>lng: -68.13268932180621<br/>total: 324.00<br/>estado: PEDIDO PENDIENTE<br/>user_id: 10<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 16:39:45<br/>updated_at: 2024-04-26 17:14:03<br/>', NULL, 'ORDEN DE PEDIDOS', '2024-04-26', '17:14:14', '2024-04-26 21:14:14', '2024-04-26 21:14:14');
 
 -- --------------------------------------------------------
 
@@ -484,6 +511,7 @@ CREATE TABLE `orden_pedidos` (
   `lng` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `total` decimal(24,2) NOT NULL,
   `estado` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
   `fecha_registro` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -890,7 +918,7 @@ ALTER TABLE `configuracions`
 -- AUTO_INCREMENT de la tabla `configuracion_pagos`
 --
 ALTER TABLE `configuracion_pagos`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_ventas`
@@ -914,7 +942,7 @@ ALTER TABLE `fecha_stocks`
 -- AUTO_INCREMENT de la tabla `historial_accions`
 --
 ALTER TABLE `historial_accions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
 
 --
 -- AUTO_INCREMENT de la tabla `ingreso_productos`

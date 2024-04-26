@@ -2,9 +2,259 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HistorialAccion;
+use App\Models\OrdenPedido;
+use App\Models\Producto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrdenPedidoController extends Controller
 {
-    //
+    public $validacion = [
+        "productos" => "required|array|min:1",
+        "configuracion_pago_id" => "required",
+        "celular" => "required",
+        "comprobante" => "required",
+    ];
+
+    public $mensajes = [
+        "productos.required" => "Este campo es obligatorio",
+        "productos.min" => "Debes seleccionar al menos :min producto",
+        "configuracion_pago_id.required" => "Este campo es obligatorio",
+        "celular.required" => "Este campo es obligatorio",
+        "comprobante.required" => "Este campo es obligatorio",
+    ];
+
+    public function index()
+    {
+        $orden_pedidos = OrdenPedido::with(["user"])->get();
+        return response()->JSON(['orden_pedidos' => $orden_pedidos, 'total' => count($orden_pedidos)], 200);
+    }
+
+    public function registraOrden(Request $request)
+    {
+        $request->validate($this->validacion, $this->mensajes);
+        $request['fecha_registro'] = date('Y-m-d');
+        DB::beginTransaction();
+        try {
+            // crear la OrdenPedido
+            $array_codigo = OrdenPedido::getNuevoCodigo();
+            $request["codigo"] = $array_codigo[0];
+            $request["nro"] = $array_codigo[1];
+            $request["user_id"] = Auth::user()->id;
+            $request["estado"] = "PEDIDO PENDIENTE";
+            $nueva_orden_pedido = OrdenPedido::create(array_map('mb_strtoupper', $request->except("productos", "cantidades", "precios", "precio_total")));
+            $datos_original = HistorialAccion::getDetalleRegistro($nueva_orden_pedido, "orden_pedidos");
+            HistorialAccion::create([
+                'user_id' => Auth::user()->id,
+                'accion' => 'CREACIÓN',
+                'descripcion' => 'EL USUARIO ' . Auth::user()->orden_pedido . ' REGISTRO UNA ORDEN DE PEDIDO',
+                'datos_original' => $datos_original,
+                'modulo' => 'ORDEN DE PEDIDOS',
+                'fecha' => date('Y-m-d'),
+                'hora' => date('H:i:s')
+            ]);
+
+            $productos = $request->productos;
+            $cantidades = $request->cantidades;
+            $precios = $request->precios;
+            $precio_total = $request->precio_total;
+
+            foreach ($productos as $key => $producto) {
+                $nueva_orden_pedido->orden_detalles()->create([
+                    "producto_id" => $producto,
+                    "cantidad" => $cantidades[$key],
+                    "precio" => $precios[$key],
+                    "precio_total" => $precio_total[$key],
+                ]);
+            }
+
+            if ($request->hasFile('comprobante')) {
+                $file = $request->comprobante;
+                $nom_comprobante = time() . '_' . $nueva_orden_pedido->id . '.' . $file->getClientOriginalExtension();
+                $nueva_orden_pedido->comprobante = $nom_comprobante;
+                $file->move(public_path() . '/imgs/comprobantes/', $nom_comprobante);
+            }
+            $nueva_orden_pedido->save();
+
+            DB::commit();
+
+            return response()->JSON([
+                "sw" => true,
+                "message" => "Orden de Venta registrada con éxito",
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->JSON([
+                "sw" => false,
+                "message" => "Ocurrió un error: " . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function store(Request $request)
+    {
+        $this->validacion["qr"] = "required";
+        $request->validate($this->validacion, $this->mensajes);
+        $request['fecha_registro'] = date('Y-m-d');
+        DB::beginTransaction();
+        try {
+            // crear la OrdenPedido
+            $array_codigo = OrdenPedido::getNuevoCodigo();
+            $request["codigo"] = $array_codigo[0];
+            $request["nro"] = $array_codigo[1];
+            $nueva_orden_pedido = OrdenPedido::create(array_map('mb_strtoupper', $request->except("qr")));
+            $datos_original = HistorialAccion::getDetalleRegistro($nueva_orden_pedido, "orden_pedidos");
+            HistorialAccion::create([
+                'user_id' => Auth::user()->id,
+                'accion' => 'CREACIÓN',
+                'descripcion' => 'EL USUARIO ' . Auth::user()->orden_pedido . ' REGISTRO UNA ORDEN DE PEDIDO',
+                'datos_original' => $datos_original,
+                'modulo' => 'ORDEN DE PEDIDOS',
+                'fecha' => date('Y-m-d'),
+                'hora' => date('H:i:s')
+            ]);
+
+            if ($request->hasFile('qr')) {
+                $file = $request->qr;
+                $nom_qr = time() . '_' . $nueva_orden_pedido->id . '.' . $file->getClientOriginalExtension();
+                $nueva_orden_pedido->qr = $nom_qr;
+                $file->move(public_path() . '/imgs/qr/', $nom_qr);
+            }
+            $nueva_orden_pedido->save();
+
+            DB::commit();
+            return redirect()->route("orden_pedidos.index")->with("bien", "Registro realizado");
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->JSON([
+                'sw' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function show(OrdenPedido $orden_pedido)
+    {
+        $orden_pedido  = $orden_pedido->load(["user", "orden_detalles.producto", "configuracion_pago"]);
+        return response()->JSON([
+            "orden_pedido" => $orden_pedido,
+        ]);
+    }
+
+    public function actualiza_estado(OrdenPedido $orden_pedido, Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $datos_original = HistorialAccion::getDetalleRegistro($orden_pedido, "orden_pedidos");
+            $orden_pedido->estado = $request->estado;
+            $orden_pedido->save();
+            $datos_nuevo = HistorialAccion::getDetalleRegistro($orden_pedido, "orden_pedidos");
+            HistorialAccion::create([
+                'user_id' => Auth::user()->id,
+                'accion' => 'MODIFICACIÓN',
+                'descripcion' => 'EL USUARIO ' . Auth::user()->orden_pedido . ' MODIFICÓ UNA ORDEN DE PEDIDO',
+                'datos_original' => $datos_original,
+                'datos_nuevo' => $datos_nuevo,
+                'modulo' => 'ORDEN DE PEDIDOS',
+                'fecha' => date('Y-m-d'),
+                'hora' => date('H:i:s')
+            ]);
+
+            DB::commit();
+            return response()->JSON([
+                "sw" => true,
+                "orden_pedido" => $orden_pedido,
+                "message" => "La orden se actualizó correctamente",
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->JSON([
+                "sw" => false,
+                "message" => "Ocurrió un error: " . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function update(OrdenPedido $orden_pedido, Request $request)
+    {
+        $request->validate($this->validacion, $this->mensajes);
+        DB::beginTransaction();
+        try {
+            $datos_original = HistorialAccion::getDetalleRegistro($orden_pedido, "orden_pedidos");
+            $orden_pedido->update(array_map('mb_strtoupper', $request->except("qr")));
+            if ($request->hasFile('qr')) {
+                $antiguo = $orden_pedido->qr;
+                if ($antiguo != 'default.png') {
+                    \File::delete(public_path() . '/imgs/qr/' . $antiguo);
+                }
+                $file = $request->qr;
+                $nom_qr = time() . '_' . $orden_pedido->id . '.' . $file->getClientOriginalExtension();
+                $orden_pedido->qr = $nom_qr;
+                $file->move(public_path() . '/imgs/qr/', $nom_qr);
+            }
+            $orden_pedido->save();
+
+            $datos_nuevo = HistorialAccion::getDetalleRegistro($orden_pedido, "orden_pedidos");
+            HistorialAccion::create([
+                'user_id' => Auth::user()->id,
+                'accion' => 'MODIFICACIÓN',
+                'descripcion' => 'EL USUARIO ' . Auth::user()->orden_pedido . ' MODIFICÓ UNA ORDEN DE PEDIDO',
+                'datos_original' => $datos_original,
+                'datos_nuevo' => $datos_nuevo,
+                'modulo' => 'ORDEN DE PEDIDOS',
+                'fecha' => date('Y-m-d'),
+                'hora' => date('H:i:s')
+            ]);
+
+            DB::commit();
+            return response()->JSON([
+                'sw' => true,
+                'orden_pedido' => $orden_pedido,
+                'msj' => 'El registro se realizó de forma correcta',
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->JSON([
+                'sw' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function destroy(OrdenPedido $orden_pedido)
+    {
+        DB::beginTransaction();
+        try {
+            $antiguo = $orden_pedido->comprobante;
+            if ($antiguo != 'default.png') {
+                \File::delete(public_path() . '/imgs/comprobantes/' . $antiguo);
+            }
+            $orden_pedido->orden_detalles()->delete();
+            $datos_original = HistorialAccion::getDetalleRegistro($orden_pedido, "orden_pedidos");
+            $orden_pedido->delete();
+            HistorialAccion::create([
+                'user_id' => Auth::user()->id,
+                'accion' => 'ELIMINACIÓN',
+                'descripcion' => 'EL USUARIO ' . Auth::user()->orden_pedido . ' ELIMINÓ UNA ORDEN DE PEDIDO',
+                'datos_original' => $datos_original,
+                'modulo' => 'ORDEN DE PEDIDOS',
+                'fecha' => date('Y-m-d'),
+                'hora' => date('H:i:s')
+            ]);
+            DB::commit();
+            return response()->JSON([
+                'sw' => true,
+                'message' => 'El registro se eliminó correctamente'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->JSON([
+                'sw' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }

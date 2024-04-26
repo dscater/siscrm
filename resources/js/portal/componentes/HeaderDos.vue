@@ -84,8 +84,8 @@
         <!-- Header Mobile -->
         <div class="wrap-header-mobile">
             <!-- Logo moblie -->
-            <div class="logo-mobile">
-                <a href=""> <strong>QHANA</strong> BOLIVIA </a>
+            <div class="logo-mobile d-flex align-center">
+                <a href="" class="d-flex h-100 align-center"> <strong>{{configuracion.alias}}</strong></a>
             </div>
 
             <!-- Icon header -->

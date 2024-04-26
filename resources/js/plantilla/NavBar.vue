@@ -84,7 +84,8 @@ export default {
                 let self = this;
                 setTimeout(function () {
                     self.$router.push({ name: "login" });
-                    localStorage.clear();
+                    localStorage.removeItem("permisos");
+                    localStorage.removeItem("user");
                     location.reload();
                 }, 500);
             });

@@ -44,6 +44,15 @@
                         </div>
                     </div>
                 </div>
+                <div
+                    class="row"
+                    v-if="user && user.id && user.tipo == 'CLIENTE'"
+                >
+                    <div class="col-12 text-center">
+                        <a :href="url_asset + '/'" class="text-md mr-3">Seguir comprando</a>
+                        <a :href="url_asset + '/carrito'" class="text-md ml-3">Ver mi carrito</a>
+                    </div>
+                </div>
             </div>
             <!-- /.container-fluid -->
         </section>
@@ -65,9 +74,11 @@ export default {
             htmlMision: "",
             htmlVision: "",
             htmlObjetivos: "",
+            url_asset: "/",
         };
     },
     mounted() {
+        this.url_asset = main_url;
         this.loadingWindow.close();
         this.getInfoBox();
     },

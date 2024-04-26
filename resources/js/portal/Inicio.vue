@@ -12,29 +12,29 @@
                 </div>
             </div>
 
-            <div class="container bg-dark wow fadeInUp" wow-data-delay="0.2s">
-                <div class="flex-w flex-sb-m p-b-30">
+            <div class="container wow fadeInUp" wow-data-delay="0.2s">
+                <div class="flex-w flex-sb-m p-b-20">
                     <div class="flex-w flex-c-m m-tb-10">
                         <div
-                            class="flex-c-m stext-106 cl0 size-104 bor4 pointer hov-btn1 trans-04 m-r-8 m-tb-4 js-show-filter"
+                            class="flex-c-m stext-106 cl2 size-104 bor4 pointer hov-btn1 trans-04 m-r-8 m-tb-4 js-show-filter"
                         >
                             <i
-                                class="icon-filter cl0 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"
+                                class="icon-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"
                             ></i>
                             <i
-                                class="icon-close-filter cl0 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"
+                                class="icon-close-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"
                             ></i>
                             Filtro
                         </div>
 
                         <div
-                            class="flex-c-m stext-106 cl0 size-105 bor4 pointer hov-btn1 trans-04 m-tb-4 js-show-search"
+                            class="flex-c-m stext-106 cl2 size-105 bor4 pointer hov-btn1 trans-04 m-tb-4 js-show-search"
                         >
                             <i
-                                class="icon-search cl0 m-r-6 fs-15 trans-04 zmdi zmdi-search"
+                                class="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"
                             ></i>
                             <i
-                                class="icon-close-search cl0 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"
+                                class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"
                             ></i>
                             <span>Buscar</span>
                         </div>
@@ -335,7 +335,7 @@
                 </div>
 
                 <div class="row mb-3" v-if="search != ''">
-                    <div class="col-md-12 text-white">
+                    <div class="col-md-12">
                         Resultados para:
                         <span class="font-weight-bold">{{ search }}</span>
                     </div>
@@ -374,55 +374,56 @@
                     <div
                         class="row isotope-grid"
                         v-if="listProductos.length > 0"
+                        id="contenedor_productos"
                     >
                         <div
                             v-for="item in listProductos"
-                            class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item"
+                            class="col-sm-6 col-md-4 col-lg-3 p-b-35 item_producto"
                             :class="[
                                 item.categoria ? 'c' + item.categoria.id : '',
                             ]"
                         >
                             <!-- Block2 -->
                             <div class="block2">
+                                <span class="info_categoria">
+                                    {{ item.categoria.nombre }}
+                                </span>
                                 <div class="block2-pic hov-img0">
                                     <img
                                         :src="item.url_imagen"
                                         alt="IMG-PRODUCT"
                                     />
-
-                                    <button
+                                    <!-- <button
                                         class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04"
                                         @click="showModalProducto(item.id)"
                                     >
                                         Ver producto
-                                    </button>
-                                    <span class="info_categoria">
-                                        {{ item.categoria.nombre }}
-                                    </span>
+                                    </button> -->
                                 </div>
 
-                                <div class="block2-txt flex-w flex-t p-t-14">
+                                <div class="block2-txt flex-w flex-t p-t-14 p-l-5 p-b-5">
                                     <div class="block2-txt-child1 flex-col-l">
                                         <span
-                                            class="stext-104 cl0 hov-cl1 trans-04 js-name-b2 p-b-6"
+                                            class="stext-104 cl2 hov-cl1 trans-04 js-name-b2 p-b-6 descripcion"
                                         >
                                             {{ item.nombre }}
                                         </span>
-                                        <span class="stext-105 cl12">
+                                        <span class="stext-105 cl7">
                                             Bs. {{ item.precio }}
                                         </span>
                                     </div>
-
-                                    <div class="block2-txt-child2 flex-r p-t-3">
-                                        <button
-                                            class="btn-addwish-b2 dis-block pos-relative js-addwish-b2 text-warning"
-                                            @click="showModalProducto(item.id)"
-                                        >
-                                            <i
-                                                class="fa fa-cart-plus fa-lg"
-                                            ></i>
-                                        </button>
-                                    </div>
+                                </div>
+                                <div class="block-btn">
+                                    <button
+                                        type="button"
+                                        class="btn btn-warning btn-flat btn-block text-white"
+                                        @click.prevent="
+                                            showModalProducto(item.id)
+                                        "
+                                    >
+                                        <i class="fa fa-cart-plus"></i>
+                                        Ver/Agregar
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -435,7 +436,10 @@
                         </div>
                     </div>
                 </b-skeleton-wrapper>
-                <div class="row" v-if="!loading && listProductos.length > 0">
+                <div
+                    class="row mt-5"
+                    v-if="!loading && listProductos.length > 0"
+                >
                     <div class="col-md-12 pb-3 paginacion_portal">
                         <b-pagination
                             class="rounded-0"
@@ -607,23 +611,4 @@ export default {
     },
 };
 </script>
-<style>
-.contenedor_inicio .block2-pic {
-    height: 334px;
-    overflow: hidden;
-}
-.contenedor_inicio .block2-pic img {
-    height: 100%;
-    object-fit: cover;
-}
-
-.contenedor_inicio .info_categoria {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    background-color: var(--secundario_transparent);
-    padding: 7px;
-    color: var(--principal);
-    font-size: 0.75em;
-}
-</style>
+<style></style>

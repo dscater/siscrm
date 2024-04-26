@@ -143,7 +143,8 @@
                         v-if="
                             permisos.includes('ventas.index') ||
                             permisos.includes('ingreso_productos.index') ||
-                            permisos.includes('salida_productos.index')
+                            permisos.includes('salida_productos.index') ||
+                            permisos.includes('orden_pedidos.index')
                         "
                     >
                         OPERACIONES
@@ -158,6 +159,18 @@
                         >
                             <i class="nav-icon fas fa-clipboard-list"></i>
                             <p>Ventas</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('orden_pedidos.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'orden_pedidos.index' }"
+                            class="nav-link"
+                        >
+                            <i class="nav-icon fas fa-clipboard-list"></i>
+                            <p>Ordenes de pedidos</p>
                         </router-link>
                     </li>
                     <li
@@ -191,7 +204,7 @@
                             permisos.includes('proveedors.index') ||
                             permisos.includes('productos.index') ||
                             permisos.includes('clientes.index') ||
-                            permisos.includes('configuracion.index')
+                            permisos.includes('configuracion_pagos.index')
                         "
                     >
                         ADMINISTRACIÓN
@@ -236,6 +249,20 @@
                         >
                             <i class="nav-icon fas fa-box"></i>
                             <p>Productos</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('configuracion_pagos.index')"
+                    >
+                        <router-link
+                            exact
+                            :to="{ name: 'configuracion_pagos.index' }"
+                            class="nav-link"
+                            v-loading.fullscreen.lock="fullscreenLoading"
+                        >
+                            <i class="nav-icon fas fa-list-alt"></i>
+                            <p>Configuración de Pagos</p>
                         </router-link>
                     </li>
                     <li
@@ -426,7 +453,8 @@ export default {
                 let self = this;
                 setTimeout(function () {
                     self.$router.push({ name: "login" });
-                    localStorage.clear();
+                    localStorage.removeItem("permisos");
+                    localStorage.removeItem("user");
                     location.reload();
                 }, 500);
             });

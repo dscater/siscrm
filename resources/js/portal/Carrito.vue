@@ -10,7 +10,7 @@
                 </h2>
             </div>
         </div>
-        <div class="container wow fadeInUp bg-dark pt-3" wow-data-delay="0.2s">
+        <div class="container wow fadeInUp pt-3" wow-data-delay="0.2s">
             <div class="row">
                 <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
                     <div class="m-l-25 m-r--38 m-lr-0-xl">
@@ -50,7 +50,7 @@
                                             item, index
                                         ) in oPedido.detalle_pedidos"
                                     >
-                                        <td class="column-1 text-white">
+                                        <td class="column-1">
                                             <div class="">
                                                 <img
                                                     :src="
@@ -61,7 +61,7 @@
                                                 />
                                             </div>
                                         </td>
-                                        <td class="column-2 text-white">
+                                        <td class="column-2">
                                             {{ item.producto.nombre }}<br />
                                             <span
                                                 class="text-xs text-warning"
@@ -70,12 +70,10 @@
                                                 }}</span
                                             >
                                         </td>
-                                        <td class="column-3 text-white">
+                                        <td class="column-3">
                                             Bs. {{ item.precio }}
                                         </td>
-                                        <td
-                                            class="column-4 text-white text-center"
-                                        >
+                                        <td class="column-4 text-center">
                                             <div
                                                 class="wrap-num-product flex-w m-l-auto m-r-0"
                                             >
@@ -119,12 +117,10 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="column-5 text-white">
+                                        <td class="column-5">
                                             Bs. {{ item.precio_total }}
                                         </td>
-                                        <td
-                                            class="column-6 text-white text-right pr-1"
-                                        >
+                                        <td class="column-6 text-right pr-1">
                                             <button
                                                 class="btn btn-danger"
                                                 @click="eliminarProducto(index)"
@@ -136,10 +132,7 @@
                                 </template>
 
                                 <tr v-else>
-                                    <td
-                                        colspan="6"
-                                        class="text-white text-center"
-                                    >
+                                    <td colspan="6" class="text-center">
                                         AÚN NO AGREGASTE NINGÚN PRODUCTO AL
                                         CARRITO
                                     </td>
@@ -151,120 +144,135 @@
 
                 <div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
                     <div
-                        class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm"
+                        class="bor10 p-lr-40 p-t-30 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm pb-3"
                     >
-                        <h4 class="mtext-109 cl0 p-b-30 text-warning">
+                        <h4
+                            class="mtext-109 cl2 p-b-30 text-warning bor12 w-100 text-center"
+                        >
                             Confirmar pedido
                         </h4>
-
-                        <div class="flex-w flex-t bor12 p-b-13">
-                            <div class="size-208">
-                                <span class="stext-110 cl0"> Total: </span>
+                        <div class="row bor12 pt-2">
+                            <div class="form-group col-md-12">
+                                <label class=""
+                                    >Seleccionar forma de pago*</label
+                                >
+                                <select
+                                    type="text"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid':
+                                            errors.configuracion_pago_id,
+                                    }"
+                                    v-model="oPedido.configuracion_pago_id"
+                                    @change="getInfoBanco"
+                                >
+                                    <option value="">- Seleccione -</option>
+                                    <option
+                                        v-for="item in listConfiguracionPagos"
+                                        :value="item.id"
+                                    >
+                                        {{ item.banco }}
+                                    </option>
+                                </select>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.configuracion_pago_id"
+                                    v-text="errors.configuracion_pago_id[0]"
+                                ></span>
+                            </div>
+                            <div
+                                class="col-12"
+                                v-if="
+                                    banco_actual &&
+                                    oPedido.configuracion_pago_id != ''
+                                "
+                            >
+                                <p>{{ banco_actual.nro_cuenta }}</p>
+                                <img
+                                    :src="banco_actual.url_qr"
+                                    alt="QR"
+                                    class="w-100"
+                                />
+                            </div>
+                            <div class="col-12 mt-3">
+                                <label class="">Selecciona tu ubicación:</label>
+                                <div id="google_map"></div>
                             </div>
 
-                            <div class="size-209">
-                                <span class="mtext-110 cl0">
+                            <div class="form-group col-md-12">
+                                <label class=""
+                                    >Cargar comprobante de pago*</label
+                                >
+                                <input
+                                    type="file"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid': errors.comprobante,
+                                    }"
+                                    ref="input_file"
+                                    @change="cargaArchivo"
+                                /><span
+                                    class="error invalid-feedback"
+                                    v-if="errors.comprobante"
+                                    v-text="errors.comprobante[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label class="">Teléfono/Celular*</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid': errors.celular,
+                                    }"
+                                    v-model="oPedido.celular"
+                                />
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.celular"
+                                    v-text="errors.celular[0]"
+                                ></span>
+                            </div>
+                        </div>
+
+                        <div
+                            class="flex-w flex-t p-t-27 p-b-33 align-items-center"
+                        >
+                            <div class="size-208">
+                                <span class="mtext-101 cl2"> Total: </span>
+                            </div>
+
+                            <div class="size-209 p-t-1">
+                                <span class="ltext-102 cl2">
                                     Bs. {{ oPedido.monto_total }}
                                 </span>
                             </div>
                         </div>
-                        <div class="row bor12 pt-2">
-                            <div class="form-group col-md-12">
-                                <label class="text-white">Nombres*</label>
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    :class="{
-                                        'is-invalid': errors.nombres,
-                                    }"
-                                    v-model="oPedido.nombres"
-                                />
-                                <span
-                                    class="error invalid-feedback"
-                                    v-if="errors.nombres"
-                                    v-text="errors.nombres[0]"
-                                ></span>
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label class="text-white">Apellidos*</label>
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    :class="{
-                                        'is-invalid': errors.apellidos,
-                                    }"
-                                    v-model="oPedido.apellidos"
-                                /><span
-                                    class="error invalid-feedback"
-                                    v-if="errors.apellidos"
-                                    v-text="errors.apellidos[0]"
-                                ></span>
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label class="text-white"
-                                    >País/Estado/Ciudad*</label
-                                >
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    :class="{
-                                        'is-invalid': errors.pec,
-                                    }"
-                                    v-model="oPedido.pec"
-                                /><span
-                                    class="error invalid-feedback"
-                                    v-if="errors.pec"
-                                    v-text="errors.pec[0]"
-                                ></span>
-                            </div>
-                            <div class="col-12 mt-3">
-                                <label class="text-white">Selecciona tu ubicación:</label>
-                                <div id="google_map"></div>
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label class="text-white"
-                                    >Teléfono/Celular*</label
-                                >
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    :class="{
-                                        'is-invalid': errors.fono,
-                                    }"
-                                    v-model="oPedido.fono"
-                                />
-                                <span
-                                    class="error invalid-feedback"
-                                    v-if="errors.fono"
-                                    v-text="errors.fono[0]"
-                                ></span>
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label class="text-white"
-                                    >Correo electrónico</label
-                                >
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    :class="{
-                                        'is-invalid': errors.correo,
-                                    }"
-                                    v-model="oPedido.correo"
-                                /><span
-                                    class="error invalid-feedback"
-                                    v-if="errors.correo"
-                                    v-text="errors.correo[0]"
-                                ></span>
-                            </div>
-                        </div>
 
-                        <button
-                            v-if="oPedido.detalle_pedidos.length > 0"
-                            class="flex-c-m stext-101 cl2 size-116 bg8 bor14 hov-btn3 p-lr-15 trans-04 pointer mt-3"
-                            @click="prepararEnvio()"
-                            :disabled="enviando"
-                            v-text="txtBoton"
-                        ></button>
+                        <template v-if="oUser && oUser.tipo == 'CLIENTE'">
+                            <button
+                                v-if="oPedido.detalle_pedidos.length > 0"
+                                class="flex-c-m stext-101 cl2 size-116 bg8 bor14 hov-btn1 p-lr-15 trans-04 pointer mt-3"
+                                @click="prepararEnvio()"
+                                :disabled="enviando"
+                                v-text="txtBoton"
+                            ></button>
+                        </template>
+                        <template v-else>
+                            <p
+                                class="w-100 text-center"
+                                v-if="oUser && oUser.id"
+                            >
+                                Debes
+                                <a href="/administracion">iniciar sesión</a>
+                                como CLIENTE para poder registrar el pedido
+                            </p>
+                            <p class="w-100 text-center" v-else>
+                                Debes
+                                <a href="/administracion">iniciar sesión</a>
+                                para poder registrar el pedido
+                            </p>
+                        </template>
                     </div>
                 </div>
             </div>
@@ -293,6 +301,8 @@ export default {
             listConfiguracionPagos: [],
             enviando: false,
             marker_map: null,
+            banco_actual: null,
+            oUser: null,
         };
     },
     computed: {
@@ -300,18 +310,24 @@ export default {
             if (this.enviando) {
                 return "ENVIANDO...";
             }
-            return "FINALIZAR PEDIDO";
+            return "REGISTRAR PEDIDO";
         },
     },
     mounted() {
         this.loadingWindow.close();
-        this.getConfiguracionPedidos();
+        this.getAuth();
+        this.getConfiguracionPagos();
         this.cargaMapaGoogle("-16.496059", "-68.133345", true);
         this.getCarrito();
         $(".js-panel-cart").removeClass("show-header-cart");
         $(".js-sidebar").removeClass("show-sidebar");
     },
     methods: {
+        getAuth() {
+            axios.get(main_url + "/auth").then((response) => {
+                this.oUser = response.data;
+            });
+        },
         getCarrito() {
             if (localStorage.getItem("carrito_siscrm")) {
                 this.oPedido.detalle_pedidos = JSON.parse(
@@ -445,13 +461,21 @@ export default {
                 self.enviarPedido();
             }, 500);
         },
-        getConfiguracionPedidos() {
+        getConfiguracionPagos() {
             axios
-                .get(main_url + "/admin/configuracion_pagos_portal")
+                .get(main_url + "/configuracion_pagos_portal")
                 .then((response) => {
+                    console.log(response.data);
                     this.listConfiguracionPagos =
                         response.data.configuracion_pagos;
                 });
+        },
+        getInfoBanco() {
+            if (this.oPedido.configuracion_pago_id != "") {
+                this.banco_actual = this.listConfiguracionPagos.filter(
+                    (elem) => elem.id == this.oPedido.configuracion_pago_id
+                )[0];
+            }
         },
         enviarPedido() {
             this.enviando = true;
@@ -473,8 +497,7 @@ export default {
             );
             formData.append("lat", this.oPedido.lat ? this.oPedido.lat : "");
             formData.append("lng", this.oPedido.lng ? this.oPedido.lng : "");
-            formData.append("total_sc", carrito_store.total_final);
-            formData.append("total", carrito_store.total_final);
+            formData.append("total", this.oPedido.monto_total);
             formData.append(
                 "estado",
                 this.oPedido.estado ? this.oPedido.estado : ""
@@ -493,7 +516,7 @@ export default {
             };
 
             axios
-                .post(main_url + "/portal/solicitudPedido", formData, config)
+                .post(main_url + "/admin/registraOrden", formData, config)
                 .then((response) => {
                     Swal.fire({
                         icon: "success",
@@ -504,7 +527,7 @@ export default {
                     });
                     this.oPedido.detalle_pedidos = [];
                     localStorage.removeItem("carrito_siscrm");
-                    EventBus.$emit("producto_agregado");
+                    this.limpiarOrdenPedido();
                     this.enviando = false;
                 })
                 .catch((error) => {
@@ -524,6 +547,16 @@ export default {
                         }
                     }
                 });
+        },
+        limpiarOrdenPedido() {
+            this.oPedido.configuracion_pago_id = "";
+            this.oPedido.celular = "";
+            this.oPedido.comprobante = null;
+            this.oPedido.lat = "";
+            this.oPedido.lng = "";
+            this.oPedido.estado = "PENDIENTE";
+            this.oPedido.monto_total = "0.00";
+            this.oPedido.detalle_pedidos = [];
         },
         async cargaMapaGoogle(lat, lng, drag = false, dir = "") {
             this.oPedido.lat = lat;
@@ -588,6 +621,9 @@ export default {
             this.marker_map.addListener("click", () => {
                 infoWindow.open(this.marker_map.map, this.marker_map);
             });
+        },
+        cargaArchivo(e) {
+            this.oPedido.comprobante = e.target.files[0];
         },
     },
 };

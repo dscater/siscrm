@@ -8,6 +8,7 @@ use App\Http\Controllers\ConfiguracionPagoController;
 use App\Http\Controllers\HistorialAccionController;
 use App\Http\Controllers\IngresoProductoController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OrdenPedidoController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
@@ -51,7 +52,7 @@ Route::get('/administracion/registro', [RegistroController::class, 'registro'])-
 Route::post('/administracion/registro', [RegistroController::class, 'store']);
 
 // LISTAS PORTAL
-Route::get("configuracion_pagos_portal", [ConfiguracionPagoController::class, 'listado'])->name("configuracion_pagos.portal");
+Route::get("configuracion_pagos_portal", [ConfiguracionPagoController::class, 'index'])->name("configuracion_pagos.portal");
 
 // CONFIGURACIÓN
 Route::get('/configuracion/getConfiguracion', [ConfiguracionController::class, 'getConfiguracion']);
@@ -120,6 +121,14 @@ Route::middleware(['auth'])->group(function () {
 
         // CONFIGURACION PAGOS
         Route::resource("configuracion_pagos", ConfiguracionPagoController::class)->only(
+            ["index", "store", "update", "show", "destroy"]
+        );
+
+
+        // ORDEN PEDIDOS
+        Route::patch("orden_pedidos/actualiza_estado/{orden_pedido}", [OrdenPedidoController::class, 'actualiza_estado'])->name("orden_pedidos.actualiza_estado");
+        Route::post("registraOrden", [OrdenPedidoController::class, 'registraOrden'])->name("orden_pedidos.registraOrden");
+        Route::resource("orden_pedidos", OrdenPedidoController::class)->only(
             ["index", "store", "update", "show", "destroy"]
         );
 

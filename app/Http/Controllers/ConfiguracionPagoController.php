@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\DB;
 class ConfiguracionPagoController extends Controller
 {
     public $validacion = [
-        'nombre' => 'required|min:2',
+        'banco' => 'required|min:2',
+        'nro_cuenta' => 'required|min:2',
     ];
 
     public $mensajes = [];
@@ -25,14 +26,21 @@ class ConfiguracionPagoController extends Controller
 
     public function store(Request $request)
     {
+        $this->validacion['qr'] = 'image|mimes:jpeg,jpg,png,webp,gif|max:2048';
         $request->validate($this->validacion, $this->mensajes);
-
+        $request["fecha_registro"] = date("Y-m-d");
         DB::beginTransaction();
         try {
             // crear ConfiguracionPago
-            $nuevo_configuracion_pago = ConfiguracionPago::create(array_map('mb_strtoupper', $request->all()));
-
-            $datos_original = HistorialAccion::getDetalleRegistro($nuevo_configuracion_pago, "configuracion_pagos");
+            $nueva_configuracion_pago = ConfiguracionPago::create(array_map('mb_strtoupper', $request->all()));
+            if ($request->hasFile('qr')) {
+                $file = $request->qr;
+                $nom_qr = time() . '_' . $nueva_configuracion_pago->id . '.' . $file->getClientOriginalExtension();
+                $nueva_configuracion_pago->qr = $nom_qr;
+                $file->move(public_path() . '/imgs/configuracion_pagos', $nom_qr);
+                $nueva_configuracion_pago->save();
+            }
+            $datos_original = HistorialAccion::getDetalleRegistro($nueva_configuracion_pago, "configuracion_pagos");
             HistorialAccion::create([
                 'user_id' => Auth::user()->id,
                 'accion' => 'CREACIÓN',
@@ -46,7 +54,7 @@ class ConfiguracionPagoController extends Controller
             DB::commit();
             return response()->JSON([
                 'sw' => true,
-                'configuracion_pago' => $nuevo_configuracion_pago,
+                'configuracion_pago' => $nueva_configuracion_pago,
                 'msj' => 'El registro se realizó de forma correcta',
             ], 200);
         } catch (\Exception $e) {
@@ -60,13 +68,27 @@ class ConfiguracionPagoController extends Controller
 
     public function update(Request $request, ConfiguracionPago $configuracion_pago)
     {
+        if ($request->hasFile('qr')) {
+            $this->validacion['qr'] = 'image|mimes:jpeg,jpg,png,webp,gif|max:2048';
+        }
+
         $request->validate($this->validacion, $this->mensajes);
 
         DB::beginTransaction();
         try {
             $datos_original = HistorialAccion::getDetalleRegistro($configuracion_pago, "configuracion_pagos");
             $configuracion_pago->update(array_map('mb_strtoupper', $request->all()));
-
+            if ($request->hasFile('qr')) {
+                $antiguo = $configuracion_pago->qr;
+                if ($antiguo != 'default.png') {
+                    \File::delete(public_path() . '/imgs/configuracion_pagos/' . $antiguo);
+                }
+                $file = $request->qr;
+                $nom_qr = time() . '_' . $configuracion_pago->id . '.' . $file->getClientOriginalExtension();
+                $configuracion_pago->qr = $nom_qr;
+                $file->move(public_path() . '/imgs/configuracion_pagos', $nom_qr);
+                $configuracion_pago->save();
+            }
             $datos_nuevo = HistorialAccion::getDetalleRegistro($configuracion_pago, "configuracion_pagos");
             HistorialAccion::create([
                 'user_id' => Auth::user()->id,
@@ -109,6 +131,11 @@ class ConfiguracionPagoController extends Controller
             $existe = OrdenPedido::where("configuracion_pago_id", $configuracion_pago->id)->get();
             if (count($existe) > 0) {
                 throw new Exception('No es posible eliminar el registro debido a que existen registros que lo utilizan');
+            }
+
+            $antiguo = $configuracion_pago->qr;
+            if ($antiguo != 'default.png') {
+                \File::delete(public_path() . '/imgs/configuracion_pagos/' . $antiguo);
             }
 
             $datos_original = HistorialAccion::getDetalleRegistro($configuracion_pago, "configuracion_pagos");

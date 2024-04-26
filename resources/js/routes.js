@@ -70,6 +70,30 @@ export default new Router({
                 .default,
         },
 
+        // configuracion_pagos
+        {
+            path: "/administracion/configuracion_pagos",
+            name: "configuracion_pagos.index",
+            component:
+                require("./components/modulos/configuracion_pagos/index.vue")
+                    .default,
+        },
+
+        // orden_pedidos
+        {
+            path: "/administracion/orden_pedidos",
+            name: "orden_pedidos.index",
+            component: require("./components/modulos/orden_pedidos/index.vue")
+                .default,
+        },
+        {
+            path: "/administracion/orden_pedidos/show/:id",
+            name: "orden_pedidos.show",
+            component: require("./components/modulos/orden_pedidos/show.vue")
+                .default,
+            props: true,
+        },
+
         // categorias
         {
             path: "/administracion/categorias",
