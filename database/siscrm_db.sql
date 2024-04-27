@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 26-04-2024 a las 21:15:45
+-- Tiempo de generación: 27-04-2024 a las 19:48:02
 -- Versión del servidor: 8.0.30
--- Versión de PHP: 8.1.10
+-- Versión de PHP: 7.4.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -45,6 +45,76 @@ INSERT INTO `api_maps` (`id`, `google_maps`, `map_id`, `created_at`, `updated_at
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `campanias`
+--
+
+CREATE TABLE `campanias` (
+  `id` bigint UNSIGNED NOT NULL,
+  `nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fecha_ini` date NOT NULL,
+  `fecha_fin` date NOT NULL,
+  `tipo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipo_cliente` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fecha_registro` date NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `campania_automaticas`
+--
+
+CREATE TABLE `campania_automaticas` (
+  `id` bigint UNSIGNED NOT NULL,
+  `campania_id` bigint UNSIGNED NOT NULL,
+  `tipo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fecha_registro` date NOT NULL,
+  `fecha_ini` date DEFAULT NULL,
+  `fecha_fin` date DEFAULT NULL,
+  `frecuencia` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `campania_detalles`
+--
+
+CREATE TABLE `campania_detalles` (
+  `id` bigint UNSIGNED NOT NULL,
+  `campania_id` bigint UNSIGNED NOT NULL,
+  `cliente_id` bigint UNSIGNED DEFAULT NULL,
+  `filtro` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `campania_envios`
+--
+
+CREATE TABLE `campania_envios` (
+  `id` bigint UNSIGNED NOT NULL,
+  `campania_id` bigint UNSIGNED NOT NULL,
+  `campania_automatico_id` bigint UNSIGNED DEFAULT NULL,
+  `fecha_envio` date NOT NULL,
+  `total_fisicos` int NOT NULL,
+  `total_ecommerce` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `categorias`
 --
 
@@ -79,6 +149,7 @@ CREATE TABLE `clientes` (
   `correo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `dir` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `user_id` bigint UNSIGNED DEFAULT NULL,
+  `tipo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `fecha_registro` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -88,11 +159,11 @@ CREATE TABLE `clientes` (
 -- Volcado de datos para la tabla `clientes`
 --
 
-INSERT INTO `clientes` (`id`, `nombre`, `ci`, `ci_exp`, `nit`, `fono`, `correo`, `dir`, `user_id`, `fecha_registro`, `created_at`, `updated_at`) VALUES
-(1, 'PEDRO MARTINEZ', '231231', 'LP', '', '', 'pedro@gmail.com', 'LOS OLIVOS', 3, '2023-04-26', '2023-04-26 20:00:10', '2024-04-25 16:22:17'),
-(2, 'MARIA GONZALES CASAS', '1231231', 'CB', '34324111', '666666; 7777777', 'maria@gmail.com', 'LOS OLIVOS', 7, '2023-04-26', '2023-04-26 20:05:20', '2024-04-25 16:22:20'),
-(6, 'PABLO SANCHEZ', '3223423', 'LP', '', '', 'pablo@gmail.com', '', 9, '2024-04-25', '2024-04-25 16:20:39', '2024-04-25 16:22:23'),
-(7, 'MARCOS MAMANI', '434334', 'LP', '8888888888', '77777777', 'marcos@gmail.com', 'LOS OLIVOS', 10, '2024-04-26', '2024-04-26 16:17:30', '2024-04-26 16:17:30');
+INSERT INTO `clientes` (`id`, `nombre`, `ci`, `ci_exp`, `nit`, `fono`, `correo`, `dir`, `user_id`, `tipo`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(1, 'PEDRO MARTINEZ', '231231', 'LP', '', '', 'pedro@gmail.com', 'LOS OLIVOS', 3, 'FISICO', '2023-04-26', '2023-04-26 20:00:10', '2024-04-25 16:22:17'),
+(2, 'MARIA GONZALES CASAS', '1231231', 'CB', '34324111', '666666; 7777777', 'maria@gmail.com', 'LOS OLIVOS', 7, 'FISICO', '2023-04-26', '2023-04-26 20:05:20', '2024-04-25 16:22:20'),
+(6, 'PABLO SANCHEZ', '3223423', 'LP', '', '', 'pablo@gmail.com', '', 9, 'FISICO', '2024-04-25', '2024-04-25 16:20:39', '2024-04-25 16:22:23'),
+(7, 'MARCOS MAMANI', '434334', 'LP', '8888888888', '77777777', 'victorgonzalo.as@gmail.com', 'LOS OLIVOS', 10, 'ECOMMERCE', '2024-04-26', '2024-04-26 16:17:30', '2024-04-26 16:17:30');
 
 -- --------------------------------------------------------
 
@@ -175,7 +246,9 @@ INSERT INTO `detalle_ventas` (`id`, `venta_id`, `producto_id`, `cantidad`, `prec
 (8, 6, 1, 3, 20.00, 60.00, '2023-04-27 19:00:50', '2023-04-27 19:00:50'),
 (9, 7, 7, 4, 12.00, 48.00, '2023-04-28 19:53:34', '2023-04-28 19:53:34'),
 (10, 7, 2, 1, 35.00, 35.00, '2023-04-28 19:53:34', '2023-04-28 19:53:34'),
-(11, 8, 3, 1, 100.00, 100.00, '2023-04-28 21:11:48', '2023-04-28 21:11:48');
+(11, 8, 3, 1, 100.00, 100.00, '2023-04-28 21:11:48', '2023-04-28 21:11:48'),
+(23, 15, 7, 1, 12.00, 12.00, '2024-04-27 19:40:42', '2024-04-27 19:40:42'),
+(24, 15, 3, 2, 100.00, 200.00, '2024-04-27 19:40:42', '2024-04-27 19:40:42');
 
 -- --------------------------------------------------------
 
@@ -195,6 +268,36 @@ CREATE TABLE `envio_correos` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `envio_correos`
+--
+
+INSERT INTO `envio_correos` (`id`, `host`, `puerto`, `encriptado`, `email`, `nombre`, `password`, `driver`, `created_at`, `updated_at`) VALUES
+(1, 'smtp.hostinger.com', '587', 'tls', 'web@emsytsrl.com', 'SISCRM', '10-Co20re30oS', 'smtp', '2024-04-27 16:28:23', '2024-04-27 16:28:48');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `envio_whatsapps`
+--
+
+CREATE TABLE `envio_whatsapps` (
+  `id` bigint UNSIGNED NOT NULL,
+  `sid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `from` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url_phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `envio_whatsapps`
+--
+
+INSERT INTO `envio_whatsapps` (`id`, `sid`, `token`, `from`, `url_phone`, `created_at`, `updated_at`) VALUES
+(1, 'AC8ab64e3e5f4dd2722cd39eae1bacbc6d', 'd96439d34defc92578f4066003d3605c', 'whatsapp:+14155238886', 'http://wa.me/+14155238886?text=join%20flow-fast', NULL, '2024-04-27 19:47:26');
 
 -- --------------------------------------------------------
 
@@ -220,7 +323,9 @@ INSERT INTO `fecha_stocks` (`id`, `producto_id`, `fecha`, `stock`, `created_at`,
 (2, 7, '2023-04-28', 86, '2023-04-28 15:42:04', '2023-04-28 19:53:34'),
 (3, 2, '2023-04-28', 99, '2023-04-28 19:53:34', '2023-04-28 19:53:34'),
 (4, 3, '2023-04-28', 69, '2023-04-28 21:11:48', '2023-04-28 21:11:48'),
-(6, 1, '2024-04-25', 93, '2024-04-25 15:36:55', '2024-04-25 15:37:03');
+(6, 1, '2024-04-25', 93, '2024-04-25 15:36:55', '2024-04-25 15:37:03'),
+(17, 7, '2024-04-27', 85, '2024-04-27 19:40:42', '2024-04-27 19:40:42'),
+(18, 3, '2024-04-27', 67, '2024-04-27 19:40:42', '2024-04-27 19:40:42');
 
 -- --------------------------------------------------------
 
@@ -372,7 +477,9 @@ INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `dato
 (124, 10, 'CREACIÓN', 'EL USUARIO  REGISTRO UNA ORDEN DE PEDIDO', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 77575373<br/>comprobante: C:\\USERS\\VICTO\\APPDATA\\LOCAL\\TEMP\\PHP2AAC.TMP<br/>lat: -16.496808823347422<br/>lng: -68.13268932180621<br/>total: 324.00<br/>estado: PEDIDO PENDIENTE<br/>user_id: 10<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 16:39:45<br/>updated_at: 2024-04-26 16:39:45<br/>', NULL, 'ORDEN DE PEDIDOS', '2024-04-26', '16:39:45', '2024-04-26 20:39:45', '2024-04-26 20:39:45'),
 (125, 1, 'MODIFICACIÓN', 'EL USUARIO  MODIFICÓ UNA ORDEN DE PEDIDO', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 77575373<br/>comprobante: 1714163985_1.pdf<br/>lat: -16.496808823347422<br/>lng: -68.13268932180621<br/>total: 324.00<br/>estado: PEDIDO PENDIENTE<br/>user_id: 10<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 16:39:45<br/>updated_at: 2024-04-26 16:39:45<br/>', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 77575373<br/>comprobante: 1714163985_1.pdf<br/>lat: -16.496808823347422<br/>lng: -68.13268932180621<br/>total: 324.00<br/>estado: ORDEN PROCESADA<br/>user_id: 10<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 16:39:45<br/>updated_at: 2024-04-26 17:13:26<br/>', 'ORDEN DE PEDIDOS', '2024-04-26', '17:13:26', '2024-04-26 21:13:26', '2024-04-26 21:13:26'),
 (126, 1, 'MODIFICACIÓN', 'EL USUARIO  MODIFICÓ UNA ORDEN DE PEDIDO', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 77575373<br/>comprobante: 1714163985_1.pdf<br/>lat: -16.496808823347422<br/>lng: -68.13268932180621<br/>total: 324.00<br/>estado: PEDIDO PENDIENTE<br/>user_id: 10<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 16:39:45<br/>updated_at: 2024-04-26 17:13:26<br/>', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 77575373<br/>comprobante: 1714163985_1.pdf<br/>lat: -16.496808823347422<br/>lng: -68.13268932180621<br/>total: 324.00<br/>estado: ORDEN PROCESADA<br/>user_id: 10<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 16:39:45<br/>updated_at: 2024-04-26 17:14:03<br/>', 'ORDEN DE PEDIDOS', '2024-04-26', '17:14:03', '2024-04-26 21:14:03', '2024-04-26 21:14:03'),
-(127, 1, 'ELIMINACIÓN', 'EL USUARIO  ELIMINÓ UNA ORDEN DE PEDIDO', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 77575373<br/>comprobante: 1714163985_1.pdf<br/>lat: -16.496808823347422<br/>lng: -68.13268932180621<br/>total: 324.00<br/>estado: PEDIDO PENDIENTE<br/>user_id: 10<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 16:39:45<br/>updated_at: 2024-04-26 17:14:03<br/>', NULL, 'ORDEN DE PEDIDOS', '2024-04-26', '17:14:14', '2024-04-26 21:14:14', '2024-04-26 21:14:14');
+(127, 1, 'ELIMINACIÓN', 'EL USUARIO  ELIMINÓ UNA ORDEN DE PEDIDO', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 77575373<br/>comprobante: 1714163985_1.pdf<br/>lat: -16.496808823347422<br/>lng: -68.13268932180621<br/>total: 324.00<br/>estado: PEDIDO PENDIENTE<br/>user_id: 10<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 16:39:45<br/>updated_at: 2024-04-26 17:14:03<br/>', NULL, 'ORDEN DE PEDIDOS', '2024-04-26', '17:14:14', '2024-04-26 21:14:14', '2024-04-26 21:14:14'),
+(128, 10, 'CREACIÓN', 'EL USUARIO  REGISTRO UNA ORDEN DE PEDIDO', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 73594451<br/>comprobante: C:\\USERS\\VICTO\\APPDATA\\LOCAL\\TEMP\\PHP87F5.TMP<br/>lat: -16.496059<br/>lng: -68.133345<br/>total: 212.00<br/>estado: PEDIDO PENDIENTE<br/>user_id: 10<br/>fecha_registro: 2024-04-27<br/>created_at: 2024-04-27 15:27:40<br/>updated_at: 2024-04-27 15:27:40<br/>', NULL, 'ORDEN DE PEDIDOS', '2024-04-27', '15:27:40', '2024-04-27 19:27:40', '2024-04-27 19:27:40'),
+(129, 1, 'MODIFICACIÓN', 'EL USUARIO  MODIFICÓ UNA ORDEN DE PEDIDO', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 73594451<br/>comprobante: 1714246060_1.pdf<br/>lat: -16.496059<br/>lng: -68.133345<br/>total: 212.00<br/>estado: PEDIDO PENDIENTE<br/>user_id: 10<br/>fecha_registro: 2024-04-27<br/>created_at: 2024-04-27 15:27:40<br/>updated_at: 2024-04-27 15:27:40<br/>', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 73594451<br/>comprobante: 1714246060_1.pdf<br/>lat: -16.496059<br/>lng: -68.133345<br/>total: 212.00<br/>estado: ORDEN PROCESADA<br/>user_id: 10<br/>fecha_registro: 2024-04-27<br/>created_at: 2024-04-27 15:27:40<br/>updated_at: 2024-04-27 15:40:42<br/>', 'ORDEN DE PEDIDOS', '2024-04-27', '15:40:47', '2024-04-27 19:40:47', '2024-04-27 19:40:47');
 
 -- --------------------------------------------------------
 
@@ -450,7 +557,9 @@ INSERT INTO `kardex_productos` (`id`, `lugar`, `tipo_registro`, `registro_id`, `
 (16, NULL, 'INGRESO', 5, 7, 'VALOR INICIAL', 12.00, 'INGRESO', 90, NULL, 90, 12.00, 1080.00, NULL, 1080.00, '2023-04-28', '2023-04-28 15:42:04', '2023-04-28 15:42:04'),
 (17, NULL, 'VENTA', 9, 7, 'VENTA DE PRODUCTO', 12.00, 'EGRESO', NULL, 4, 86, 12.00, NULL, 48.00, 1032.00, '2023-04-28', '2023-04-28 19:53:34', '2023-04-28 19:53:34'),
 (18, NULL, 'VENTA', 10, 2, 'VENTA DE PRODUCTO', 35.00, 'EGRESO', NULL, 1, 99, 35.00, NULL, 35.00, 3465.00, '2023-04-28', '2023-04-28 19:53:34', '2023-04-28 19:53:34'),
-(19, NULL, 'VENTA', 11, 3, 'VENTA DE PRODUCTO', 100.00, 'EGRESO', NULL, 1, 69, 100.00, NULL, 100.00, 6900.00, '2023-04-28', '2023-04-28 21:11:48', '2023-04-28 21:11:48');
+(19, NULL, 'VENTA', 11, 3, 'VENTA DE PRODUCTO', 100.00, 'EGRESO', NULL, 1, 69, 100.00, NULL, 100.00, 6900.00, '2023-04-28', '2023-04-28 21:11:48', '2023-04-28 21:11:48'),
+(31, NULL, 'VENTA', 23, 7, 'VENTA DE PRODUCTO', 12.00, 'EGRESO', NULL, 1, 85, 12.00, NULL, 12.00, 1020.00, '2024-04-27', '2024-04-27 19:40:42', '2024-04-27 19:40:42'),
+(32, NULL, 'VENTA', 24, 3, 'VENTA DE PRODUCTO', 100.00, 'EGRESO', NULL, 2, 67, 100.00, NULL, 200.00, 6700.00, '2024-04-27', '2024-04-27 19:40:42', '2024-04-27 19:40:42');
 
 -- --------------------------------------------------------
 
@@ -475,7 +584,12 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (4, '2024_04_25_122820_create_api_maps_table', 4),
 (5, '2024_04_25_151628_create_configuracion_pagos_table', 5),
 (6, '2024_04_25_151629_create_orden_pedidos_table', 6),
-(7, '2024_04_25_152115_create_orden_detalles_table', 7);
+(7, '2024_04_25_152115_create_orden_detalles_table', 7),
+(8, '2024_04_27_130820_create_campanias_table', 8),
+(9, '2024_04_27_131001_create_campania_automaticas_table', 9),
+(10, '2024_04_27_131611_create_campania_detalles_table', 10),
+(11, '2024_04_27_131620_create_campania_envios_table', 11),
+(12, '2024_04_27_144424_create_envio_whatsapps_table', 12);
 
 -- --------------------------------------------------------
 
@@ -493,6 +607,14 @@ CREATE TABLE `orden_detalles` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `orden_detalles`
+--
+
+INSERT INTO `orden_detalles` (`id`, `orden_pedido_id`, `producto_id`, `cantidad`, `precio`, `precio_total`, `created_at`, `updated_at`) VALUES
+(1, 1, 7, 1.00, 12.00, 12.00, '2024-04-27 19:27:40', '2024-04-27 19:27:40'),
+(2, 1, 3, 2.00, 100.00, 200.00, '2024-04-27 19:27:40', '2024-04-27 19:27:40');
 
 -- --------------------------------------------------------
 
@@ -516,6 +638,13 @@ CREATE TABLE `orden_pedidos` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `orden_pedidos`
+--
+
+INSERT INTO `orden_pedidos` (`id`, `codigo`, `nro`, `configuracion_pago_id`, `celular`, `comprobante`, `lat`, `lng`, `total`, `estado`, `user_id`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(1, 'ORD.1', 1, 1, '73594451', '1714246060_1.pdf', '-16.496059', '-68.133345', 212.00, 'ORDEN PROCESADA', 10, '2024-04-27', '2024-04-27 19:27:40', '2024-04-27 19:40:42');
 
 -- --------------------------------------------------------
 
@@ -564,8 +693,8 @@ CREATE TABLE `productos` (
 INSERT INTO `productos` (`id`, `codigo_almacen`, `codigo_producto`, `nombre`, `descripcion`, `precio`, `stock_min`, `stock_actual`, `imagen`, `categoria_id`, `fecha_registro`, `created_at`, `updated_at`) VALUES
 (1, 'A001', 'P001', 'PASTILLAS A', '', 20.00, 10, 93, '', 3, '2023-04-24', '2023-04-24 21:36:20', '2024-04-25 15:37:03'),
 (2, 'A001', 'P002', 'GEL ANTIBACTERIAL', '', 35.00, 5, 99, NULL, 1, '2023-04-24', '2023-04-24 21:44:24', '2023-04-28 19:53:34'),
-(3, 'A001', 'P003', 'PRODUCTO 3', '', 100.00, 10, 69, NULL, 1, '2023-04-24', '2023-04-24 21:45:17', '2023-04-28 21:11:48'),
-(7, 'A00111', 'P004', 'PRODUCTO 4', '', 12.00, 12, 86, '1682696496_7.jpg', 1, '2023-04-24', '2023-04-24 21:47:54', '2023-04-28 19:53:34'),
+(3, 'A001', 'P003', 'PRODUCTO 3', '', 100.00, 10, 67, NULL, 1, '2023-04-24', '2023-04-24 21:45:17', '2024-04-27 19:40:42'),
+(7, 'A00111', 'P004', 'PRODUCTO 4', '', 12.00, 12, 85, '1682696496_7.jpg', 1, '2023-04-24', '2023-04-24 21:47:54', '2024-04-27 19:40:42'),
 (10, 'A002222', 'P0044', 'PRODUCTO NUEVO P0044', 'DESC', 99.00, 10, 0, '', 3, '2023-05-19', '2023-05-19 23:55:04', '2023-05-19 23:55:13');
 
 -- --------------------------------------------------------
@@ -717,6 +846,8 @@ CREATE TABLE `ventas` (
   `descuento` double(8,2) NOT NULL,
   `total_final` decimal(24,2) NOT NULL,
   `estado` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `orden_pedido_id` bigint UNSIGNED DEFAULT NULL,
   `fecha_registro` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -726,12 +857,13 @@ CREATE TABLE `ventas` (
 -- Volcado de datos para la tabla `ventas`
 --
 
-INSERT INTO `ventas` (`id`, `user_id`, `cliente_id`, `nit`, `total`, `descuento`, `total_final`, `estado`, `fecha_registro`, `created_at`, `updated_at`) VALUES
-(3, 1, 1, '231231', 200.00, 0.00, 80.00, 'CANCELADO', '2023-04-26', '2023-04-26 20:29:21', '2023-04-26 20:47:35'),
-(5, 1, 1, '231231', 20.00, 0.00, 20.00, 'CANCELADO', '2023-04-27', '2023-04-27 18:59:27', '2023-04-27 18:59:27'),
-(6, 1, 3, '43434', 60.00, 0.00, 120.00, 'CANCELADO', '2023-04-27', '2023-04-27 19:00:19', '2023-04-27 19:00:50'),
-(7, 1, 2, '1231231', 83.00, 0.00, 83.00, 'CANCELADO', '2023-04-28', '2023-04-28 19:53:34', '2023-04-28 19:53:34'),
-(8, 2, 2, '1231231', 100.00, 0.00, 100.00, 'CANCELADO', '2023-04-28', '2023-04-28 21:11:48', '2023-04-28 21:11:48');
+INSERT INTO `ventas` (`id`, `user_id`, `cliente_id`, `nit`, `total`, `descuento`, `total_final`, `estado`, `tipo`, `orden_pedido_id`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(3, 1, 1, '231231', 200.00, 0.00, 80.00, 'CANCELADO', 'FISICO', NULL, '2023-04-26', '2023-04-26 20:29:21', '2023-04-26 20:47:35'),
+(5, 1, 1, '231231', 20.00, 0.00, 20.00, 'CANCELADO', 'FISICO', NULL, '2023-04-27', '2023-04-27 18:59:27', '2023-04-27 18:59:27'),
+(6, 1, 3, '43434', 60.00, 0.00, 120.00, 'CANCELADO', 'FISICO', NULL, '2023-04-27', '2023-04-27 19:00:19', '2023-04-27 19:00:50'),
+(7, 1, 2, '1231231', 83.00, 0.00, 83.00, 'CANCELADO', 'FISICO', NULL, '2023-04-28', '2023-04-28 19:53:34', '2023-04-28 19:53:34'),
+(8, 2, 2, '1231231', 100.00, 0.00, 100.00, 'CANCELADO', 'FISICO', NULL, '2023-04-28', '2023-04-28 21:11:48', '2023-04-28 21:11:48'),
+(15, 1, 7, '8888888888', 212.00, 0.00, 212.00, 'CANCELADO', 'ECOMMERCE', 1, '2024-04-27', '2024-04-27 19:40:42', '2024-04-27 19:40:42');
 
 --
 -- Índices para tablas volcadas
@@ -741,6 +873,30 @@ INSERT INTO `ventas` (`id`, `user_id`, `cliente_id`, `nit`, `total`, `descuento`
 -- Indices de la tabla `api_maps`
 --
 ALTER TABLE `api_maps`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `campanias`
+--
+ALTER TABLE `campanias`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `campania_automaticas`
+--
+ALTER TABLE `campania_automaticas`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `campania_detalles`
+--
+ALTER TABLE `campania_detalles`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `campania_envios`
+--
+ALTER TABLE `campania_envios`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -780,6 +936,12 @@ ALTER TABLE `detalle_ventas`
 -- Indices de la tabla `envio_correos`
 --
 ALTER TABLE `envio_correos`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `envio_whatsapps`
+--
+ALTER TABLE `envio_whatsapps`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -897,6 +1059,30 @@ ALTER TABLE `api_maps`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT de la tabla `campanias`
+--
+ALTER TABLE `campanias`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `campania_automaticas`
+--
+ALTER TABLE `campania_automaticas`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `campania_detalles`
+--
+ALTER TABLE `campania_detalles`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `campania_envios`
+--
+ALTER TABLE `campania_envios`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
@@ -924,25 +1110,31 @@ ALTER TABLE `configuracion_pagos`
 -- AUTO_INCREMENT de la tabla `detalle_ventas`
 --
 ALTER TABLE `detalle_ventas`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `envio_correos`
 --
 ALTER TABLE `envio_correos`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `envio_whatsapps`
+--
+ALTER TABLE `envio_whatsapps`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `fecha_stocks`
 --
 ALTER TABLE `fecha_stocks`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `historial_accions`
 --
 ALTER TABLE `historial_accions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 
 --
 -- AUTO_INCREMENT de la tabla `ingreso_productos`
@@ -954,25 +1146,25 @@ ALTER TABLE `ingreso_productos`
 -- AUTO_INCREMENT de la tabla `kardex_productos`
 --
 ALTER TABLE `kardex_productos`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `orden_detalles`
 --
 ALTER TABLE `orden_detalles`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `orden_pedidos`
 --
 ALTER TABLE `orden_pedidos`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `personal_access_tokens`
@@ -1020,7 +1212,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Restricciones para tablas volcadas

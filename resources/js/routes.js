@@ -182,6 +182,16 @@ export default new Router({
             props: true,
         },
 
+        // Otra Configuración
+        {
+            path: "/administracion/otra_configuracion",
+            name: "otra_configuracion",
+            component:
+                require("./components/modulos/otra_configuracion/index.vue")
+                    .default,
+            props: true,
+        },
+
         // Analisis inventarios
         {
             path: "/administracion/analisis_inventarios",

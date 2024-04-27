@@ -18,6 +18,7 @@ class Cliente extends Model
         "correo",
         "dir",
         "user_id",
+        "tipo",
         "fecha_registro",
     ];
 

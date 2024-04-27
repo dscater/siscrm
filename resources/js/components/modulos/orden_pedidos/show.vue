@@ -174,10 +174,9 @@
                                         <button
                                             class="btn btn-primary btn-block btn-flat"
                                             @click="actualizarEstado"
-                                        >
-                                            <i class="fa fa-check"></i> Orden
-                                            procesada
-                                        </button>
+                                            :disabled="actualizando"
+                                            v-html="txtBotonProcesar"
+                                        ></button>
                                         <button
                                             class="btn btn-danger btn-block btn-flat"
                                             @click="eliminarOrdenPedido"
@@ -229,7 +228,16 @@ export default {
                     qr: "",
                 },
             },
+            actualizando: false,
         };
+    },
+    computed: {
+        txtBotonProcesar() {
+            if (this.actualizando) {
+                return `<i class="fa fa-spinner fa-spin"></i> Procesando...`;
+            }
+            return `<i class="fa fa-check"></i> Orden procesada`;
+        },
     },
     mounted() {
         this.getOrdenPedido();
@@ -267,6 +275,7 @@ export default {
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
+                    this.actualizando = true;
                     axios
                         .post(
                             "/admin/orden_pedidos/actualiza_estado/" +
@@ -279,6 +288,7 @@ export default {
                         .then((res) => {
                             this.getOrdenPedido();
 
+                            this.actualizando = false;
                             Swal.fire({
                                 icon: "success",
                                 title: res.data.message,
@@ -287,6 +297,7 @@ export default {
                             });
                         })
                         .catch((error) => {
+                            this.actualizando = false;
                             if (error.response) {
                                 if (error.response.status === 422) {
                                     this.errors = error.response.data.errors;

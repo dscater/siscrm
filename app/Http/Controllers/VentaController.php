@@ -51,6 +51,7 @@ class VentaController extends Controller
             $request["fecha_registro"] = date("Y-m-d");
             $request["estado"] = "CANCELADO";
             $request["user_id"] = Auth::user()->id;
+            $request["tipo"] = "FISICO";
             $venta = Venta::create(array_map("mb_strtoupper", $request->except("detalle_ventas", "cliente", "user")));
 
             $detalle_ventas = $request->detalle_ventas;

@@ -11,7 +11,7 @@ class Venta extends Model
     use HasFactory;
 
     protected $fillable = [
-        "user_id", "cliente_id", "nit", "total", "descuento", "total_final", "estado", "fecha_registro",
+        "user_id", "cliente_id", "nit", "total", "descuento", "total_final", "estado", "tipo", "orden_pedido_id", "fecha_registro",
     ];
 
     protected $appends = ["editable", "fecha_formateado", "hora", "nro_factura", "qr"];
@@ -42,6 +42,11 @@ class Venta extends Model
     public function detalle_ventas()
     {
         return $this->hasMany(DetalleVenta::class, 'venta_id');
+    }
+
+    public function orden_pedido()
+    {
+        return $this->belongsTo(OrdenPedido::class, 'orden_pedido_id');
     }
 
     public function getNroFacturaAttribute()

@@ -9,7 +9,7 @@ class EnvioCorreo extends Model
 {
     use HasFactory;
 
-    protected $appends = [
+    protected $fillable = [
         "host",
         "puerto",
         "encriptado",

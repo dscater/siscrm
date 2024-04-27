@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\HistorialAccion;
+use App\Models\KardexProducto;
 use App\Models\OrdenPedido;
 use App\Models\Producto;
+use App\Models\Venta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -151,6 +153,40 @@ class OrdenPedidoController extends Controller
             $datos_original = HistorialAccion::getDetalleRegistro($orden_pedido, "orden_pedidos");
             $orden_pedido->estado = $request->estado;
             $orden_pedido->save();
+
+            // REGISTRAR LA VENTA
+            $venta = Venta::create([
+                "user_id" => Auth::user()->id,
+                "cliente_id" => $orden_pedido->user->cliente->id,
+                "nit" => $orden_pedido->user->cliente->nit ? $orden_pedido->user->cliente->nit : $orden_pedido->user->cliente->ci,
+                "total" => $orden_pedido->total,
+                "descuento" => 0,
+                "total_final" => $orden_pedido->total,
+                "estado" => "CANCELADO",
+                "tipo" => "ECOMMERCE",
+                "orden_pedido_id" => $orden_pedido->id,
+                "fecha_registro" => date("Y-m-d")
+            ]);
+
+            foreach ($orden_pedido->orden_detalles as $od) {
+                $dv = $venta->detalle_ventas()->create([
+                    "producto_id" => $od->producto_id,
+                    "cantidad" => $od->cantidad,
+                    "precio" => $od->precio,
+                    "subtotal" => $od->precio_total,
+                ]);
+
+                // registrar kardex
+                KardexProducto::registroEgreso("VENTA", $dv->id, $dv->producto, $dv->cantidad, $dv->precio, "VENTA DE PRODUCTO");
+            }
+
+            EnvioCorreoController::mensajeOrdenProcesada($orden_pedido, $orden_pedido->orden_detalles);
+            $mensaje = "Acabamos de procesar su pedido con código " . $orden_pedido->codigo . "
+            
+            Puedes ver tú pedido aquí:
+            " . url('/administracion/orden_pedidos/show/' . $orden_pedido->id);
+            EnviarWhatsappController::enviarMensaje($mensaje, $orden_pedido->celular);
+
             $datos_nuevo = HistorialAccion::getDetalleRegistro($orden_pedido, "orden_pedidos");
             HistorialAccion::create([
                 'user_id' => Auth::user()->id,

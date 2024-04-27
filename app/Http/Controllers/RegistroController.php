@@ -41,6 +41,7 @@ class RegistroController extends Controller
         $request['fecha_registro'] = date('Y-m-d');
         $request['usuario'] = $request->correo;
         $request['acceso'] = 1;
+        $request["tipo"] = "ECOMMERCE";
         DB::beginTransaction();
         try {
 

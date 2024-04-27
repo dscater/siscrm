@@ -402,6 +402,18 @@
                             <p>Configuración</p>
                         </router-link>
                     </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('otra_configuracion.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'otra_configuracion' }"
+                            class="nav-link"
+                        >
+                            <i class="nav-icon fas fa-cog"></i>
+                            <p>Otras Configuraciones</p>
+                        </router-link>
+                    </li>
                     <li class="nav-item">
                         <router-link
                             exact

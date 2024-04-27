@@ -44,6 +44,7 @@ class ClienteController extends Controller
         try {
             // crear Cliente
             $request["fecha_registro"] = date("Y-m-d");
+            $request["tipo"] = "FISICO";
             $nuevo_cliente = Cliente::create(array_map('mb_strtoupper', $request->all()));
             $nuevo_cliente->correo = $request->correo;
             $nuevo_cliente->save();

@@ -59,6 +59,9 @@ class UserController extends Controller
             'usuarios.edit',
             'usuarios.destroy',
 
+            'otra_configuracion.index',
+            'otra_configuracion.store',
+
             'proveedors.index',
             'proveedors.create',
             'proveedors.edit',

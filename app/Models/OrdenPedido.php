@@ -45,6 +45,11 @@ class OrdenPedido extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function venta()
+    {
+        return $this->hasOne(Venta::class, 'orden_pedido_id');
+    }
+
     public function comprobantes()
     {
         return $this->hasMany(OrdenDetalle::class, 'orden_pedido_id');

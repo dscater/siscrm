@@ -5,10 +5,12 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\ConfiguracionPagoController;
+use App\Http\Controllers\EnviarWhatsappController;
 use App\Http\Controllers\HistorialAccionController;
 use App\Http\Controllers\IngresoProductoController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OrdenPedidoController;
+use App\Http\Controllers\OtraConfiguracionController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
@@ -53,6 +55,8 @@ Route::post('/administracion/registro', [RegistroController::class, 'store']);
 
 // LISTAS PORTAL
 Route::get("configuracion_pagos_portal", [ConfiguracionPagoController::class, 'index'])->name("configuracion_pagos.portal");
+
+Route::get("prueba", [EnviarWhatsappController::class, 'prueba'])->name("prueba");
 
 // CONFIGURACIÓN
 Route::get('/configuracion/getConfiguracion', [ConfiguracionController::class, 'getConfiguracion']);
@@ -124,6 +128,10 @@ Route::middleware(['auth'])->group(function () {
             ["index", "store", "update", "show", "destroy"]
         );
 
+        // OTRAS CONFIGURACIONES
+        Route::resource("otra_configuracion", OtraConfiguracionController::class)->only(
+            ["index", "store"]
+        );
 
         // ORDEN PEDIDOS
         Route::patch("orden_pedidos/actualiza_estado/{orden_pedido}", [OrdenPedidoController::class, 'actualiza_estado'])->name("orden_pedidos.actualiza_estado");
