@@ -297,7 +297,7 @@ CREATE TABLE `envio_whatsapps` (
 --
 
 INSERT INTO `envio_whatsapps` (`id`, `sid`, `token`, `from`, `url_phone`, `created_at`, `updated_at`) VALUES
-(1, 'AC8ab64e3e5f4dd2722cd39eae1bacbc6d', 'd96439d34defc92578f4066003d3605c', 'whatsapp:+14155238886', 'http://wa.me/+14155238886?text=join%20flow-fast', NULL, '2024-04-27 19:47:26');
+(1, 'SID', 'TOKEN', 'whatsapp:+14155238886', 'http://wa.me/+14155238886?text=join%20flow-fast', NULL, '2024-04-27 19:47:26');
 
 -- --------------------------------------------------------
 
