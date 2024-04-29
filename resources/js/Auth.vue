@@ -146,9 +146,21 @@ export default {
                     }, 50);
                 })
                 .catch((error) => {
-                    this.error = true;
-                    this.password = "";
-                    console.log(error);
+                    console.log(error.response);
+                    if (error.response.status == 401) {
+                        if (error.response.data.message) {
+                            Swal.fire({
+                                icon: "info",
+                                title: "Acceso restringido",
+                                html: `<strong>${error.response.data.message}</strong>`,
+                                confirmButtonColor: "#149FDA",
+                                confirmButtonText: "Aceptar",
+                            });
+                        } else {
+                            this.error = true;
+                        }
+                        this.password = "";
+                    }
                     this.fullscreenLoading = false;
                 });
         },

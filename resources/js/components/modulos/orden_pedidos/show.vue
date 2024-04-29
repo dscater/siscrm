@@ -162,7 +162,10 @@
                                     class="row mb-2"
                                     v-if="
                                         oOrdenPedido.estado ==
-                                        'PEDIDO PENDIENTE'
+                                            'PEDIDO PENDIENTE' &&
+                                        oUser &&
+                                        (oUser.tipo == 'ADMINISTRADOR' ||
+                                            oUser.tipo == 'VENDEDOR')
                                     "
                                 >
                                     <div
@@ -229,6 +232,7 @@ export default {
                 },
             },
             actualizando: false,
+            oUser: null,
         };
     },
     computed: {
@@ -244,6 +248,13 @@ export default {
         this.loadingWindow.close();
     },
     methods: {
+        getAuth() {
+            axios
+                .get(main_url + "/admin/usuarios/userActual")
+                .then((response) => {
+                    this.oUser = response.data;
+                });
+        },
         recargaFormulario(id) {
             this.$router.push({
                 name: "orden_pedidos.ticket",

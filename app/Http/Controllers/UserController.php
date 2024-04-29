@@ -8,6 +8,7 @@ use App\Models\HistorialAccion;
 use App\Models\MaestroRegistro;
 use App\Models\Nota;
 use App\Models\Notificacion;
+use App\Models\OrdenPedido;
 use App\Models\Venta;
 use App\Models\Producto;
 use App\Models\SeguimientoAprobado;
@@ -145,7 +146,7 @@ class UserController extends Controller
             'reportes.ventas',
             'reportes.stock_productos',
             'reportes.historial_acciones',
-            
+
             'reportes.ventas_fecha',
             'reportes.canal_productos',
             'reportes.compras_fecha',
@@ -162,6 +163,12 @@ class UserController extends Controller
             'reportes.ventas',
             'reportes.stock_productos',
             'reportes.historial_acciones',
+
+            'reportes.ventas_fecha',
+            'reportes.canal_productos',
+            'reportes.compras_fecha',
+            'reportes.ventas_promedio',
+            'reportes.envios_campania',
         ],
         'SUPERVISOR' => [
             'proveedors.index',
@@ -218,8 +225,29 @@ class UserController extends Controller
             'reportes.ventas',
             'reportes.stock_productos',
             'reportes.historial_acciones',
+
+            'reportes.ventas_fecha',
+            'reportes.canal_productos',
+            'reportes.compras_fecha',
+            'reportes.ventas_promedio',
+            'reportes.envios_campania',
         ],
         'VENDEDOR' => [
+            'orden_pedidos.index',
+            'orden_pedidos.create',
+            'orden_pedidos.edit',
+            'orden_pedidos.destroy',
+
+            'campanias.index',
+            'campanias.create',
+            'campanias.edit',
+            'campanias.destroy',
+
+            'campania_automaticas.index',
+            'campania_automaticas.create',
+            'campania_automaticas.edit',
+            'campania_automaticas.destroy',
+
             'clientes.index',
             'clientes.create',
             'clientes.edit',
@@ -232,8 +260,16 @@ class UserController extends Controller
             'reportes.kardex',
             'reportes.ventas',
             'reportes.stock_productos',
+
+            'reportes.ventas_fecha',
+            'reportes.canal_productos',
+            'reportes.compras_fecha',
+            'reportes.ventas_promedio',
+            'reportes.envios_campania',
         ],
-        'CLIENTE' => [],
+        'CLIENTE' => [
+            'orden_pedidos.index',
+        ],
     ];
 
 
@@ -517,6 +553,23 @@ class UserController extends Controller
                 'label' => 'Productos',
                 'cantidad' => count(Producto::all()),
                 'color' => 'bg-danger',
+                'icon' => 'fas fa-box',
+            ];
+        }
+
+        if (in_array('orden_pedidos.index', $this->permisos[$tipo])) {
+
+            $orden_pedidos = [];
+            if (Auth::user()->tipo == 'CLIENTE') {
+                $orden_pedidos = OrdenPedido::where("user_id", Auth::user()->id)->get();
+            } else {
+                $orden_pedidos = OrdenPedido::all();
+            }
+
+            $array_infos[] = [
+                'label' => 'Ordendes de Pedidos',
+                'cantidad' => count($orden_pedidos),
+                'color' => 'bg-warning',
                 'icon' => 'fas fa-box',
             ];
         }

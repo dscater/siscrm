@@ -161,7 +161,8 @@ class Campania extends Model
                 if ($sw_whatsapp) {
                     // ENVIO WHATSAPP
                     foreach ($fonos as $value) {
-                        EnviarWhatsappController::enviarMensajeMultimedia($mensaje, trim($value), $array_multimedias);
+                        EnviarWhatsappController::enviarMensajeMultimedia("Your appointment is coming up on July 21 at 3PM", trim($value), $array_multimedias);
+                        // EnviarWhatsappController::enviarMensajeMultimedia($mensaje, trim($value), $array_multimedias);
                         // registrar envio
                         $existe_envio = CampaniaEnvio::where("fecha_envio", $fecha_actual)
                             ->where("campania_id", $campania->id)
@@ -211,7 +212,8 @@ class Campania extends Model
                 if ($sw_whatsapp) {
                     // ENVIO WHATSAPP
                     foreach ($fonos as $value) {
-                        EnviarWhatsappController::enviarMensaje($mensaje, trim($value));
+                        EnviarWhatsappController::enviarMensaje("Your appointment is coming up on July 21 at 3PM", trim($value));
+                        // EnviarWhatsappController::enviarMensaje($mensaje, trim($value));
                         // registrar envio
                         $existe_envio = CampaniaEnvio::where("fecha_envio", $fecha_actual)
                             ->where("campania_id", $campania->id)

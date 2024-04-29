@@ -30,7 +30,14 @@ class OrdenPedidoController extends Controller
 
     public function index()
     {
-        $orden_pedidos = OrdenPedido::with(["user"])->get();
+
+        $orden_pedidos = [];
+        if (Auth::user()->tipo == 'CLIENTE') {
+            $orden_pedidos = OrdenPedido::with(["user"])->where("user_id", Auth::user()->id)->get();
+        } else {
+            $orden_pedidos = OrdenPedido::with(["user"])->get();
+        }
+
         return response()->JSON(['orden_pedidos' => $orden_pedidos, 'total' => count($orden_pedidos)], 200);
     }
 

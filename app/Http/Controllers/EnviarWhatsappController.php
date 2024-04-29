@@ -43,7 +43,7 @@ class EnviarWhatsappController extends Controller
 
             // Enviar el mensaje de texto
             $messageOptions = array(
-                "from" => "whatsapp:$from",
+                "from" => $from,
                 "body" => $mensaje
             );
 

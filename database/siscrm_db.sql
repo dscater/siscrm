@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 29-04-2024 a las 02:02:56
+-- Tiempo de generación: 29-04-2024 a las 16:22:00
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -146,7 +146,9 @@ CREATE TABLE `campania_envios` (
 --
 
 INSERT INTO `campania_envios` (`id`, `campania_id`, `campania_automatico_id`, `fecha_envio`, `total_fisicos`, `total_ecommerce`, `created_at`, `updated_at`) VALUES
-(1, 6, NULL, '2024-04-28', 12, 6, '2024-04-28 21:00:31', '2024-04-28 21:06:08');
+(1, 6, NULL, '2024-04-28', 12, 6, '2024-04-28 21:00:31', '2024-04-28 21:06:08'),
+(2, 6, NULL, '2024-04-29', 4, 2, '2024-04-29 16:11:10', '2024-04-29 16:12:55'),
+(3, 7, NULL, '2024-04-29', 0, 1, '2024-04-29 16:12:19', '2024-04-29 16:12:19');
 
 -- --------------------------------------------------------
 
@@ -241,9 +243,9 @@ CREATE TABLE `clientes` (
 --
 
 INSERT INTO `clientes` (`id`, `nombre`, `ci`, `ci_exp`, `nit`, `fono`, `correo`, `dir`, `user_id`, `tipo`, `fecha_registro`, `created_at`, `updated_at`) VALUES
-(1, 'PEDRO MARTINEZ', '231231', 'LP', '', '', 'pedro@gmail.com', 'LOS OLIVOS', 3, 'FISICO', '2023-04-26', '2023-04-26 20:00:10', '2024-04-25 16:22:17'),
-(2, 'MARIA GONZALES CASAS', '1231231', 'CB', '34324111', '666666; 7777777', 'maria@gmail.com', 'LOS OLIVOS', 7, 'FISICO', '2023-04-26', '2023-04-26 20:05:20', '2024-04-25 16:22:20'),
-(6, 'PABLO SANCHEZ', '3223423', 'LP', '', '', 'pablo@gmail.com', '', 9, 'FISICO', '2024-04-25', '2024-04-25 16:20:39', '2024-04-25 16:22:23'),
+(1, 'PEDRO MARTINEZ', '231231', 'LP', '', '', 'pedro@gmail.com', 'LOS OLIVOS', 3, 'FISICO', '2023-04-26', '2023-04-26 20:00:10', '2024-04-29 16:17:22'),
+(2, 'MARIA GONZALES CASAS', '1231231', 'CB', '34324111', '666666; 7777777', 'maria@gmail.com', 'LOS OLIVOS', 7, 'FISICO', '2023-04-26', '2023-04-26 20:05:20', '2024-04-29 16:17:16'),
+(6, 'PABLO SANCHEZ', '3223423', 'LP', '', '', 'pablo@gmail.com', '', 9, 'FISICO', '2024-04-25', '2024-04-25 16:20:39', '2024-04-29 16:17:12'),
 (7, 'MARCOS MAMANI', '434334', 'LP', '8888888888', '73594451', 'victorgonzalo.as@gmail.com', 'LOS OLIVOS', 10, 'ECOMMERCE', '2024-04-26', '2024-04-26 16:17:30', '2024-04-26 16:17:30');
 
 -- --------------------------------------------------------
@@ -378,7 +380,7 @@ CREATE TABLE `envio_whatsapps` (
 --
 
 INSERT INTO `envio_whatsapps` (`id`, `sid`, `token`, `from`, `url_phone`, `created_at`, `updated_at`) VALUES
-(1, 'AC8ab64e3e5f4dd2722cd39eae1bacbc6d', '6869d803147e6ccfdedaac1deb3999c7', 'whatsapp:+14155238886', 'http://wa.me/+14155238886?text=join%20flow-fast', NULL, '2024-04-27 19:47:26');
+(1, 'AC8ab64e3e5f4dd2722cd39eae1bacbc6d', 'f37a2144e208998f7c2af04bfcef2274', 'whatsapp:+14155238886', 'http://wa.me/+14155238886?text=join%20flow-fast', NULL, '2024-04-27 19:47:26');
 
 -- --------------------------------------------------------
 
@@ -586,7 +588,11 @@ INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `dato
 (157, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CAMPAÑA', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: <br/>tipo: CATÁLOGO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 13:19:53<br/>', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: <br/>tipo: CATÁLOGO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 13:19:53<br/>', 'CAMPAÑAS', '2024-04-28', '16:53:00', '2024-04-28 20:53:00', '2024-04-28 20:53:00'),
 (158, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CAMPAÑA', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: <br/>tipo: CATÁLOGO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 13:19:53<br/>', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: <br/>tipo: CATÁLOGO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 13:19:53<br/>', 'CAMPAÑAS', '2024-04-28', '16:54:13', '2024-04-28 20:54:13', '2024-04-28 20:54:13'),
 (159, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CAMPAÑA', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: <br/>tipo: CATÁLOGO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 13:19:53<br/>', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: <br/>tipo: CATÁLOGO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 13:19:53<br/>', 'CAMPAÑAS', '2024-04-28', '16:54:21', '2024-04-28 20:54:21', '2024-04-28 20:54:21'),
-(160, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CAMPAÑA', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: <br/>tipo: CATÁLOGO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 13:19:53<br/>', 'cantidad_compra: <br/>catalogo_id: 1<br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: <br/>tipo: CATÁLOGO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 16:55:24<br/>', 'CAMPAÑAS', '2024-04-28', '16:55:24', '2024-04-28 20:55:24', '2024-04-28 20:55:24');
+(160, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CAMPAÑA', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: <br/>tipo: CATÁLOGO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 13:19:53<br/>', 'cantidad_compra: <br/>catalogo_id: 1<br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: <br/>tipo: CATÁLOGO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 16:55:24<br/>', 'CAMPAÑAS', '2024-04-28', '16:55:24', '2024-04-28 20:55:24', '2024-04-28 20:55:24'),
+(161, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CLIENTE', 'id: 6<br/>nombre: PABLO SANCHEZ<br/>ci: 3223423<br/>ci_exp: LP<br/>nit: <br/>fono: <br/>correo: pablo@gmail.com<br/>dir: <br/>user_id: 9<br/>tipo: FISICO<br/>fecha_registro: 2024-04-25<br/>created_at: 2024-04-25 12:20:39<br/>updated_at: 2024-04-25 12:22:23<br/>', 'id: 6<br/>nombre: PABLO SANCHEZ<br/>ci: 3223423<br/>ci_exp: LP<br/>nit: <br/>fono: <br/>correo: pablo@gmail.com<br/>dir: <br/>user_id: 9<br/>tipo: FISICO<br/>fecha_registro: 2024-04-25<br/>created_at: 2024-04-25 12:20:39<br/>updated_at: 2024-04-29 12:17:07<br/>', 'CLIENTES', '2024-04-29', '12:17:07', '2024-04-29 16:17:07', '2024-04-29 16:17:07'),
+(162, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CLIENTE', 'id: 6<br/>nombre: PABLO SANCHEZ<br/>ci: 3223423<br/>ci_exp: LP<br/>nit: <br/>fono: <br/>correo: pablo@gmail.com<br/>dir: <br/>user_id: 9<br/>tipo: FISICO<br/>fecha_registro: 2024-04-25<br/>created_at: 2024-04-25 12:20:39<br/>updated_at: 2024-04-29 12:17:07<br/>', 'id: 6<br/>nombre: PABLO SANCHEZ<br/>ci: 3223423<br/>ci_exp: LP<br/>nit: <br/>fono: <br/>correo: pablo@gmail.com<br/>dir: <br/>user_id: 9<br/>tipo: FISICO<br/>fecha_registro: 2024-04-25<br/>created_at: 2024-04-25 12:20:39<br/>updated_at: 2024-04-29 12:17:12<br/>', 'CLIENTES', '2024-04-29', '12:17:12', '2024-04-29 16:17:12', '2024-04-29 16:17:12'),
+(163, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CLIENTE', 'id: 2<br/>nombre: MARIA GONZALES CASAS<br/>ci: 1231231<br/>ci_exp: CB<br/>nit: 34324111<br/>fono: 666666; 7777777<br/>correo: maria@gmail.com<br/>dir: LOS OLIVOS<br/>user_id: 7<br/>tipo: FISICO<br/>fecha_registro: 2023-04-26<br/>created_at: 2023-04-26 16:05:20<br/>updated_at: 2024-04-25 12:22:20<br/>', 'id: 2<br/>nombre: MARIA GONZALES CASAS<br/>ci: 1231231<br/>ci_exp: CB<br/>nit: 34324111<br/>fono: 666666; 7777777<br/>correo: maria@gmail.com<br/>dir: LOS OLIVOS<br/>user_id: 7<br/>tipo: FISICO<br/>fecha_registro: 2023-04-26<br/>created_at: 2023-04-26 16:05:20<br/>updated_at: 2024-04-29 12:17:16<br/>', 'CLIENTES', '2024-04-29', '12:17:17', '2024-04-29 16:17:17', '2024-04-29 16:17:17'),
+(164, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CLIENTE', 'id: 1<br/>nombre: PEDRO MARTINEZ<br/>ci: 231231<br/>ci_exp: LP<br/>nit: <br/>fono: <br/>correo: pedro@gmail.com<br/>dir: LOS OLIVOS<br/>user_id: 3<br/>tipo: FISICO<br/>fecha_registro: 2023-04-26<br/>created_at: 2023-04-26 16:00:10<br/>updated_at: 2024-04-25 12:22:17<br/>', 'id: 1<br/>nombre: PEDRO MARTINEZ<br/>ci: 231231<br/>ci_exp: LP<br/>nit: <br/>fono: <br/>correo: pedro@gmail.com<br/>dir: LOS OLIVOS<br/>user_id: 3<br/>tipo: FISICO<br/>fecha_registro: 2023-04-26<br/>created_at: 2023-04-26 16:00:10<br/>updated_at: 2024-04-29 12:17:22<br/>', 'CLIENTES', '2024-04-29', '12:17:22', '2024-04-29 16:17:22', '2024-04-29 16:17:22');
 
 -- --------------------------------------------------------
 
@@ -957,9 +963,9 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `usuario`, `nombre`, `paterno`, `materno`, `ci`, `ci_exp`, `dir`, `correo`, `fono`, `tipo`, `foto`, `password`, `acceso`, `fecha_registro`, `created_at`, `updated_at`) VALUES
 (1, 'admin', 'admin', 'admin', NULL, '', '', '', NULL, '', 'ADMINISTRADOR', NULL, '$2y$10$RrCZZySOwPej2gMFWsrjMe6dLzfaL5Q88h4J75I1FesEBRNPwq1x.', 1, '2023-01-11', NULL, NULL),
 (2, 'JPERES', 'JUAN', 'PERES', 'MAMANI', '1234', 'LP', 'LOS OLIVOS', '', '777777', 'SUPERVISOR', 'default.png', '$2y$10$ZTabc8GZiG/WlSL4nJbloe3WMay9P10kVUOlfsW/aFjhqzA9mi/jS', 1, '2023-04-24', '2023-04-24 20:23:30', '2023-04-28 21:12:44'),
-(3, 'PEDRO@GMAIL.COM', 'PEDRO MARTINEZ', NULL, NULL, '231231', 'LP', 'LOS OLIVOS', 'PEDRO@GMAIL.COM', '', 'CLIENTE', NULL, '$2y$10$pRPnVk30Zbozb2.th9uVoexsiou4LpY3PvnyYMwO34NBsKaIknb0e', 1, '2024-04-25', '2024-04-25 16:12:18', '2024-04-25 16:22:17'),
-(7, 'MARIA@GMAIL.COM', 'MARIA GONZALES CASAS', NULL, NULL, '1231231', 'CB', 'LOS OLIVOS', 'MARIA@GMAIL.COM', '666666; 7777777', 'CLIENTE', NULL, '$2y$10$mg4L/sMzxECOmwT5rnrx6.ySbewLNN1OjgGVv/R62HIWhuElU0o0G', 1, '2024-04-25', '2024-04-25 16:19:01', '2024-04-25 16:22:20'),
-(9, 'pablo@gmail.com', 'PABLO SANCHEZ', NULL, NULL, '3223423', 'LP', '', 'pablo@gmail.com', '', 'CLIENTE', NULL, '$2y$10$7Y0BzYvUzgAymO0EZxbT3.jEBiAuau/vOql46Q5K/E.sRAqCHhbSS', 1, '2024-04-25', '2024-04-25 16:20:39', '2024-04-25 16:22:23'),
+(3, 'pedro@gmail.com', 'PEDRO MARTINEZ', NULL, NULL, '231231', 'LP', 'LOS OLIVOS', 'pedro@gmail.com', '', 'CLIENTE', NULL, '$2y$10$7n65zh2iGSJOPqlYbx8n5eG7/o7xUDIAfrne7ywoe4VTt5wv9KwRy', 1, '2024-04-25', '2024-04-25 16:12:18', '2024-04-29 16:17:22'),
+(7, 'maria@gmail.com', 'MARIA GONZALES CASAS', NULL, NULL, '1231231', 'CB', 'LOS OLIVOS', 'maria@gmail.com', '666666; 7777777', 'CLIENTE', NULL, '$2y$10$VqF1FkJs6TSBBG4QaDoYoOKxKxC6dG7yGIJPdNrG5APEJ01jtMSja', 1, '2024-04-25', '2024-04-25 16:19:01', '2024-04-29 16:17:17'),
+(9, 'pablo@gmail.com', 'PABLO SANCHEZ', NULL, NULL, '3223423', 'LP', '', 'pablo@gmail.com', '', 'CLIENTE', NULL, '$2y$10$JsubxYFiltQvLc9IWt5jlOyJMe.Cqfgg.zwwQwuRWHjc9LDEI1BWa', 1, '2024-04-25', '2024-04-25 16:20:39', '2024-04-29 16:17:12'),
 (10, 'marcos@gmail.com', 'MARCOS MAMANI', NULL, NULL, '434334', 'LP', 'LOS OLIVOS', 'victorgonzalo.as@gmail.com', '77777777', 'CLIENTE', NULL, '$2y$10$pE1D7.CBmB4.vhYzmXSInev5QIavUIR.r3FH2DStqf8fu2Nbj1Pj.', 1, '2024-04-26', '2024-04-26 16:17:30', '2024-04-28 15:08:21');
 
 -- --------------------------------------------------------
@@ -1229,7 +1235,7 @@ ALTER TABLE `campania_detalles`
 -- AUTO_INCREMENT de la tabla `campania_envios`
 --
 ALTER TABLE `campania_envios`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `catalogos`
@@ -1295,7 +1301,7 @@ ALTER TABLE `fecha_stocks`
 -- AUTO_INCREMENT de la tabla `historial_accions`
 --
 ALTER TABLE `historial_accions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=165;
 
 --
 -- AUTO_INCREMENT de la tabla `ingreso_productos`
