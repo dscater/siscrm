@@ -204,7 +204,10 @@
                             permisos.includes('proveedors.index') ||
                             permisos.includes('productos.index') ||
                             permisos.includes('clientes.index') ||
-                            permisos.includes('configuracion_pagos.index')
+                            permisos.includes('configuracion_pagos.index') ||
+                            permisos.includes('catalogos.index') ||
+                            permisos.includes('campanias.index') ||
+                            permisos.includes('campania_automaticas.index')
                         "
                     >
                         ADMINISTRACIÓN
@@ -235,6 +238,46 @@
                         >
                             <i class="nav-icon fas fa-list"></i>
                             <p>Proveedores</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('campanias.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'campanias.index' }"
+                            class="nav-link"
+                            v-loading.fullscreen.lock="fullscreenLoading"
+                        >
+                            <i class="nav-icon fas fa-clipboard-list"></i>
+                            <p>Campañas</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('campania_automaticas.index')"
+                    >
+                        <router-link
+                            exact
+                            :to="{ name: 'campania_automaticas.index' }"
+                            class="nav-link"
+                            v-loading.fullscreen.lock="fullscreenLoading"
+                        >
+                            <i class="nav-icon fas fa-clipboard-list"></i>
+                            <p>Envío automatico de campañas</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('catalogos.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'catalogos.index' }"
+                            class="nav-link"
+                            v-loading.fullscreen.lock="fullscreenLoading"
+                        >
+                            <i class="nav-icon fas fa-list"></i>
+                            <p>Catálogos</p>
                         </router-link>
                     </li>
                     <li
@@ -339,6 +382,54 @@
                         >
                             <i class="fas fa-file-pdf nav-icon"></i>
                             <p>Ventas</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('reportes.ventas_fecha')"
+                    >
+                        <router-link
+                            :to="{ name: 'reportes.ventas_fecha' }"
+                            class="nav-link"
+                        >
+                            <i class="fas fa-chart-bar nav-icon"></i>
+                            <p>Cantidad Ventas por Fecha</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('reportes.compras_fecha')"
+                    >
+                        <router-link
+                            :to="{ name: 'reportes.compras_fecha' }"
+                            class="nav-link"
+                        >
+                            <i class="fas fa-chart-bar nav-icon"></i>
+                            <p>Compras por Fecha</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('reportes.ventas_promedio')"
+                    >
+                        <router-link
+                            :to="{ name: 'reportes.ventas_promedio' }"
+                            class="nav-link"
+                        >
+                            <i class="fas fa-chart-bar nav-icon"></i>
+                            <p>Ventas promedio</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('reportes.envios_campania')"
+                    >
+                        <router-link
+                            :to="{ name: 'reportes.envios_campania' }"
+                            class="nav-link"
+                        >
+                            <i class="fas fa-chart-bar nav-icon"></i>
+                            <p>Envíos de campaña</p>
                         </router-link>
                     </li>
                     <!-- <li

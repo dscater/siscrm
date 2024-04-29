@@ -192,6 +192,57 @@ export default new Router({
             props: true,
         },
 
+        // catalogos
+        {
+            path: "/administracion/catalogos",
+            name: "catalogos.index",
+            component: require("./components/modulos/catalogos/index.vue")
+                .default,
+        },
+        {
+            path: "/administracion/catalogos/create",
+            name: "catalogos.create",
+            component: require("./components/modulos/catalogos/create.vue")
+                .default,
+        },
+        {
+            path: "/administracion/catalogos/edit/:id",
+            name: "catalogos.edit",
+            component: require("./components/modulos/catalogos/edit.vue")
+                .default,
+            props: true,
+        },
+
+        // campanias
+        {
+            path: "/administracion/campanias",
+            name: "campanias.index",
+            component: require("./components/modulos/campanias/index.vue")
+                .default,
+        },
+        {
+            path: "/administracion/campanias/create",
+            name: "campanias.create",
+            component: require("./components/modulos/campanias/create.vue")
+                .default,
+        },
+        {
+            path: "/administracion/campanias/edit/:id",
+            name: "campanias.edit",
+            component: require("./components/modulos/campanias/edit.vue")
+                .default,
+            props: true,
+        },
+
+        // campania_automaticas
+        {
+            path: "/administracion/campania_automaticas",
+            name: "campania_automaticas.index",
+            component:
+                require("./components/modulos/campania_automaticas/index.vue")
+                    .default,
+        },
+
         // Analisis inventarios
         {
             path: "/administracion/analisis_inventarios",
@@ -278,6 +329,37 @@ export default new Router({
             name: "reportes.grafico_orden",
             component:
                 require("./components/modulos/reportes/grafico_orden.vue")
+                    .default,
+            props: true,
+        },
+        {
+            path: "/administracion/reportes/ventas_fecha",
+            name: "reportes.ventas_fecha",
+            component: require("./components/modulos/reportes/ventas_fecha.vue")
+                .default,
+            props: true,
+        },
+        {
+            path: "/administracion/reportes/compras_fecha",
+            name: "reportes.compras_fecha",
+            component:
+                require("./components/modulos/reportes/compras_fecha.vue")
+                    .default,
+            props: true,
+        },
+        {
+            path: "/administracion/reportes/ventas_promedio",
+            name: "reportes.ventas_promedio",
+            component:
+                require("./components/modulos/reportes/ventas_promedio.vue")
+                    .default,
+            props: true,
+        },
+        {
+            path: "/administracion/reportes/envios_campania",
+            name: "reportes.envios_campania",
+            component:
+                require("./components/modulos/reportes/envios_campania.vue")
                     .default,
             props: true,
         },

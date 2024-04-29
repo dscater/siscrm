@@ -52,7 +52,8 @@
         @else
             <Auth ruta="{{ route('base_path') }}" logo="{{ asset('imgs/' . $configuracion->first()->logo) }}"
                 empresa="{{ $configuracion->first()->razon_social }}" configuracion="{{ $configuracion->first() }}"
-                url_registro="{{ route('registro') }}">
+                url_registro="{{ route('registro') }}"
+                url_olvide_mi_contrasenia="{{ route('olvide_mi_contrasenia') }}">
             </Auth>
         @endif
     </div>

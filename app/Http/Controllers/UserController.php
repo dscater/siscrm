@@ -107,6 +107,21 @@ class UserController extends Controller
             'clientes.edit',
             'clientes.destroy',
 
+            'catalogos.index',
+            'catalogos.create',
+            'catalogos.edit',
+            'catalogos.destroy',
+
+            'campanias.index',
+            'campanias.create',
+            'campanias.edit',
+            'campanias.destroy',
+
+            'campania_automaticas.index',
+            'campania_automaticas.create',
+            'campania_automaticas.edit',
+            'campania_automaticas.destroy',
+
             'ventas.index',
             'ventas.create',
             'ventas.edit',
@@ -130,6 +145,12 @@ class UserController extends Controller
             'reportes.ventas',
             'reportes.stock_productos',
             'reportes.historial_acciones',
+            
+            'reportes.ventas_fecha',
+            'reportes.canal_productos',
+            'reportes.compras_fecha',
+            'reportes.ventas_promedio',
+            'reportes.envios_campania',
         ],
         'GERENCIA' => [
             "analisis_inventarios",

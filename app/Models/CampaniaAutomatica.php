@@ -16,7 +16,35 @@ class CampaniaAutomatica extends Model
         "fecha_ini",
         "fecha_fin",
         "frecuencia",
+        "dias",
     ];
+
+    protected $appends = ["fecha_registro_t", "fecha_ini_t", "fecha_fin_t", "array_dias"];
+
+    public function getArrayDiasAttribute()
+    {
+        if ($this->dias) {
+            return explode(",", $this->dias);
+        }
+        return [];
+    }
+
+    public function getFechaRegistroTAttribute()
+    {
+        return date("d/m/Y", strtotime($this->fecha_Registro));
+    }
+
+
+    public function getFechaIniTAttribute()
+    {
+        return date("d/m/Y", strtotime($this->fecha_ini));
+    }
+
+
+    public function getFechaFinTAttribute()
+    {
+        return date("d/m/Y", strtotime($this->fecha_fin));
+    }
 
     public function campania()
     {

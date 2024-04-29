@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\AnalisisBiController;
+use App\Http\Controllers\CampaniaAutomaticaController;
+use App\Http\Controllers\CampaniaController;
+use App\Http\Controllers\CatalogoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ConfiguracionController;
@@ -14,6 +17,7 @@ use App\Http\Controllers\OtraConfiguracionController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\RecuperacionController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\SalidaProductoController;
@@ -56,7 +60,10 @@ Route::post('/administracion/registro', [RegistroController::class, 'store']);
 // LISTAS PORTAL
 Route::get("configuracion_pagos_portal", [ConfiguracionPagoController::class, 'index'])->name("configuracion_pagos.portal");
 
-Route::get("prueba", [EnviarWhatsappController::class, 'prueba'])->name("prueba");
+Route::get("olvide_mi_contrasenia", [RecuperacionController::class, 'olvide_mi_contrasenia'])->name("olvide_mi_contrasenia");
+Route::post("registrar_ci", [RecuperacionController::class, 'registrar_ci'])->name("registrar_ci");
+Route::get("recuperacion/{recuperacion}", [RecuperacionController::class, 'recuperacion'])->name("recuperacion");
+Route::post("recuperacion/{recuperacion}", [RecuperacionController::class, 'registro_recuperacion'])->name("registro_recuperacion");
 
 // CONFIGURACIÓN
 Route::get('/configuracion/getConfiguracion', [ConfiguracionController::class, 'getConfiguracion']);
@@ -123,6 +130,22 @@ Route::middleware(['auth'])->group(function () {
             'index', 'store', 'update', 'destroy', 'show'
         ]);
 
+        // Catalogos
+        Route::resource('catalogos', CatalogoController::class)->only([
+            'index', 'store', 'update', 'destroy', 'show'
+        ]);
+
+        // Campaña Whatsapp
+        Route::post('campanias/enviarCampania/{campania}', [CampaniaController::class, 'enviarCampania']);
+        Route::resource('campanias', CampaniaController::class)->only([
+            'index', 'store', 'update', 'destroy', 'show'
+        ]);
+
+        // Campaña automaticas
+        Route::resource('campania_automaticas', CampaniaAutomaticaController::class)->only([
+            'index', 'store', 'update', 'destroy', 'show'
+        ]);
+
         // CONFIGURACION PAGOS
         Route::resource("configuracion_pagos", ConfiguracionPagoController::class)->only(
             ["index", "store", "update", "show", "destroy"]
@@ -184,6 +207,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('reportes/historial_accion', [ReporteController::class, 'historial_accion']);
         Route::post('reportes/grafico_ingresos', [ReporteController::class, 'grafico_ingresos']);
         Route::post('reportes/grafico_orden', [ReporteController::class, 'grafico_orden']);
+
+        Route::post('reportes/ventas_fecha', [ReporteController::class, 'ventas_fecha']);
+        Route::post('reportes/compras_fecha', [ReporteController::class, 'compras_fecha']);
+        Route::post('reportes/ventas_promedio', [ReporteController::class, 'ventas_promedio']);
+        Route::post('reportes/envios_campania', [ReporteController::class, 'envios_campania']);
+        Route::post('reportes/envios_campania_pdf', [ReporteController::class, 'envios_campania_pdf']);
     });
 });
 

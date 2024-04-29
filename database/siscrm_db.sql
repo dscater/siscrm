@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 27-04-2024 a las 19:48:02
+-- Tiempo de generación: 29-04-2024 a las 02:02:56
 -- Versión del servidor: 8.0.30
--- Versión de PHP: 7.4.19
+-- Versión de PHP: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -55,11 +55,26 @@ CREATE TABLE `campanias` (
   `fecha_fin` date NOT NULL,
   `tipo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tipo_cliente` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `filtro_cliente` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `producto_id` bigint UNSIGNED DEFAULT NULL,
+  `cantidad_compra` double(10,2) DEFAULT NULL,
   `descripcion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `catalogo_id` bigint UNSIGNED DEFAULT NULL,
   `fecha_registro` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `campanias`
+--
+
+INSERT INTO `campanias` (`id`, `nombre`, `fecha_ini`, `fecha_fin`, `tipo`, `tipo_cliente`, `filtro_cliente`, `producto_id`, `cantidad_compra`, `descripcion`, `catalogo_id`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(6, 'CAMPAÑA #1', '2024-04-28', '2024-04-29', 'GIFTCARD', 'TODOS', '', NULL, NULL, 'DESCRIPCION CAMPAÑA #1 TODOS LOS CLIENTES MOD', NULL, '2024-04-28', '2024-04-28 17:17:04', '2024-04-28 17:19:18'),
+(7, 'CAMPAÑA #2', '2024-04-28', '2024-04-29', 'CATÁLOGO', 'ECOMMERCE', '', NULL, NULL, 'DESC. CAMPAÑA #2', 1, '2024-04-28', '2024-04-28 17:19:53', '2024-04-28 20:55:24'),
+(8, 'CAMPAÑA #3', '2024-04-28', '2024-04-29', 'DESCUENTO', 'PERSONALIZADO', 'PRODUCTO COMPRADO', 3, NULL, 'DESCRIPCION CAMP 3', NULL, '2024-04-28', '2024-04-28 17:21:37', '2024-04-28 17:22:34'),
+(9, 'CAMPAÑA 4', '2024-04-28', '2024-04-29', 'RECORDATORIO', 'PERSONALIZADO', 'CANTIDAD COMPRA', NULL, 3.00, 'DESC CAMP 4', NULL, '2024-04-28', '2024-04-28 17:23:27', '2024-04-28 17:23:28'),
+(11, 'CAMPAÑA 5', '2024-04-28', '2024-04-29', 'RECORDATORIO', 'PERSONALIZADO', 'CLIENTES ESPECIFICOS', NULL, NULL, 'DESC. CAMPAÑA 5', NULL, '2024-04-28', '2024-04-28 17:24:49', '2024-04-28 17:24:49');
 
 -- --------------------------------------------------------
 
@@ -74,10 +89,19 @@ CREATE TABLE `campania_automaticas` (
   `fecha_registro` date NOT NULL,
   `fecha_ini` date DEFAULT NULL,
   `fecha_fin` date DEFAULT NULL,
-  `frecuencia` int DEFAULT NULL,
+  `frecuencia` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dias` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `campania_automaticas`
+--
+
+INSERT INTO `campania_automaticas` (`id`, `campania_id`, `tipo`, `fecha_registro`, `fecha_ini`, `fecha_fin`, `frecuencia`, `dias`, `created_at`, `updated_at`) VALUES
+(1, 6, 'TODOS', '2024-04-28', '2024-04-28', '2024-04-29', 'RANGO DE FECHAS', '', '2024-04-28 19:46:30', '2024-04-28 19:46:30'),
+(2, 7, 'CORREO', '2024-04-28', NULL, NULL, 'DÍAS', '5,30', '2024-04-28 19:51:31', '2024-04-28 19:53:49');
 
 -- --------------------------------------------------------
 
@@ -89,11 +113,16 @@ CREATE TABLE `campania_detalles` (
   `id` bigint UNSIGNED NOT NULL,
   `campania_id` bigint UNSIGNED NOT NULL,
   `cliente_id` bigint UNSIGNED DEFAULT NULL,
-  `filtro` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tipo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `campania_detalles`
+--
+
+INSERT INTO `campania_detalles` (`id`, `campania_id`, `cliente_id`, `created_at`, `updated_at`) VALUES
+(7, 11, 7, '2024-04-28 17:33:03', '2024-04-28 17:33:03');
 
 -- --------------------------------------------------------
 
@@ -111,6 +140,58 @@ CREATE TABLE `campania_envios` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `campania_envios`
+--
+
+INSERT INTO `campania_envios` (`id`, `campania_id`, `campania_automatico_id`, `fecha_envio`, `total_fisicos`, `total_ecommerce`, `created_at`, `updated_at`) VALUES
+(1, 6, NULL, '2024-04-28', 12, 6, '2024-04-28 21:00:31', '2024-04-28 21:06:08');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `catalogos`
+--
+
+CREATE TABLE `catalogos` (
+  `id` bigint UNSIGNED NOT NULL,
+  `nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `catalogos`
+--
+
+INSERT INTO `catalogos` (`id`, `nombre`, `created_at`, `updated_at`) VALUES
+(1, 'CATALOGO #1', '2024-04-28 16:07:59', '2024-04-28 16:07:59'),
+(2, 'CATALOGO #2', '2024-04-28 16:09:39', '2024-04-28 16:09:39');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `catalogo_detalles`
+--
+
+CREATE TABLE `catalogo_detalles` (
+  `id` bigint UNSIGNED NOT NULL,
+  `catalogo_id` bigint UNSIGNED NOT NULL,
+  `producto_id` bigint UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `catalogo_detalles`
+--
+
+INSERT INTO `catalogo_detalles` (`id`, `catalogo_id`, `producto_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 3, '2024-04-28 16:07:59', '2024-04-28 16:07:59'),
+(2, 1, 7, '2024-04-28 16:07:59', '2024-04-28 16:07:59'),
+(3, 2, 1, '2024-04-28 16:09:39', '2024-04-28 16:09:39'),
+(4, 2, 2, '2024-04-28 16:09:39', '2024-04-28 16:09:39');
 
 -- --------------------------------------------------------
 
@@ -163,7 +244,7 @@ INSERT INTO `clientes` (`id`, `nombre`, `ci`, `ci_exp`, `nit`, `fono`, `correo`,
 (1, 'PEDRO MARTINEZ', '231231', 'LP', '', '', 'pedro@gmail.com', 'LOS OLIVOS', 3, 'FISICO', '2023-04-26', '2023-04-26 20:00:10', '2024-04-25 16:22:17'),
 (2, 'MARIA GONZALES CASAS', '1231231', 'CB', '34324111', '666666; 7777777', 'maria@gmail.com', 'LOS OLIVOS', 7, 'FISICO', '2023-04-26', '2023-04-26 20:05:20', '2024-04-25 16:22:20'),
 (6, 'PABLO SANCHEZ', '3223423', 'LP', '', '', 'pablo@gmail.com', '', 9, 'FISICO', '2024-04-25', '2024-04-25 16:20:39', '2024-04-25 16:22:23'),
-(7, 'MARCOS MAMANI', '434334', 'LP', '8888888888', '77777777', 'victorgonzalo.as@gmail.com', 'LOS OLIVOS', 10, 'ECOMMERCE', '2024-04-26', '2024-04-26 16:17:30', '2024-04-26 16:17:30');
+(7, 'MARCOS MAMANI', '434334', 'LP', '8888888888', '73594451', 'victorgonzalo.as@gmail.com', 'LOS OLIVOS', 10, 'ECOMMERCE', '2024-04-26', '2024-04-26 16:17:30', '2024-04-26 16:17:30');
 
 -- --------------------------------------------------------
 
@@ -297,7 +378,7 @@ CREATE TABLE `envio_whatsapps` (
 --
 
 INSERT INTO `envio_whatsapps` (`id`, `sid`, `token`, `from`, `url_phone`, `created_at`, `updated_at`) VALUES
-(1, 'SID', 'TOKEN', 'whatsapp:+14155238886', 'http://wa.me/+14155238886?text=join%20flow-fast', NULL, '2024-04-27 19:47:26');
+(1, 'AC8ab64e3e5f4dd2722cd39eae1bacbc6d', '6869d803147e6ccfdedaac1deb3999c7', 'whatsapp:+14155238886', 'http://wa.me/+14155238886?text=join%20flow-fast', NULL, '2024-04-27 19:47:26');
 
 -- --------------------------------------------------------
 
@@ -479,7 +560,33 @@ INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `dato
 (126, 1, 'MODIFICACIÓN', 'EL USUARIO  MODIFICÓ UNA ORDEN DE PEDIDO', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 77575373<br/>comprobante: 1714163985_1.pdf<br/>lat: -16.496808823347422<br/>lng: -68.13268932180621<br/>total: 324.00<br/>estado: PEDIDO PENDIENTE<br/>user_id: 10<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 16:39:45<br/>updated_at: 2024-04-26 17:13:26<br/>', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 77575373<br/>comprobante: 1714163985_1.pdf<br/>lat: -16.496808823347422<br/>lng: -68.13268932180621<br/>total: 324.00<br/>estado: ORDEN PROCESADA<br/>user_id: 10<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 16:39:45<br/>updated_at: 2024-04-26 17:14:03<br/>', 'ORDEN DE PEDIDOS', '2024-04-26', '17:14:03', '2024-04-26 21:14:03', '2024-04-26 21:14:03'),
 (127, 1, 'ELIMINACIÓN', 'EL USUARIO  ELIMINÓ UNA ORDEN DE PEDIDO', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 77575373<br/>comprobante: 1714163985_1.pdf<br/>lat: -16.496808823347422<br/>lng: -68.13268932180621<br/>total: 324.00<br/>estado: PEDIDO PENDIENTE<br/>user_id: 10<br/>fecha_registro: 2024-04-26<br/>created_at: 2024-04-26 16:39:45<br/>updated_at: 2024-04-26 17:14:03<br/>', NULL, 'ORDEN DE PEDIDOS', '2024-04-26', '17:14:14', '2024-04-26 21:14:14', '2024-04-26 21:14:14'),
 (128, 10, 'CREACIÓN', 'EL USUARIO  REGISTRO UNA ORDEN DE PEDIDO', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 73594451<br/>comprobante: C:\\USERS\\VICTO\\APPDATA\\LOCAL\\TEMP\\PHP87F5.TMP<br/>lat: -16.496059<br/>lng: -68.133345<br/>total: 212.00<br/>estado: PEDIDO PENDIENTE<br/>user_id: 10<br/>fecha_registro: 2024-04-27<br/>created_at: 2024-04-27 15:27:40<br/>updated_at: 2024-04-27 15:27:40<br/>', NULL, 'ORDEN DE PEDIDOS', '2024-04-27', '15:27:40', '2024-04-27 19:27:40', '2024-04-27 19:27:40'),
-(129, 1, 'MODIFICACIÓN', 'EL USUARIO  MODIFICÓ UNA ORDEN DE PEDIDO', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 73594451<br/>comprobante: 1714246060_1.pdf<br/>lat: -16.496059<br/>lng: -68.133345<br/>total: 212.00<br/>estado: PEDIDO PENDIENTE<br/>user_id: 10<br/>fecha_registro: 2024-04-27<br/>created_at: 2024-04-27 15:27:40<br/>updated_at: 2024-04-27 15:27:40<br/>', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 73594451<br/>comprobante: 1714246060_1.pdf<br/>lat: -16.496059<br/>lng: -68.133345<br/>total: 212.00<br/>estado: ORDEN PROCESADA<br/>user_id: 10<br/>fecha_registro: 2024-04-27<br/>created_at: 2024-04-27 15:27:40<br/>updated_at: 2024-04-27 15:40:42<br/>', 'ORDEN DE PEDIDOS', '2024-04-27', '15:40:47', '2024-04-27 19:40:47', '2024-04-27 19:40:47');
+(129, 1, 'MODIFICACIÓN', 'EL USUARIO  MODIFICÓ UNA ORDEN DE PEDIDO', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 73594451<br/>comprobante: 1714246060_1.pdf<br/>lat: -16.496059<br/>lng: -68.133345<br/>total: 212.00<br/>estado: PEDIDO PENDIENTE<br/>user_id: 10<br/>fecha_registro: 2024-04-27<br/>created_at: 2024-04-27 15:27:40<br/>updated_at: 2024-04-27 15:27:40<br/>', 'id: 1<br/>codigo: ORD.1<br/>nro: 1<br/>configuracion_pago_id: 1<br/>celular: 73594451<br/>comprobante: 1714246060_1.pdf<br/>lat: -16.496059<br/>lng: -68.133345<br/>total: 212.00<br/>estado: ORDEN PROCESADA<br/>user_id: 10<br/>fecha_registro: 2024-04-27<br/>created_at: 2024-04-27 15:27:40<br/>updated_at: 2024-04-27 15:40:42<br/>', 'ORDEN DE PEDIDOS', '2024-04-27', '15:40:47', '2024-04-27 19:40:47', '2024-04-27 19:40:47'),
+(130, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN CATALOGO', 'created_at: 2024-04-28 11:51:03<br/>id: 1<br/>nombre: CATALOGO #1<br/>updated_at: 2024-04-28 11:51:03<br/>', NULL, 'CATALOGOS', '2024-04-28', '11:51:03', '2024-04-28 15:51:03', '2024-04-28 15:51:03'),
+(131, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CATALOGO', 'created_at: 2024-04-28 11:51:03<br/>id: 1<br/>nombre: CATALOGO #1<br/>updated_at: 2024-04-28 11:51:03<br/>', 'created_at: 2024-04-28 11:51:03<br/>id: 1<br/>nombre: CATALOGO #1<br/>updated_at: 2024-04-28 11:51:03<br/>', 'CATALOGOS', '2024-04-28', '12:05:19', '2024-04-28 16:05:19', '2024-04-28 16:05:19'),
+(132, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CATALOGO', 'created_at: 2024-04-28 11:51:03<br/>id: 1<br/>nombre: CATALOGO #1<br/>updated_at: 2024-04-28 11:51:03<br/>', 'created_at: 2024-04-28 11:51:03<br/>id: 1<br/>nombre: CATALOGO #1<br/>updated_at: 2024-04-28 11:51:03<br/>', 'CATALOGOS', '2024-04-28', '12:06:12', '2024-04-28 16:06:12', '2024-04-28 16:06:12'),
+(133, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CATALOGO', 'created_at: 2024-04-28 11:51:03<br/>id: 1<br/>nombre: CATALOGO #1<br/>updated_at: 2024-04-28 11:51:03<br/>', 'created_at: 2024-04-28 11:51:03<br/>id: 1<br/>nombre: CATALOGO #1<br/>updated_at: 2024-04-28 11:51:03<br/>', 'CATALOGOS', '2024-04-28', '12:06:18', '2024-04-28 16:06:18', '2024-04-28 16:06:18'),
+(134, 1, 'ELIMINACIÓN', 'EL USUARIO admin ELIMINÓ UN CATALOGO', 'created_at: 2024-04-28 11:51:03<br/>id: 1<br/>nombre: CATALOGO #1<br/>updated_at: 2024-04-28 11:51:03<br/>', NULL, 'CATALOGOS', '2024-04-28', '12:07:10', '2024-04-28 16:07:10', '2024-04-28 16:07:10'),
+(135, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN CATALOGO', 'created_at: 2024-04-28 12:07:59<br/>id: 1<br/>nombre: CATALOGO #1<br/>updated_at: 2024-04-28 12:07:59<br/>', NULL, 'CATALOGOS', '2024-04-28', '12:07:59', '2024-04-28 16:07:59', '2024-04-28 16:07:59'),
+(136, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN CATALOGO', 'created_at: 2024-04-28 12:09:39<br/>id: 2<br/>nombre: CATALOGO #2<br/>updated_at: 2024-04-28 12:09:39<br/>', NULL, 'CATALOGOS', '2024-04-28', '12:09:39', '2024-04-28 16:09:39', '2024-04-28 16:09:39'),
+(142, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN CAMPAÑA', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:17:04<br/>descripcion: DESCRIPCION CAMPAÑA #1 TODOS LOS CLIENTES<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: PRODUCTO COMPRADO<br/>id: 6<br/>nombre: CAMPAÑA #1<br/>producto_id: <br/>tipo: GIFTCARD<br/>tipo_cliente: TODOS<br/>updated_at: 2024-04-28 13:17:04<br/>', NULL, 'CAMPAÑAS', '2024-04-28', '13:17:04', '2024-04-28 17:17:04', '2024-04-28 17:17:04'),
+(143, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CAMPAÑA', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:17:04<br/>descripcion: DESCRIPCION CAMPAÑA #1 TODOS LOS CLIENTES<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: PRODUCTO COMPRADO<br/>id: 6<br/>nombre: CAMPAÑA #1<br/>producto_id: <br/>tipo: GIFTCARD<br/>tipo_cliente: TODOS<br/>updated_at: 2024-04-28 13:17:04<br/>', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:17:04<br/>descripcion: DESCRIPCION CAMPAÑA #1 TODOS LOS CLIENTES MOD<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 6<br/>nombre: CAMPAÑA #1<br/>producto_id: <br/>tipo: GIFTCARD<br/>tipo_cliente: TODOS<br/>updated_at: 2024-04-28 13:19:18<br/>', 'CAMPAÑAS', '2024-04-28', '13:19:18', '2024-04-28 17:19:18', '2024-04-28 17:19:18'),
+(144, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN CAMPAÑA', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: <br/>tipo: CATÁLOGO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 13:19:53<br/>', NULL, 'CAMPAÑAS', '2024-04-28', '13:19:53', '2024-04-28 17:19:53', '2024-04-28 17:19:53'),
+(145, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN CAMPAÑA', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:21:37<br/>descripcion: DESCRIPCION CAMP 3<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 8<br/>nombre: CAMPAÑA #3<br/>producto_id: <br/>tipo: DESCUENTO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 13:21:37<br/>', NULL, 'CAMPAÑAS', '2024-04-28', '13:21:37', '2024-04-28 17:21:37', '2024-04-28 17:21:37'),
+(146, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CAMPAÑA', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:21:37<br/>descripcion: DESCRIPCION CAMP 3<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 8<br/>nombre: CAMPAÑA #3<br/>producto_id: <br/>tipo: DESCUENTO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 13:21:37<br/>', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:21:37<br/>descripcion: DESCRIPCION CAMP 3<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: PRODUCTO COMPRADO<br/>id: 8<br/>nombre: CAMPAÑA #3<br/>producto_id: 3<br/>tipo: DESCUENTO<br/>tipo_cliente: PERSONALIZADO<br/>updated_at: 2024-04-28 13:22:34<br/>', 'CAMPAÑAS', '2024-04-28', '13:22:34', '2024-04-28 17:22:34', '2024-04-28 17:22:34'),
+(147, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN CAMPAÑA', 'cantidad_compra: 3<br/>catalogo_id: <br/>created_at: 2024-04-28 13:23:27<br/>descripcion: DESC CAMP 4<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: CANTIDAD COMPRA<br/>id: 9<br/>nombre: CAMPAÑA 4<br/>producto_id: <br/>tipo: RECORDATORIO<br/>tipo_cliente: PERSONALIZADO<br/>updated_at: 2024-04-28 13:23:28<br/>', NULL, 'CAMPAÑAS', '2024-04-28', '13:23:28', '2024-04-28 17:23:28', '2024-04-28 17:23:28'),
+(148, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN CAMPAÑA', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:24:49<br/>descripcion: DESC. CAMPAÑA 5<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: CLIENTES ESPECIFICOS<br/>id: 11<br/>nombre: CAMPAÑA 5<br/>producto_id: <br/>tipo: RECORDATORIO<br/>tipo_cliente: PERSONALIZADO<br/>updated_at: 2024-04-28 13:24:49<br/>', NULL, 'CAMPAÑAS', '2024-04-28', '13:24:49', '2024-04-28 17:24:49', '2024-04-28 17:24:49'),
+(149, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CAMPAÑA', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:24:49<br/>descripcion: DESC. CAMPAÑA 5<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: CLIENTES ESPECIFICOS<br/>id: 11<br/>nombre: CAMPAÑA 5<br/>producto_id: <br/>tipo: RECORDATORIO<br/>tipo_cliente: PERSONALIZADO<br/>updated_at: 2024-04-28 13:24:49<br/>', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:24:49<br/>descripcion: DESC. CAMPAÑA 5<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: CLIENTES ESPECIFICOS<br/>id: 11<br/>nombre: CAMPAÑA 5<br/>producto_id: <br/>tipo: RECORDATORIO<br/>tipo_cliente: PERSONALIZADO<br/>updated_at: 2024-04-28 13:24:49<br/>', 'CAMPAÑAS', '2024-04-28', '13:29:01', '2024-04-28 17:29:01', '2024-04-28 17:29:01'),
+(150, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CAMPAÑA', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:24:49<br/>descripcion: DESC. CAMPAÑA 5<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: CLIENTES ESPECIFICOS<br/>id: 11<br/>nombre: CAMPAÑA 5<br/>producto_id: <br/>tipo: RECORDATORIO<br/>tipo_cliente: PERSONALIZADO<br/>updated_at: 2024-04-28 13:24:49<br/>', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:24:49<br/>descripcion: DESC. CAMPAÑA 5<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: CLIENTES ESPECIFICOS<br/>id: 11<br/>nombre: CAMPAÑA 5<br/>producto_id: <br/>tipo: RECORDATORIO<br/>tipo_cliente: PERSONALIZADO<br/>updated_at: 2024-04-28 13:24:49<br/>', 'CAMPAÑAS', '2024-04-28', '13:32:54', '2024-04-28 17:32:54', '2024-04-28 17:32:54'),
+(151, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CAMPAÑA', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:24:49<br/>descripcion: DESC. CAMPAÑA 5<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: CLIENTES ESPECIFICOS<br/>id: 11<br/>nombre: CAMPAÑA 5<br/>producto_id: <br/>tipo: RECORDATORIO<br/>tipo_cliente: PERSONALIZADO<br/>updated_at: 2024-04-28 13:24:49<br/>', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:24:49<br/>descripcion: DESC. CAMPAÑA 5<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: CLIENTES ESPECIFICOS<br/>id: 11<br/>nombre: CAMPAÑA 5<br/>producto_id: <br/>tipo: RECORDATORIO<br/>tipo_cliente: PERSONALIZADO<br/>updated_at: 2024-04-28 13:24:49<br/>', 'CAMPAÑAS', '2024-04-28', '13:33:03', '2024-04-28 17:33:03', '2024-04-28 17:33:03'),
+(152, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN ENVIO DE CAMPAÑA AUTOMATICA', 'campania_id: 6<br/>created_at: 2024-04-28 15:46:30<br/>dias: <br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>frecuencia: RANGO DE FECHAS<br/>id: 1<br/>tipo: TODOS<br/>updated_at: 2024-04-28 15:46:30<br/>', NULL, 'ENVIO DE CAMPAÑAS AUTOMATICAS', '2024-04-28', '15:46:30', '2024-04-28 19:46:30', '2024-04-28 19:46:30'),
+(153, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN ENVIO DE CAMPAÑA AUTOMATICA', 'campania_id: 7<br/>created_at: 2024-04-28 15:51:31<br/>dias: 5,10<br/>fecha_fin: <br/>fecha_ini: <br/>fecha_registro: 2024-04-28<br/>frecuencia: DÍAS<br/>id: 2<br/>tipo: CORREO<br/>updated_at: 2024-04-28 15:51:31<br/>', NULL, 'ENVIO DE CAMPAÑAS AUTOMATICAS', '2024-04-28', '15:51:31', '2024-04-28 19:51:31', '2024-04-28 19:51:31'),
+(154, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN ENVIO DE CAMPAÑA AUTOMATICA', 'campania_id: 7<br/>created_at: 2024-04-28 15:51:31<br/>dias: 5,10<br/>fecha_fin: <br/>fecha_ini: <br/>fecha_registro: 2024-04-28<br/>frecuencia: DÍAS<br/>id: 2<br/>tipo: CORREO<br/>updated_at: 2024-04-28 15:51:31<br/>', 'campania_id: 7<br/>created_at: 2024-04-28 15:51:31<br/>dias: 5,15,10<br/>fecha_fin: <br/>fecha_ini: <br/>fecha_registro: 2024-04-28<br/>frecuencia: DÍAS<br/>id: 2<br/>tipo: CORREO<br/>updated_at: 2024-04-28 15:51:56<br/>', 'ENVIO DE CAMPAÑAS AUTOMATICAS', '2024-04-28', '15:51:56', '2024-04-28 19:51:56', '2024-04-28 19:51:56'),
+(155, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN ENVIO DE CAMPAÑA AUTOMATICA', 'campania_id: 7<br/>created_at: 2024-04-28 15:51:31<br/>dias: 5,15,10<br/>fecha_fin: <br/>fecha_ini: <br/>fecha_registro: 2024-04-28<br/>frecuencia: DÍAS<br/>id: 2<br/>tipo: CORREO<br/>updated_at: 2024-04-28 15:51:56<br/>', 'campania_id: 7<br/>created_at: 2024-04-28 15:51:31<br/>dias: 5<br/>fecha_fin: <br/>fecha_ini: <br/>fecha_registro: 2024-04-28<br/>frecuencia: DÍAS<br/>id: 2<br/>tipo: CORREO<br/>updated_at: 2024-04-28 15:53:43<br/>', 'ENVIO DE CAMPAÑAS AUTOMATICAS', '2024-04-28', '15:53:43', '2024-04-28 19:53:43', '2024-04-28 19:53:43'),
+(156, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN ENVIO DE CAMPAÑA AUTOMATICA', 'campania_id: 7<br/>created_at: 2024-04-28 15:51:31<br/>dias: 5<br/>fecha_fin: <br/>fecha_ini: <br/>fecha_registro: 2024-04-28<br/>frecuencia: DÍAS<br/>id: 2<br/>tipo: CORREO<br/>updated_at: 2024-04-28 15:53:43<br/>', 'campania_id: 7<br/>created_at: 2024-04-28 15:51:31<br/>dias: 5,30<br/>fecha_fin: <br/>fecha_ini: <br/>fecha_registro: 2024-04-28<br/>frecuencia: DÍAS<br/>id: 2<br/>tipo: CORREO<br/>updated_at: 2024-04-28 15:53:49<br/>', 'ENVIO DE CAMPAÑAS AUTOMATICAS', '2024-04-28', '15:53:49', '2024-04-28 19:53:49', '2024-04-28 19:53:49'),
+(157, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CAMPAÑA', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: <br/>tipo: CATÁLOGO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 13:19:53<br/>', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: <br/>tipo: CATÁLOGO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 13:19:53<br/>', 'CAMPAÑAS', '2024-04-28', '16:53:00', '2024-04-28 20:53:00', '2024-04-28 20:53:00'),
+(158, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CAMPAÑA', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: <br/>tipo: CATÁLOGO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 13:19:53<br/>', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: <br/>tipo: CATÁLOGO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 13:19:53<br/>', 'CAMPAÑAS', '2024-04-28', '16:54:13', '2024-04-28 20:54:13', '2024-04-28 20:54:13'),
+(159, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CAMPAÑA', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: <br/>tipo: CATÁLOGO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 13:19:53<br/>', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: <br/>tipo: CATÁLOGO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 13:19:53<br/>', 'CAMPAÑAS', '2024-04-28', '16:54:21', '2024-04-28 20:54:21', '2024-04-28 20:54:21'),
+(160, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CAMPAÑA', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: <br/>tipo: CATÁLOGO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 13:19:53<br/>', 'cantidad_compra: <br/>catalogo_id: 1<br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: <br/>tipo: CATÁLOGO<br/>tipo_cliente: ECOMMERCE<br/>updated_at: 2024-04-28 16:55:24<br/>', 'CAMPAÑAS', '2024-04-28', '16:55:24', '2024-04-28 20:55:24', '2024-04-28 20:55:24');
 
 -- --------------------------------------------------------
 
@@ -508,11 +615,11 @@ CREATE TABLE `ingreso_productos` (
 --
 
 INSERT INTO `ingreso_productos` (`id`, `producto_id`, `proveedor_id`, `precio_compra`, `cantidad`, `lote`, `fecha_fabricacion`, `fecha_compra`, `tipo_ingreso_id`, `descripcion`, `fecha_registro`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 20.00, 100, '1', '2023-02-02', '2024-02-02', 1, '', '2023-04-25', '2023-04-25 15:23:41', '2024-04-25 15:37:03'),
-(2, 2, 1, 30.00, 100, '2', '2023-04-25', '2024-04-25', 2, '', '2023-04-25', '2023-04-25 15:25:58', '2023-04-25 15:25:58'),
-(3, 3, 1, 100.00, 70, '3', '2023-03-03', '2026-03-03', 1, '', '2023-04-25', '2023-04-25 15:28:29', '2023-04-25 15:31:20'),
-(4, 1, 1, 20.00, 10, '10', '2023-04-27', '2025-04-27', 1, '', '2023-04-27', '2023-04-27 18:59:01', '2023-04-27 18:59:01'),
-(5, 7, 2, 11.00, 90, '322323', '2023-01-01', '2025-01-01', 1, '', '2023-04-28', '2023-04-28 15:42:04', '2023-04-28 15:42:04');
+(1, 1, 1, 20.00, 100, '1', '2023-02-02', '2023-02-02', 1, '', '2023-04-25', '2023-04-25 15:23:41', '2024-04-25 15:37:03'),
+(2, 2, 1, 30.00, 100, '2', '2023-04-25', '2023-04-25', 2, '', '2023-04-25', '2023-04-25 15:25:58', '2023-04-25 15:25:58'),
+(3, 3, 1, 100.00, 70, '3', '2023-03-03', '2023-03-03', 1, '', '2023-04-25', '2023-04-25 15:28:29', '2023-04-25 15:31:20'),
+(4, 1, 1, 20.00, 10, '10', '2023-04-27', '2023-04-27', 1, '', '2023-04-27', '2023-04-27 18:59:01', '2023-04-27 18:59:01'),
+(5, 7, 2, 11.00, 90, '322323', '2023-01-01', '2023-01-01', 1, '', '2023-04-28', '2023-04-28 15:42:04', '2023-04-28 15:42:04');
 
 -- --------------------------------------------------------
 
@@ -589,7 +696,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (9, '2024_04_27_131001_create_campania_automaticas_table', 9),
 (10, '2024_04_27_131611_create_campania_detalles_table', 10),
 (11, '2024_04_27_131620_create_campania_envios_table', 11),
-(12, '2024_04_27_144424_create_envio_whatsapps_table', 12);
+(12, '2024_04_27_144424_create_envio_whatsapps_table', 12),
+(13, '2024_04_28_101519_create_catalogos_table', 13),
+(14, '2024_04_28_101708_create_catalogo_detalles_table', 14),
+(15, '2024_04_28_104529_create_recuperacions_table', 15);
 
 -- --------------------------------------------------------
 
@@ -727,6 +837,27 @@ INSERT INTO `proveedors` (`id`, `razon_social`, `nit`, `dir`, `fono`, `nombre_co
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `recuperacions`
+--
+
+CREATE TABLE `recuperacions` (
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `recuperado` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `recuperacions`
+--
+
+INSERT INTO `recuperacions` (`id`, `user_id`, `recuperado`, `created_at`, `updated_at`) VALUES
+(1, 10, 1, '2024-04-28 14:55:50', '2024-04-28 15:07:50');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `salida_productos`
 --
 
@@ -829,7 +960,7 @@ INSERT INTO `users` (`id`, `usuario`, `nombre`, `paterno`, `materno`, `ci`, `ci_
 (3, 'PEDRO@GMAIL.COM', 'PEDRO MARTINEZ', NULL, NULL, '231231', 'LP', 'LOS OLIVOS', 'PEDRO@GMAIL.COM', '', 'CLIENTE', NULL, '$2y$10$pRPnVk30Zbozb2.th9uVoexsiou4LpY3PvnyYMwO34NBsKaIknb0e', 1, '2024-04-25', '2024-04-25 16:12:18', '2024-04-25 16:22:17'),
 (7, 'MARIA@GMAIL.COM', 'MARIA GONZALES CASAS', NULL, NULL, '1231231', 'CB', 'LOS OLIVOS', 'MARIA@GMAIL.COM', '666666; 7777777', 'CLIENTE', NULL, '$2y$10$mg4L/sMzxECOmwT5rnrx6.ySbewLNN1OjgGVv/R62HIWhuElU0o0G', 1, '2024-04-25', '2024-04-25 16:19:01', '2024-04-25 16:22:20'),
 (9, 'pablo@gmail.com', 'PABLO SANCHEZ', NULL, NULL, '3223423', 'LP', '', 'pablo@gmail.com', '', 'CLIENTE', NULL, '$2y$10$7Y0BzYvUzgAymO0EZxbT3.jEBiAuau/vOql46Q5K/E.sRAqCHhbSS', 1, '2024-04-25', '2024-04-25 16:20:39', '2024-04-25 16:22:23'),
-(10, 'marcos@gmail.com', 'MARCOS MAMANI', NULL, NULL, '434334', 'LP', 'LOS OLIVOS', 'marcos@gmail.com', '77777777', 'CLIENTE', NULL, '$2y$10$9XLoUjSp.xrZbDZODhsAf.zH8UYCnloHP4kv8wRGqOo5FJQYOu7lm', 1, '2024-04-26', '2024-04-26 16:17:30', '2024-04-26 16:17:30');
+(10, 'marcos@gmail.com', 'MARCOS MAMANI', NULL, NULL, '434334', 'LP', 'LOS OLIVOS', 'victorgonzalo.as@gmail.com', '77777777', 'CLIENTE', NULL, '$2y$10$pE1D7.CBmB4.vhYzmXSInev5QIavUIR.r3FH2DStqf8fu2Nbj1Pj.', 1, '2024-04-26', '2024-04-26 16:17:30', '2024-04-28 15:08:21');
 
 -- --------------------------------------------------------
 
@@ -897,6 +1028,18 @@ ALTER TABLE `campania_detalles`
 -- Indices de la tabla `campania_envios`
 --
 ALTER TABLE `campania_envios`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `catalogos`
+--
+ALTER TABLE `catalogos`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `catalogo_detalles`
+--
+ALTER TABLE `catalogo_detalles`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1015,6 +1158,12 @@ ALTER TABLE `proveedors`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `recuperacions`
+--
+ALTER TABLE `recuperacions`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `salida_productos`
 --
 ALTER TABLE `salida_productos`
@@ -1062,25 +1211,37 @@ ALTER TABLE `api_maps`
 -- AUTO_INCREMENT de la tabla `campanias`
 --
 ALTER TABLE `campanias`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `campania_automaticas`
 --
 ALTER TABLE `campania_automaticas`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `campania_detalles`
 --
 ALTER TABLE `campania_detalles`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `campania_envios`
 --
 ALTER TABLE `campania_envios`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `catalogos`
+--
+ALTER TABLE `catalogos`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `catalogo_detalles`
+--
+ALTER TABLE `catalogo_detalles`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `categorias`
@@ -1134,7 +1295,7 @@ ALTER TABLE `fecha_stocks`
 -- AUTO_INCREMENT de la tabla `historial_accions`
 --
 ALTER TABLE `historial_accions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
 
 --
 -- AUTO_INCREMENT de la tabla `ingreso_productos`
@@ -1152,7 +1313,7 @@ ALTER TABLE `kardex_productos`
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `orden_detalles`
@@ -1183,6 +1344,12 @@ ALTER TABLE `productos`
 --
 ALTER TABLE `proveedors`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `recuperacions`
+--
+ALTER TABLE `recuperacions`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `salida_productos`

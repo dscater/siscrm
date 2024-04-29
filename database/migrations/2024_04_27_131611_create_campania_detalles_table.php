@@ -17,8 +17,6 @@ class CreateCampaniaDetallesTable extends Migration
             $table->id();
             $table->unsignedBigInteger("campania_id");
             $table->unsignedBigInteger("cliente_id")->nullable();
-            $table->string("filtro");
-            $table->string("tipo");
             $table->timestamps();
         });
     }

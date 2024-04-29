@@ -106,8 +106,10 @@ Vue.mixin(globalMixin);
 // COMPONENTES
 Vue.component("App", require("./App.vue").default);
 Vue.component("Auth", require("./Auth.vue").default);
-Vue.component('Registro', require('./Registro.vue').default);
+Vue.component("Registro", require("./Registro.vue").default);
 Vue.component("Portal", require("./portal/Portal.vue").default);
+Vue.component("enviorecuperacion", require("./enviorecuperacion.vue").default);
+Vue.component("Recuperacion", require("./Recuperacion.vue").default);
 import router from "./routes";
 const app = new Vue({
     el: "#app",

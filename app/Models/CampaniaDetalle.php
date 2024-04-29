@@ -12,12 +12,16 @@ class CampaniaDetalle extends Model
     protected $fillable = [
         "campania_id",
         "cliente_id",
-        "filtro",
-        "tipo",
     ];
 
     public function campania()
     {
         return $this->belongsTo(Campania::class, 'campania_id');
+    }
+
+
+    public function cliente()
+    {
+        return $this->belongsTo(Cliente::class, 'cliente_id');
     }
 }

@@ -81,7 +81,10 @@
                                 </a>
                             </div>
                             <div class="col-12 mt-2 text-center">
-                                <a href="" class="w-100 text-center">
+                                <a
+                                    :href="url_olvide_mi_contrasenia"
+                                    class="w-100 text-center"
+                                >
                                     ¿Olvidaste tú contraseña?
                                 </a>
                             </div>
@@ -114,6 +117,10 @@ export default {
         url_registro: {
             type: String,
             default: "/registro",
+        },
+        url_olvide_mi_contrasenia: {
+            type: String,
+            default: "/olvide_mi_contrasenia",
         },
     },
     data() {

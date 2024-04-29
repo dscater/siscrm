@@ -21,6 +21,7 @@ class CreateCampaniasTable extends Migration
             $table->string("tipo", 255);
             $table->string("tipo_cliente", 255);
             $table->string("descripcion");
+            $table->unsignedBigInteger("catalogo_id")->nullable();
             $table->date("fecha_registro");
             $table->timestamps();
         });
