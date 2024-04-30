@@ -141,4 +141,108 @@ class EnvioCorreoController extends Controller
             ], 500);
         }
     }
+
+    // public function pruebas()
+    // {
+    //     // Datos de la solicitud
+    //     $url = 'https://graph.facebook.com/v19.0/285515087983710/messages';
+    //     $accessToken = 'EAAGRiodRKZCoBO9idqZCqHJXI2wrKeonB8pNM6XVu2c9WKoZCudV0wZAG29QSfhPpkuP1jQCWn9kUkNjzZA4FaEGsd7rU7sQJvTBXkHm2UPt5qO2TiSWgPIUbWM2isW5Uhft9LrFPt2r5hpYk3ly0qwcEZCkvq0mT3saxqtvGmsQRE8pSBwxYoZAZCHO76ASWumtds1ECOdkg1WLEYDQPYZB6Gn1d2tEZD';
+    //     $headers = array(
+    //         'Authorization: Bearer ' . $accessToken,
+    //         'Content-Type: application/json'
+    //     );
+
+    //     // Datos del mensaje
+    //     $data = array(
+    //         'messaging_product' => 'whatsapp',
+    //         'to' => '59173594451',
+    //         'type' => 'template',
+    //         'template' => array(
+    //             'name' => 'hello_world',
+    //             'language' => array(
+    //                 'code' => 'en_US'
+    //             )
+    //         )
+    //     );
+
+    //     // Convertir los datos a formato JSON
+    //     $postData = json_encode($data);
+
+    //     // Inicializar cURL
+    //     $ch = curl_init();
+
+    //     // Configurar la solicitud cURL
+    //     curl_setopt($ch, CURLOPT_URL, $url);
+    //     curl_setopt($ch, CURLOPT_POST, true);
+    //     curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+    //     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    //     // Ejecutar la solicitud y obtener la respuesta
+    //     $response = curl_exec($ch);
+
+    //     // Comprobar si hay errores
+    //     if (curl_errno($ch)) {
+    //         echo 'Error: ' . curl_error($ch);
+    //     }
+
+    //     // Cerrar cURL
+    //     curl_close($ch);
+
+    //     // Imprimir la respuesta
+    //     echo $response;
+    // }
+
+
+
+    public function pruebas()
+    {
+        // Datos de la solicitud
+        $url = 'https://graph.facebook.com/v19.0/285515087983710/messages';
+        $accessToken = 'EAAGRiodRKZCoBO9idqZCqHJXI2wrKeonB8pNM6XVu2c9WKoZCudV0wZAG29QSfhPpkuP1jQCWn9kUkNjzZA4FaEGsd7rU7sQJvTBXkHm2UPt5qO2TiSWgPIUbWM2isW5Uhft9LrFPt2r5hpYk3ly0qwcEZCkvq0mT3saxqtvGmsQRE8pSBwxYoZAZCHO76ASWumtds1ECOdkg1WLEYDQPYZB6Gn1d2tEZD';
+        $headers = array(
+            'Authorization: Bearer ' . $accessToken,
+            'Content-Type: application/json'
+        );
+
+        // Datos del mensaje
+        $data = array(
+            'messaging_product' => 'whatsapp',
+            'to' => '59173594451',
+            'type' => 'template',
+            'template' => array(
+                'name' => 'hello_world',
+                'language' => array(
+                    'code' => 'en_US'
+                )
+            )
+        );
+
+        // Convertir los datos a formato JSON
+        $postData = json_encode($data);
+
+        // Inicializar cURL
+        $ch = curl_init();
+
+        // Configurar la solicitud cURL
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        // Ejecutar la solicitud y obtener la respuesta
+        $response = curl_exec($ch);
+
+        // Comprobar si hay errores
+        if (curl_errno($ch)) {
+            echo 'Error: ' . curl_error($ch);
+        }
+
+        // Cerrar cURL
+        curl_close($ch);
+
+        // Imprimir la respuesta
+        echo $response;
+    }
 }

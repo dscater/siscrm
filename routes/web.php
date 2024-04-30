@@ -31,6 +31,8 @@ use Illuminate\Support\Facades\Route;
 // PORTAL
 Route::get('/url_asset', [ConfiguracionController::class, 'url_asset'])->name("url_asset");
 
+Route::get('/pruebas', [EnvioCorreoController::class, 'pruebas'])->name("pruebas");
+
 // productos
 Route::get('portal/listaProductos', [ProductoController::class, 'listaProductos']);
 Route::get('portal/getProducto/{producto}', [ProductoController::class, 'show']);
