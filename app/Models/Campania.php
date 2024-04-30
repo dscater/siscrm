@@ -81,6 +81,11 @@ class Campania extends Model
         return $this->hasMany(CampaniaEnvio::class, 'campania_id');
     }
 
+    public function producto()
+    {
+        return $this->belongsTo(Producto::class, 'producto_id');
+    }
+
     // ENVIOS
     public static function realizaEnvioCampania(Campania $campania, $sw_whatsapp, $sw_correo)
     {

@@ -4,39 +4,38 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-6 col-lg-3 p-b-50 offset-md-3">
-                    <h4 class="stext-301 cl0 p-b-30">QHANA BOLIVIA</h4>
+                    <h4 class="stext-301 cl0 p-b-30">
+                        {{ oConfiguracion.razon_social }}
+                    </h4>
 
                     <p class="stext-107 cl7 size-201 text-justify">
-                        Bienvenidos al sitio oficial de Qhana Bolivia. Por
-                        trecientos años la región de Los Andes dentro de Bolivia
-                        ha sido uno de los lugares más productores de excelentes
-                        textiles.
+                        {{ oConfiguracion.servicios }}
                     </p>
 
                     <div class="p-t-27">
                         <a
-                            :href="oRedSocial?.twitter"
+                            :href="oConfiguracion?.twitter"
                             target="_blank"
                             class="fs-18 cl7 hov-cl1 trans-04 m-r-16"
                         >
                             <i class="fab fa-twitter fa-lg"></i>
                         </a>
                         <a
-                            :href="oRedSocial?.facebook"
+                            :href="oConfiguracion?.facebook"
                             target="_blank"
                             class="fs-18 cl7 hov-cl1 trans-04 m-r-16"
                         >
                             <i class="fab fa-facebook fa-lg"></i>
                         </a>
                         <a
-                            :href="oRedSocial?.youtube"
+                            :href="oConfiguracion?.youtube"
                             target="_blank"
                             class="fs-18 cl7 hov-cl1 trans-04 m-r-16"
                         >
                             <i class="fab fa-youtube fa-lg"></i>
                         </a>
                         <a
-                            :href="oRedSocial?.instagram"
+                            :href="oConfiguracion?.instagram"
                             target="_blank"
                             class="fs-18 cl7 hov-cl1 trans-04 m-r-16"
                         >
@@ -46,7 +45,12 @@
                 </div>
 
                 <div class="col-sm-6 col-lg-3 p-b-50">
-                    <img :src="logo" alt="Logo" width="100%" />
+                    <img
+                        v-if="oConfiguracion.url_servicios_img"
+                        :src="oConfiguracion.url_servicios_img"
+                        alt="Logo"
+                        width="100%"
+                    />
                 </div>
             </div>
 
@@ -80,16 +84,50 @@ export default {
     data() {
         return {
             oRedSocial: null,
+            oConfiguracion: {
+                nombre_sistema: "",
+                alias: "",
+                razon_social: "",
+                nit: "",
+                ciudad: "",
+                dir: "",
+                fono: "",
+                web: "",
+                actividad: "",
+                correo: "",
+                logo: "",
+                servicios: "",
+                servicios_img: "",
+                mision: "",
+                mision_img: "",
+                vision: "",
+                vision_img: "",
+                nosotros: "",
+                nosotros_img: "",
+                facebook: "",
+                instagram: "",
+                twitter: "",
+                youtube: "",
+                ubicacion: "",
+            },
         };
     },
     mounted() {
         this.getInfoRedSocial();
+        this.getConfiguracion();
     },
     methods: {
         getInfoRedSocial() {
             axios.get(main_url + "/portal/getRedSocial").then((response) => {
                 this.oRedSocial = response.data.red_social;
             });
+        },
+        getConfiguracion() {
+            axios
+                .get(main_url + "/configuracion/getConfiguracion")
+                .then((response) => {
+                    this.oConfiguracion = response.data.configuracion;
+                });
         },
     },
 };

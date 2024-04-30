@@ -14,12 +14,25 @@ export default new Router({
             name: "portal.inicio",
             component: require("./portal/Inicio.vue").default,
         },
+        // PRODUCTOS
+        {
+            path: "/productos",
+            name: "portal.productos",
+            component: require("./portal/Productos.vue").default,
+        },
 
         // CARRITO
         {
             path: "/carrito",
             name: "portal.carrito",
             component: require("./portal/Carrito.vue").default,
+        },
+
+        // CONTACTOS
+        {
+            path: "/contactos",
+            name: "portal.contactos",
+            component: require("./portal/Contactos.vue").default,
         },
 
         /* ************************* *

@@ -203,7 +203,7 @@
                                         :class="{
                                             'text-danger': errors.producto_id,
                                         }"
-                                        >Seleccionar producto</label
+                                        >Buscar producto</label
                                     >
                                     <el-select
                                         class="w-full d-block"
@@ -371,6 +371,12 @@ export default {
             if (newVal.id != 0) {
                 this.getClientes();
                 this.getCatalogos();
+                if (this.campania.producto) {
+                    this.getProductosQuery(this.campania.producto.nombre);
+                    setTimeout(() => {
+                        this.getProducto();
+                    }, 300);
+                }
             }
         },
     },

@@ -68,6 +68,14 @@
                                     <div class="col-6 col-md-4">
                                         {{ oOrdenPedido.celular }}
                                     </div>
+                                    <div
+                                        class="col-6 col-md-2 text-right font-weight-bold"
+                                    >
+                                        Entrega:
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        {{ oOrdenPedido.entrega }}
+                                    </div>
                                 </div>
                                 <div class="row mb-2">
                                     <div
@@ -142,6 +150,32 @@
                                                         {{ oOrdenPedido.total }}
                                                     </td>
                                                 </tr>
+                                                <tr>
+                                                    <td
+                                                        colspan="4"
+                                                        class="text-right font-weight-bold"
+                                                    >
+                                                        DESCUENTO
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            oOrdenPedido.descuento
+                                                        }}%
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        colspan="4"
+                                                        class="text-right font-weight-bold"
+                                                    >
+                                                        TOTAL FINAL
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            oOrdenPedido.total_final
+                                                        }}
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -157,7 +191,6 @@
                                         <span>{{ oOrdenPedido.estado }}</span>
                                     </div>
                                 </div>
-
                                 <div
                                     class="row mb-2"
                                     v-if="
@@ -246,6 +279,7 @@ export default {
     mounted() {
         this.getOrdenPedido();
         this.loadingWindow.close();
+        this.getAuth();
     },
     methods: {
         getAuth() {

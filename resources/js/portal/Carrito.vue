@@ -199,7 +199,7 @@
                                 <div id="google_map"></div>
                             </div>
 
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-12 mt-2">
                                 <label class=""
                                     >Cargar comprobante de pago*</label
                                 >
@@ -215,6 +215,44 @@
                                     class="error invalid-feedback"
                                     v-if="errors.comprobante"
                                     v-text="errors.comprobante[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label class="">Entrega*</label>
+                                <select
+                                    type="text"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid': errors.entrega,
+                                    }"
+                                    v-model="oPedido.entrega"
+                                >
+                                    <option value="">- Seleccione -</option>
+                                    <option value="DOMICILIO">DOMICILIO</option>
+                                    <option value="TIENDA">TIENDA</option>
+                                </select>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.entrega"
+                                    v-text="errors.entrega[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label class=""
+                                    >Cupón de descuento (opcional)</label
+                                >
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid': errors.cupon,
+                                    }"
+                                    v-model="oPedido.cupon"
+                                />
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.cupon"
+                                    v-text="errors.cupon[0]"
                                 ></span>
                             </div>
                             <div class="form-group col-md-12">
@@ -252,7 +290,7 @@
                         <template v-if="oUser && oUser.tipo == 'CLIENTE'">
                             <button
                                 v-if="oPedido.detalle_pedidos.length > 0"
-                                class="flex-c-m stext-101 cl2 size-116 bg8 bor14 hov-btn1 p-lr-15 trans-04 pointer mt-3"
+                                class="flex-c-m stext-101 cl2 size-116 bg-info text-white bor14 hov-btn1 p-lr-15 trans-04 pointer mt-3"
                                 @click="prepararEnvio()"
                                 :disabled="enviando"
                                 v-text="txtBoton"
@@ -490,6 +528,14 @@ export default {
             formData.append(
                 "celular",
                 this.oPedido.celular ? this.oPedido.celular : ""
+            );
+            formData.append(
+                "entrega",
+                this.oPedido.entrega ? this.oPedido.entrega : ""
+            );
+            formData.append(
+                "cupon",
+                this.oPedido.cupon ? this.oPedido.cupon : ""
             );
             formData.append(
                 "comprobante",

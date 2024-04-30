@@ -65,7 +65,7 @@ class CampaniaController extends Controller
         DB::beginTransaction();
         try {
             // crear Campania
-            $nueva_campania = Campania::create(array_map('mb_strtoupper', $request->except("campania_detalles", "campania_clientes", "eliminados", "catalogo_id", "producto_id", "cantidad_compra")));
+            $nueva_campania = Campania::create(array_map('mb_strtoupper', $request->except("campania_detalles", "campania_clientes", "eliminados", "catalogo_id", "producto_id", "producto", "cantidad_compra")));
             if ($request->tipo == 'CATÁLOGO') {
                 $nueva_campania->catalogo_id = $request->catalogo_id;
             }
@@ -137,7 +137,7 @@ class CampaniaController extends Controller
         DB::beginTransaction();
         try {
             $datos_original = HistorialAccion::getDetalleRegistro($campania, "campanias");
-            $campania->update(array_map('mb_strtoupper', $request->except("campania_detalles", "campania_clientes", "eliminados", "catalogo_id", "producto_id", "cantidad_compra")));
+            $campania->update(array_map('mb_strtoupper', $request->except("campania_detalles", "campania_clientes", "eliminados", "catalogo_id", "producto", "producto_id", "cantidad_compra")));
             if ($request->tipo == 'CATÁLOGO') {
                 $campania->catalogo_id = $request->catalogo_id;
             }
@@ -190,7 +190,7 @@ class CampaniaController extends Controller
     {
         return response()->JSON([
             'sw' => true,
-            'campania' => $campania->load(["campania_detalles.cliente"])
+            'campania' => $campania->load(["producto", "campania_detalles.cliente"])
         ], 200);
     }
 

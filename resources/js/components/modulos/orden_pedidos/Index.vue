@@ -63,6 +63,9 @@
                                                 empty-filtered-text="Sin resultados"
                                                 :filter="filter"
                                             >
+                                            <template #cell(descuento)="row">
+                                                {{ row.item.descuento }}%
+                                            </template>
                                                 <template #cell(accion)="row">
                                                     <div
                                                         class="row justify-content-center flex-column"
@@ -151,6 +154,8 @@ export default {
                     sortable: true,
                 },
                 { key: "total", label: "Total", sortable: true },
+                { key: "descuento", label: "% Descuento", sortable: true },
+                { key: "total_final", label: "Total Final", sortable: true },
                 { key: "estado", label: "Estado", sortable: true },
                 {
                     key: "fecha_registro_t",

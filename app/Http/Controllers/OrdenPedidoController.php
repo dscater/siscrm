@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cupon;
 use App\Models\HistorialAccion;
 use App\Models\KardexProducto;
 use App\Models\OrdenPedido;
@@ -53,6 +54,20 @@ class OrdenPedidoController extends Controller
             $request["nro"] = $array_codigo[1];
             $request["user_id"] = Auth::user()->id;
             $request["estado"] = "PEDIDO PENDIENTE";
+
+            // existe cupon
+            $cupon = Cupon::where("texto", $request->cupon)->get()->first();
+            $p_descuento = 0;
+            $request["descuento"] = 0;
+            if ($cupon) {
+                // calcular descuento
+                $p_descuento = (float)$cupon->descuento / 100;
+                $monto_descuento  = (float)$request["total"] * $p_descuento;
+                $total_con_descuento = (float)$request["total"] - ($monto_descuento);
+                $request["descuento"] = $cupon->descuento;
+            }
+            $request["total_final"] = $total_con_descuento;
+
             $nueva_orden_pedido = OrdenPedido::create(array_map('mb_strtoupper', $request->except("productos", "cantidades", "precios", "precio_total")));
             $datos_original = HistorialAccion::getDetalleRegistro($nueva_orden_pedido, "orden_pedidos");
             HistorialAccion::create([
@@ -161,14 +176,16 @@ class OrdenPedidoController extends Controller
             $orden_pedido->estado = $request->estado;
             $orden_pedido->save();
 
+            $descuento = $orden_pedido->descuento;
+            $total_final = $orden_pedido->total_final;
             // REGISTRAR LA VENTA
             $venta = Venta::create([
                 "user_id" => Auth::user()->id,
                 "cliente_id" => $orden_pedido->user->cliente->id,
                 "nit" => $orden_pedido->user->cliente->nit ? $orden_pedido->user->cliente->nit : $orden_pedido->user->cliente->ci,
                 "total" => $orden_pedido->total,
-                "descuento" => 0,
-                "total_final" => $orden_pedido->total,
+                "descuento" => $descuento,
+                "total_final" => $total_final,
                 "estado" => "CANCELADO",
                 "tipo" => "ECOMMERCE",
                 "orden_pedido_id" => $orden_pedido->id,

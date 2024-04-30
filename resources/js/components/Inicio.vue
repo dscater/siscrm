@@ -48,9 +48,23 @@
                     class="row"
                     v-if="user && user.id && user.tipo == 'CLIENTE'"
                 >
+                    <div class="col-12" v-if="oEnvioWhatsapp">
+                        <p class="w-100 text-center">
+                            Recibe notificaciones sobre
+                            campañas,promociones,etc. en tu whatsapp envíando el
+                            texto
+                            <strong>"{{ texto_whatsapp }}" </strong>, al número
+                            {{ texto_numero }}. Solo debes hacer click
+                            <a :href="oEnvioWhatsapp.url_phone">aquí</a>
+                        </p>
+                    </div>
                     <div class="col-12 text-center">
-                        <a :href="url_asset + '/'" class="text-md mr-3">Seguir comprando</a>
-                        <a :href="url_asset + '/carrito'" class="text-md ml-3">Ver mi carrito</a>
+                        <a :href="url_asset + '/productos'" class="text-md mr-3"
+                            >Seguir comprando</a
+                        >
+                        <a :href="url_asset + '/carrito'" class="text-md ml-3"
+                            >Ver mi carrito</a
+                        >
                     </div>
                 </div>
             </div>
@@ -75,14 +89,28 @@ export default {
             htmlVision: "",
             htmlObjetivos: "",
             url_asset: "/",
+            oEnvioWhatsapp: null,
+            texto_whatsapp: "",
+            texto_numero: "",
         };
     },
     mounted() {
         this.url_asset = main_url;
         this.loadingWindow.close();
         this.getInfoBox();
+        this.getEnvioWhatsapp();
     },
     methods: {
+        getEnvioWhatsapp() {
+            axios.get(main_url + "/url_phone").then((response) => {
+                this.oEnvioWhatsapp = response.data;
+                let array = this.oEnvioWhatsapp.url_phone.split("=");
+                this.texto_whatsapp = array[1];
+                this.texto_whatsapp = this.texto_whatsapp.replace("%20", " ");
+                array = this.oEnvioWhatsapp.from.split(":");
+                this.texto_numero = array[1];
+            });
+        },
         getInfoBox() {
             axios.get("/admin/usuarios/getInfoBox").then((res) => {
                 this.listInfoBox = res.data;

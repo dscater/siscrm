@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ApiMap;
+use App\Models\Cupon;
 use App\Models\EnvioCorreo;
 use App\Models\EnvioWhatsapp;
 use Illuminate\Http\Request;
@@ -15,11 +16,13 @@ class OtraConfiguracionController extends Controller
         $api_map = ApiMap::first();
         $envio_correo = EnvioCorreo::first();
         $envio_whatsapp = EnvioWhatsapp::first();
+        $cupon = Cupon::first();
 
         return response()->JSON([
             "api_map" => $api_map,
             "envio_correo" => $envio_correo,
             "envio_whatsapp" => $envio_whatsapp,
+            "cupon" => $cupon,
         ]);
     }
 
@@ -59,11 +62,19 @@ class OtraConfiguracionController extends Controller
 
         $request->validate($validacion, $mensajes);
 
+        if ($request->texto != '' || $request->descuento != '') {
+            $request->validate([
+                "texto" => "required|min:2",
+                "descuento" => "required|numeric|min:0|max:100",
+            ]);
+        }
+
         DB::beginTransaction();
         try {
             $api_map = ApiMap::first();
             $envio_correo = EnvioCorreo::first();
             $envio_whatsapp = EnvioWhatsapp::first();
+            $cupon = Cupon::first();
             if ($api_map) {
                 $api_map->update([
                     "google_maps" => $request->google_maps,
@@ -115,6 +126,19 @@ class OtraConfiguracionController extends Controller
                 ]);
             }
 
+
+            if ($cupon) {
+                $cupon->update([
+                    "texto" => mb_strtoupper($request->texto),
+                    "descuento" => $request->descuento,
+                ]);
+            } else {
+                $cupon = Cupon::create([
+                    "texto" => mb_strtoupper($request->texto),
+                    "descuento" => $request->descuento,
+                ]);
+            }
+
             DB::commit();
             return response()->JSON([
                 'sw' => true,
@@ -122,6 +146,7 @@ class OtraConfiguracionController extends Controller
                 'api_map' => $api_map,
                 'envio_correo' => $envio_correo,
                 'envio_whatsapp' => $envio_whatsapp,
+                'cupon' => $cupon,
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();

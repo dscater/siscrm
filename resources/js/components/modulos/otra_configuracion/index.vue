@@ -247,6 +247,47 @@
                                         ></span>
                                     </div>
                                 </div>
+                                <h4>Cupón de descuento</h4>
+                                <div class="row">
+                                    <div class="col-md-12 form-group">
+                                        <label for="">Texto Cupón:</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            :class="{
+                                                'is-invalid': errors.texto,
+                                            }"
+                                            v-model="oConfiguracion.texto"
+                                        />
+
+                                        <span
+                                            class="error invalid-feedback"
+                                            v-if="errors.texto"
+                                            v-text="errors.texto[0]"
+                                        ></span>
+                                    </div>
+                                    <div class="col-md-12 form-group">
+                                        <label for=""
+                                            >Porcentaje de descuento
+                                            (0-100%)</label
+                                        >
+                                        <input
+                                            type="number"
+                                            class="form-control"
+                                            step="0.01"
+                                            :class="{
+                                                'is-invalid': errors.descuento,
+                                            }"
+                                            v-model="oConfiguracion.descuento"
+                                        />
+
+                                        <span
+                                            class="error invalid-feedback"
+                                            v-if="errors.descuento"
+                                            v-text="errors.descuento[0]"
+                                        ></span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="card-footer">
                                 <div class="row">
@@ -296,6 +337,8 @@ export default {
                 token: "",
                 from: "",
                 url_phone: "",
+                texto: "",
+                descuento: "",
             },
             errors: [],
         };
@@ -334,7 +377,12 @@ export default {
                     this.oConfiguracion.sid = res.data.envio_whatsapp.sid;
                     this.oConfiguracion.token = res.data.envio_whatsapp.token;
                     this.oConfiguracion.from = res.data.envio_whatsapp.from;
-                    this.oConfiguracion.url_phone = res.data.envio_whatsapp.url_phone;
+                    this.oConfiguracion.url_phone =
+                        res.data.envio_whatsapp.url_phone;
+                }
+                if (res.data.cupon) {
+                    this.oConfiguracion.texto = res.data.cupon.texto;
+                    this.oConfiguracion.descuento = res.data.cupon.descuento;
                 }
             });
         },
@@ -400,6 +448,8 @@ export default {
             this.oConfiguracion.actividad = "";
             this.oConfiguracion.correo = "";
             this.oConfiguracion.logo = "";
+            this.oConfiguracion.texto = "";
+            this.oConfiguracion.descuento = "";
         },
     },
 };

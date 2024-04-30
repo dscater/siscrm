@@ -143,6 +143,12 @@
                                                         'is-invalid':
                                                             errors.fecha_ini,
                                                     }"
+                                                    @keyup="
+                                                        validarFecha(
+                                                            $event,
+                                                            'fecha_ini'
+                                                        )
+                                                    "
                                                 />
                                                 <span
                                                     class="error invalid-feedback"
@@ -172,6 +178,12 @@
                                                         'is-invalid':
                                                             errors.fecha_fin,
                                                     }"
+                                                    @keyup="
+                                                        validarFecha(
+                                                            $event,
+                                                            'fecha_fin'
+                                                        )
+                                                    "
                                                 />
                                                 <span
                                                     class="error invalid-feedback"
@@ -295,7 +307,7 @@ export default {
         generaReporte() {
             this.enviando = true;
             axios
-                .post("/admin/reportes/canal_productos", this.oReporte)
+                .post("/admin/reportes/ventas_fecha", this.oReporte)
                 .then((response) => {
                     this.errors = [];
                     Highcharts.chart("container", {
@@ -359,6 +371,36 @@ export default {
                         }
                     }
                 });
+        },
+        validarFecha(e, index) {
+            let fecha = e.target.value;
+            let validacion = false;
+
+            const partes = fecha.split("-");
+            const year = parseInt(partes[0], 10);
+            const month = parseInt(partes[1], 10);
+            const day = parseInt(partes[2], 10);
+            const date = new Date(year, month - 1, day); // Meses en JavaScript son indexados desde 0
+            const regex = /^\d{4}-\d{2}-\d{2}$/; // Expresión regular para el formato YYYY-MM-DD
+            if (!regex.test(fecha)) {
+                validacion = false;
+            } else {
+                // Verificar si los componentes de la fecha coinciden con los componentes originales
+                if (
+                    date.getFullYear() === year &&
+                    date.getMonth() === month - 1 &&
+                    date.getDate() === day
+                ) {
+                    validacion = true;
+                }
+            }
+
+            this.errors[index] = [];
+            if (!validacion) {
+                this.errors[index].push("Fecha no valida");
+            } else {
+                this.$delete(this.errors, index);
+            }
         },
     },
 };

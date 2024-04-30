@@ -85,7 +85,9 @@
         <div class="wrap-header-mobile">
             <!-- Logo moblie -->
             <div class="logo-mobile d-flex align-center">
-                <a href="" class="d-flex h-100 align-center"> <strong>{{configuracion.alias}}</strong></a>
+                <a href="" class="d-flex h-100 align-center">
+                    <strong>{{ configuracion.alias }}</strong></a
+                >
             </div>
 
             <!-- Icon header -->
@@ -159,8 +161,16 @@ export default {
                     ruta: "portal.inicio",
                 },
                 {
+                    label: "Productos",
+                    ruta: "portal.productos",
+                },
+                {
                     label: "Tú carrito",
                     ruta: "portal.carrito",
+                },
+                {
+                    label: "Contactos",
+                    ruta: "portal.contactos",
                 },
             ],
             cantidad_carrito: 0,

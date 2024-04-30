@@ -75,9 +75,18 @@
                 <td colspan="4">TOTAL</td>
                 <td>{{ $orden_pedido->total }}</td>
             </tr>
+            <tr class="bg-black text-md">
+                <td colspan="4">DESCUENTO</td>
+                <td>{{ $orden_pedido->descuento }}%</td>
+            </tr>
+            <tr class="bg-black text-md">
+                <td colspan="4">TOTAL FINAL</td>
+                <td>{{ $orden_pedido->total_final }}</td>
+            </tr>
         </tbody>
     </table>
-    <p>Ver detalles del pedido <a href="{{ url('/administracion/orden_pedidos/show/' . $orden_pedido->id) }}">Aqui</a></p>
+    <p>Ver detalles del pedido <a href="{{ url('/administracion/orden_pedidos/show/' . $orden_pedido->id) }}">Aqui</a>
+    </p>
 </body>
 
 </html>

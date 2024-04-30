@@ -124,6 +124,140 @@
                                                 :src="oConfiguracion.path_image"
                                             ></el-avatar>
                                         </el-descriptions-item>
+                                        <el-descriptions-item>
+                                            <template slot="label">
+                                                <i
+                                                    class="el-icon-document"
+                                                ></i>
+                                                Servicios
+                                            </template>
+                                            <p>
+                                                {{ oConfiguracion.servicios }}
+                                            </p>
+                                            <el-avatar
+                                                shape="square"
+                                                :size="120"
+                                                :fit="'cover'"
+                                                :src="
+                                                    oConfiguracion.url_servicios_img
+                                                "
+                                            ></el-avatar>
+                                        </el-descriptions-item>
+                                        <el-descriptions-item>
+                                            <template slot="label">
+                                                <i
+                                                    class="el-icon-document"
+                                                ></i>
+                                                Misión
+                                            </template>
+                                            <p>
+                                                {{ oConfiguracion.mision }}
+                                            </p>
+                                            <el-avatar
+                                                shape="square"
+                                                :size="120"
+                                                :fit="'cover'"
+                                                :src="
+                                                    oConfiguracion.url_mision_img
+                                                "
+                                            ></el-avatar>
+                                        </el-descriptions-item>
+                                        <el-descriptions-item>
+                                            <template slot="label">
+                                                <i
+                                                    class="el-icon-document"
+                                                ></i>
+                                                Visión
+                                            </template>
+                                            <p>
+                                                {{ oConfiguracion.vision }}
+                                            </p>
+                                            <el-avatar
+                                                shape="square"
+                                                :size="120"
+                                                :fit="'cover'"
+                                                :src="
+                                                    oConfiguracion.url_vision_img
+                                                "
+                                            ></el-avatar>
+                                        </el-descriptions-item>
+                                        <el-descriptions-item>
+                                            <template slot="label">
+                                                <i
+                                                    class="el-icon-document"
+                                                ></i>
+                                                file_nosotros
+                                            </template>
+                                            <p>
+                                                {{ oConfiguracion.nosotros }}
+                                            </p>
+                                            <el-avatar
+                                                shape="square"
+                                                :size="120"
+                                                :fit="'cover'"
+                                                :src="
+                                                    oConfiguracion.url_nosotros_img
+                                                "
+                                            ></el-avatar>
+                                        </el-descriptions-item>
+                                        <el-descriptions-item>
+                                            <template slot="label">
+                                                <i
+                                                    class="el-icon-document"
+                                                ></i>
+                                                Facebook
+                                            </template>
+                                            <p>
+                                                {{ oConfiguracion.facebook }}
+                                            </p>
+                                        </el-descriptions-item>
+                                        <el-descriptions-item>
+                                            <template slot="label">
+                                                <i
+                                                    class="el-icon-document"
+                                                ></i>
+                                                Instagram
+                                            </template>
+                                            <p>
+                                                {{ oConfiguracion.instagram }}
+                                            </p>
+                                        </el-descriptions-item>
+                                        <el-descriptions-item>
+                                            <template slot="label">
+                                                <i
+                                                    class="el-icon-document"
+                                                ></i>
+                                                Twitter
+                                            </template>
+                                            <p>
+                                                {{ oConfiguracion.twitter }}
+                                            </p>
+                                        </el-descriptions-item>
+                                        <el-descriptions-item>
+                                            <template slot="label">
+                                                <i
+                                                    class="el-icon-document"
+                                                ></i>
+                                                Youtube
+                                            </template>
+                                            <p>
+                                                {{ oConfiguracion.youtube }}
+                                            </p>
+                                        </el-descriptions-item>
+                                        <el-descriptions-item>
+                                            <template slot="label">
+                                                <i
+                                                    class="el-icon-document"
+                                                ></i>
+                                                Ubicación
+                                            </template>
+                                            <div
+                                                class="w-100"
+                                                v-html="
+                                                    oConfiguracion.ubicacion
+                                                "
+                                            ></div>
+                                        </el-descriptions-item>
                                     </el-descriptions>
                                 </div>
                             </div>
@@ -388,6 +522,321 @@
                                     ></span>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.servicios,
+                                        }"
+                                        >Servicios</label
+                                    >
+                                    <el-input
+                                        type="textarea"
+                                        placeholder="Servicios"
+                                        :class="{
+                                            'is-invalid': errors.servicios,
+                                        }"
+                                        autosize
+                                        v-model="oConfiguracion.servicios"
+                                        clearable
+                                    >
+                                    </el-input>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.servicios"
+                                        v-text="errors.servicios[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.servicios_img,
+                                        }"
+                                        >Imagen Servicios</label
+                                    >
+                                    <input
+                                        type="file"
+                                        class="form-control"
+                                        :class="{
+                                            'is-invalid': errors.servicios_img,
+                                        }"
+                                        ref="file_servicios"
+                                        @change="
+                                            cargarFile($event, 'servicios_img')
+                                        "
+                                    />
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.servicios_img"
+                                        v-text="errors.servicios_img[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.mision,
+                                        }"
+                                        >Misión</label
+                                    >
+                                    <el-input
+                                        type="textarea"
+                                        placeholder="Misión"
+                                        :class="{
+                                            'is-invalid': errors.mision,
+                                        }"
+                                        autosize
+                                        v-model="oConfiguracion.mision"
+                                        clearable
+                                    >
+                                    </el-input>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.mision"
+                                        v-text="errors.mision[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.mision_img,
+                                        }"
+                                        >Imagen Misión</label
+                                    >
+                                    <input
+                                        type="file"
+                                        class="form-control"
+                                        :class="{
+                                            'is-invalid': errors.mision_img,
+                                        }"
+                                        ref="file_mision"
+                                        @change="
+                                            cargarFile($event, 'mision_img')
+                                        "
+                                    />
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.mision_img"
+                                        v-text="errors.mision_img[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.vision,
+                                        }"
+                                        >Visión</label
+                                    >
+                                    <el-input
+                                        type="textarea"
+                                        placeholder="Visión"
+                                        :class="{
+                                            'is-invalid': errors.vision,
+                                        }"
+                                        autosize
+                                        v-model="oConfiguracion.vision"
+                                        clearable
+                                    >
+                                    </el-input>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.vision"
+                                        v-text="errors.vision[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.vision_img,
+                                        }"
+                                        >Imagen Visión</label
+                                    >
+                                    <input
+                                        type="file"
+                                        class="form-control"
+                                        :class="{
+                                            'is-invalid': errors.vision_img,
+                                        }"
+                                        ref="file_vision"
+                                        @change="
+                                            cargarFile($event, 'vision_img')
+                                        "
+                                    />
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.vision_img"
+                                        v-text="errors.vision_img[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.nosotros,
+                                        }"
+                                        >Nosotros</label
+                                    >
+                                    <el-input
+                                        type="textarea"
+                                        placeholder="Nosotros"
+                                        :class="{
+                                            'is-invalid': errors.nosotros,
+                                        }"
+                                        autosize
+                                        v-model="oConfiguracion.nosotros"
+                                        clearable
+                                    >
+                                    </el-input>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.nosotros"
+                                        v-text="errors.nosotros[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.nosotros_img,
+                                        }"
+                                        >Imagen Nosotros</label
+                                    >
+                                    <input
+                                        type="file"
+                                        class="form-control"
+                                        :class="{
+                                            'is-invalid': errors.nosotros_img,
+                                        }"
+                                        ref="file_nosotros"
+                                        @change="
+                                            cargarFile($event, 'nosotros_img')
+                                        "
+                                    />
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.nosotros_img"
+                                        v-text="errors.nosotros_img[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.facebook,
+                                        }"
+                                        >Facebook</label
+                                    >
+                                    <el-input
+                                        type="textarea"
+                                        placeholder="Facebook"
+                                        :class="{
+                                            'is-invalid': errors.facebook,
+                                        }"
+                                        autosize
+                                        v-model="oConfiguracion.facebook"
+                                        clearable
+                                    >
+                                    </el-input>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.facebook"
+                                        v-text="errors.facebook[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.instagram,
+                                        }"
+                                        >Instagram</label
+                                    >
+                                    <el-input
+                                        type="textarea"
+                                        placeholder="Instagram"
+                                        :class="{
+                                            'is-invalid': errors.instagram,
+                                        }"
+                                        autosize
+                                        v-model="oConfiguracion.instagram"
+                                        clearable
+                                    >
+                                    </el-input>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.instagram"
+                                        v-text="errors.instagram[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.twitter,
+                                        }"
+                                        >Twitter</label
+                                    >
+                                    <el-input
+                                        type="textarea"
+                                        placeholder="Twitter"
+                                        :class="{
+                                            'is-invalid': errors.twitter,
+                                        }"
+                                        autosize
+                                        v-model="oConfiguracion.twitter"
+                                        clearable
+                                    >
+                                    </el-input>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.twitter"
+                                        v-text="errors.twitter[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.youtube,
+                                        }"
+                                        >Youtube</label
+                                    >
+                                    <el-input
+                                        type="textarea"
+                                        placeholder="Youtube"
+                                        :class="{
+                                            'is-invalid': errors.youtube,
+                                        }"
+                                        autosize
+                                        v-model="oConfiguracion.youtube"
+                                        clearable
+                                    >
+                                    </el-input>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.youtube"
+                                        v-text="errors.youtube[0]"
+                                    ></span>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.ubicacion,
+                                        }"
+                                        >Ubicación (Iframe)</label
+                                    >
+                                    <el-input
+                                        type="textarea"
+                                        placeholder="Ubicación (Iframe)"
+                                        :class="{
+                                            'is-invalid': errors.ubicacion,
+                                        }"
+                                        autosize
+                                        v-model="oConfiguracion.ubicacion"
+                                        clearable
+                                    >
+                                    </el-input>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.ubicacion"
+                                        v-text="errors.ubicacion[0]"
+                                    ></span>
+                                </div>
+                            </div>
                         </form>
                     </div>
                     <div class="modal-footer justify-content-between">
@@ -445,6 +894,19 @@ export default {
                 actividad: "",
                 correo: "",
                 logo: "",
+                servicios: "",
+                servicios_img: "",
+                mision: "",
+                mision_img: "",
+                vision: "",
+                vision_img: "",
+                nosotros: "",
+                nosotros_img: "",
+                facebook: "",
+                instagram: "",
+                twitter: "",
+                youtube: "",
+                ubicacion: "",
             },
             errors: [],
         };
@@ -456,6 +918,9 @@ export default {
     methods: {
         getFile(e) {
             this.oConfiguracion.logo = e.target.files[0];
+        },
+        cargarFile(e, index) {
+            this.oConfiguracion[index] = e.target.files[0];
         },
         // Listar Usuarios
         getConfiguracion() {
@@ -500,6 +965,81 @@ export default {
                 );
                 formdata.append("logo", this.oConfiguracion.logo);
 
+                formdata.append(
+                    "servicios",
+                    this.oConfiguracion.servicios
+                        ? this.oConfiguracion.servicios
+                        : ""
+                );
+                formdata.append(
+                    "servicios_img",
+                    this.oConfiguracion.servicios_img
+                        ? this.oConfiguracion.servicios_img
+                        : ""
+                );
+                formdata.append(
+                    "mision",
+                    this.oConfiguracion.mision ? this.oConfiguracion.mision : ""
+                );
+                formdata.append(
+                    "mision_img",
+                    this.oConfiguracion.mision_img
+                        ? this.oConfiguracion.mision_img
+                        : ""
+                );
+                formdata.append(
+                    "vision",
+                    this.oConfiguracion.vision ? this.oConfiguracion.vision : ""
+                );
+                formdata.append(
+                    "vision_img",
+                    this.oConfiguracion.vision_img
+                        ? this.oConfiguracion.vision_img
+                        : ""
+                );
+                formdata.append(
+                    "nosotros",
+                    this.oConfiguracion.nosotros
+                        ? this.oConfiguracion.nosotros
+                        : ""
+                );
+                formdata.append(
+                    "nosotros_img",
+                    this.oConfiguracion.nosotros_img
+                        ? this.oConfiguracion.nosotros_img
+                        : ""
+                );
+                formdata.append(
+                    "facebook",
+                    this.oConfiguracion.facebook
+                        ? this.oConfiguracion.facebook
+                        : ""
+                );
+                formdata.append(
+                    "instagram",
+                    this.oConfiguracion.instagram
+                        ? this.oConfiguracion.instagram
+                        : ""
+                );
+                formdata.append(
+                    "twitter",
+                    this.oConfiguracion.twitter
+                        ? this.oConfiguracion.twitter
+                        : ""
+                );
+                formdata.append(
+                    "youtube",
+                    this.oConfiguracion.youtube
+                        ? this.oConfiguracion.youtube
+                        : ""
+                );
+                formdata.append(
+                    "ubicacion",
+                    this.oConfiguracion.ubicacion
+                        ? this.oConfiguracion.ubicacion
+                        : ""
+                );
+
                 let config = {
                     headers: {
                         "Content-Type": "multipart/form-data",
@@ -526,7 +1066,6 @@ export default {
 
                         this.limpiarConfiguracion();
                         this.errors = [];
-                        this.$refs.input_file.value = null;
                         if (this.accion == "edit") {
                             this.textoBtn = "Actualizar";
                         } else {
@@ -581,6 +1120,11 @@ export default {
             this.oConfiguracion.actividad = "";
             this.oConfiguracion.correo = "";
             this.oConfiguracion.logo = "";
+            this.$refs.input_file.value = null;
+            this.$refs.servicios_img.value = null;
+            this.$refs.mision_img.value = null;
+            this.$refs.vision_img.value = null;
+            this.$refs.nosotros_img.value = null;
         },
     },
 };

@@ -32,7 +32,7 @@ class ConfiguracionPagoController extends Controller
         DB::beginTransaction();
         try {
             // crear ConfiguracionPago
-            $nueva_configuracion_pago = ConfiguracionPago::create(array_map('mb_strtoupper', $request->all()));
+            $nueva_configuracion_pago = ConfiguracionPago::create(array_map('mb_strtoupper', $request->except("qr")));
             if ($request->hasFile('qr')) {
                 $file = $request->qr;
                 $nom_qr = time() . '_' . $nueva_configuracion_pago->id . '.' . $file->getClientOriginalExtension();
@@ -77,7 +77,7 @@ class ConfiguracionPagoController extends Controller
         DB::beginTransaction();
         try {
             $datos_original = HistorialAccion::getDetalleRegistro($configuracion_pago, "configuracion_pagos");
-            $configuracion_pago->update(array_map('mb_strtoupper', $request->all()));
+            $configuracion_pago->update(array_map('mb_strtoupper', $request->except("qr")));
             if ($request->hasFile('qr')) {
                 $antiguo = $configuracion_pago->qr;
                 if ($antiguo != 'default.png') {

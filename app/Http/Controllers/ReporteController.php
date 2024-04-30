@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Models\Venta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use PDF;
 
 class ReporteController extends Controller
@@ -319,6 +320,11 @@ class ReporteController extends Controller
         ];
 
         if ($filtro_fecha == 'RANGO DE FECHAS') {
+            $request->validate([
+                "fecha_ini" => "required|date",
+                "fecha_fin" => "required|date",
+            ]);
+            
             $aux_fecha_ini = $fecha_ini;
             while ($aux_fecha_ini <= $fecha_fin) {
                 $categories[] = $aux_fecha_ini;
@@ -564,6 +570,12 @@ class ReporteController extends Controller
 
         if ($filtro_fecha == 'RANGO DE FECHAS') {
             $aux_fecha_ini = $fecha_ini;
+            $request->validate([
+                "fecha_ini" => "required|date",
+                "fecha_fin" => "required|date",
+            ]);
+            Log::debug($aux_fecha_ini);
+            Log::debug($fecha_ini);
             while ($aux_fecha_ini <= $fecha_fin) {
                 $categories[] = $aux_fecha_ini;
 
@@ -577,6 +589,7 @@ class ReporteController extends Controller
 
                 $aux_fecha_ini = date("Y-m-d", strtotime($aux_fecha_ini . "+1 days"));
             }
+            Log::debug($categories);
         }
 
         if ($filtro_fecha == 'MES') {
@@ -742,6 +755,11 @@ class ReporteController extends Controller
         ];
         $total_ventas = 0;
         if ($filtro_fecha == 'RANGO DE FECHAS') {
+            $request->validate([
+                "fecha_ini" => "required|date",
+                "fecha_fin" => "required|date",
+            ]);
+
             $aux_fecha_ini = $fecha_ini;
 
             $cantidad_ventas_ecommerce = Venta::whereBetween("ventas.fecha_registro", [$aux_fecha_ini, $fecha_fin]);

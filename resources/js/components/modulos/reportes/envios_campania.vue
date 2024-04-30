@@ -70,6 +70,12 @@
                                                         'is-invalid':
                                                             errors.fecha_ini,
                                                     }"
+                                                    @keyup="
+                                                        validarFecha(
+                                                            $event,
+                                                            'fecha_ini'
+                                                        )
+                                                    "
                                                 />
                                                 <span
                                                     class="error invalid-feedback"
@@ -93,6 +99,12 @@
                                                         'is-invalid':
                                                             errors.fecha_fin,
                                                     }"
+                                                    @keyup="
+                                                        validarFecha(
+                                                            $event,
+                                                            'fecha_fin'
+                                                        )
+                                                    "
                                                 />
                                                 <span
                                                     class="error invalid-feedback"
@@ -118,7 +130,10 @@
                                                 class="bg-primary w-full"
                                                 :loading="enviando"
                                                 @click="generaReporte()"
-                                                >{{ textoBtn }} Gráfico</el-button
+                                                >{{
+                                                    textoBtn
+                                                }}
+                                                Gráfico</el-button
                                             >
                                         </div>
                                     </div>
@@ -176,7 +191,11 @@ export default {
                 responseType: "blob",
             };
             axios
-                .post("/admin/reportes/envios_campania_pdf", this.oReporte, config)
+                .post(
+                    "/admin/reportes/envios_campania_pdf",
+                    this.oReporte,
+                    config
+                )
                 .then((res) => {
                     this.errors = [];
                     this.enviando = false;
@@ -295,6 +314,36 @@ export default {
                         }
                     }
                 });
+        },
+        validarFecha(e, index) {
+            let fecha = e.target.value;
+            let validacion = false;
+
+            const partes = fecha.split("-");
+            const year = parseInt(partes[0], 10);
+            const month = parseInt(partes[1], 10);
+            const day = parseInt(partes[2], 10);
+            const date = new Date(year, month - 1, day); // Meses en JavaScript son indexados desde 0
+            const regex = /^\d{4}-\d{2}-\d{2}$/; // Expresión regular para el formato YYYY-MM-DD
+            if (!regex.test(fecha)) {
+                validacion = false;
+            } else {
+                // Verificar si los componentes de la fecha coinciden con los componentes originales
+                if (
+                    date.getFullYear() === year &&
+                    date.getMonth() === month - 1 &&
+                    date.getDate() === day
+                ) {
+                    validacion = true;
+                }
+            }
+
+            this.errors[index] = [];
+            if (!validacion) {
+                this.errors[index].push("Fecha no valida");
+            } else {
+                this.$delete(this.errors, index);
+            }
         },
     },
 };

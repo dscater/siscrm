@@ -9,6 +9,8 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\ConfiguracionPagoController;
 use App\Http\Controllers\EnviarWhatsappController;
+use App\Http\Controllers\EnvioCorreoController;
+use App\Http\Controllers\EnvioWhatsappController;
 use App\Http\Controllers\HistorialAccionController;
 use App\Http\Controllers\IngresoProductoController;
 use App\Http\Controllers\LoginController;
@@ -49,6 +51,8 @@ Route::get('/cache_clear', function () {
 
 Route::get('/auth', [LoginController::class, 'auth']);
 
+Route::post("correo_portal", [EnvioCorreoController::class, 'correo_portal'])->name("correo_portal");
+
 // LOGIN
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
@@ -64,6 +68,9 @@ Route::get("olvide_mi_contrasenia", [RecuperacionController::class, 'olvide_mi_c
 Route::post("registrar_ci", [RecuperacionController::class, 'registrar_ci'])->name("registrar_ci");
 Route::get("recuperacion/{recuperacion}", [RecuperacionController::class, 'recuperacion'])->name("recuperacion");
 Route::post("recuperacion/{recuperacion}", [RecuperacionController::class, 'registro_recuperacion'])->name("registro_recuperacion");
+
+
+Route::get("url_phone", [EnvioWhatsappController::class, 'url_phone'])->name("url_phone");
 
 // CONFIGURACIÓN
 Route::get('/configuracion/getConfiguracion', [ConfiguracionController::class, 'getConfiguracion']);
