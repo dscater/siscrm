@@ -53,9 +53,18 @@
                             Recibe notificaciones sobre
                             campañas,promociones,etc. en tu whatsapp envíando el
                             texto
-                            <strong>"{{ texto_whatsapp }}" </strong>, al número
-                            {{ texto_numero }}. Solo debes hacer click
-                            <a :href="oEnvioWhatsapp.url_phone">aquí</a>
+                            <strong>"{{ oEnvioWhatsapp.url_phone }}" </strong>,
+                            al número {{ oEnvioWhatsapp.from }}. Solo debes
+                            hacer click
+                            <a
+                                :href="
+                                    'http://wa.me/' +
+                                    oEnvioWhatsapp.from +
+                                    '?text=' +
+                                    oEnvioWhatsapp.url_phone
+                                "
+                                >aquí</a
+                            >
                         </p>
                     </div>
                     <div class="col-12 text-center">
@@ -104,11 +113,6 @@ export default {
         getEnvioWhatsapp() {
             axios.get(main_url + "/url_phone").then((response) => {
                 this.oEnvioWhatsapp = response.data;
-                let array = this.oEnvioWhatsapp.url_phone.split("=");
-                this.texto_whatsapp = array[1];
-                this.texto_whatsapp = this.texto_whatsapp.replace("%20", " ");
-                array = this.oEnvioWhatsapp.from.split(":");
-                this.texto_numero = array[1];
             });
         },
         getInfoBox() {

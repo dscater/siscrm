@@ -142,6 +142,41 @@ class EnvioCorreoController extends Controller
         }
     }
 
+    public function pruebas()
+    {
+        // VONAGE - NEXMO
+        $apiKey = 'cc391a2f';
+        $apiSecret = 'X3YWsIkHDjFs4gxR';
+        $fromNumber = '14157386102';
+        $toNumber = '59173594451'; // Reemplaza $TO_NUMBER con el número de destino
+        $message = 'Mensaje de prueba';
+
+        $data = array(
+            'from' => $fromNumber,
+            'to' => $toNumber,
+            'message_type' => 'text',
+            'text' => $message,
+            'channel' => 'whatsapp'
+        );
+
+        $ch = curl_init('https://messages-sandbox.nexmo.com/v1/messages');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Accept: application/json'
+        ));
+        curl_setopt($ch, CURLOPT_USERPWD, $apiKey . ':' . $apiSecret);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        echo $response;
+    }
+
+
+
     // public function pruebas()
     // {
     //     // Datos de la solicitud
@@ -192,57 +227,4 @@ class EnvioCorreoController extends Controller
     //     // Imprimir la respuesta
     //     echo $response;
     // }
-
-
-
-    public function pruebas()
-    {
-        // Datos de la solicitud
-        $url = 'https://graph.facebook.com/v19.0/285515087983710/messages';
-        $accessToken = 'EAAGRiodRKZCoBO9idqZCqHJXI2wrKeonB8pNM6XVu2c9WKoZCudV0wZAG29QSfhPpkuP1jQCWn9kUkNjzZA4FaEGsd7rU7sQJvTBXkHm2UPt5qO2TiSWgPIUbWM2isW5Uhft9LrFPt2r5hpYk3ly0qwcEZCkvq0mT3saxqtvGmsQRE8pSBwxYoZAZCHO76ASWumtds1ECOdkg1WLEYDQPYZB6Gn1d2tEZD';
-        $headers = array(
-            'Authorization: Bearer ' . $accessToken,
-            'Content-Type: application/json'
-        );
-
-        // Datos del mensaje
-        $data = array(
-            'messaging_product' => 'whatsapp',
-            'to' => '59173594451',
-            'type' => 'template',
-            'template' => array(
-                'name' => 'hello_world',
-                'language' => array(
-                    'code' => 'en_US'
-                )
-            )
-        );
-
-        // Convertir los datos a formato JSON
-        $postData = json_encode($data);
-
-        // Inicializar cURL
-        $ch = curl_init();
-
-        // Configurar la solicitud cURL
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        // Ejecutar la solicitud y obtener la respuesta
-        $response = curl_exec($ch);
-
-        // Comprobar si hay errores
-        if (curl_errno($ch)) {
-            echo 'Error: ' . curl_error($ch);
-        }
-
-        // Cerrar cURL
-        curl_close($ch);
-
-        // Imprimir la respuesta
-        echo $response;
-    }
 }

@@ -173,10 +173,24 @@
                                         ></span>
                                     </div>
                                 </div>
-                                <h4>Envio de Whatsapp con Twillio</h4>
+                                <h4>
+                                    Envio de Whatsapp con VONAGE Api (Nexmo)<a
+                                        href="https://dashboard.nexmo.com/"
+                                        target="_blank"
+                                        ><i class="fa fa-info-circle"></i
+                                    ></a>
+                                </h4>
                                 <div class="row">
                                     <div class="col-md-12 form-group">
-                                        <label for="">SID:</label>
+                                        <label for=""
+                                            >Api Key
+                                            <a
+                                                href="https://dashboard.nexmo.com/settings"
+                                                target="_blank"
+                                                ><i
+                                                    class="fa fa-info-circle"
+                                                ></i></a
+                                        ></label>
                                         <input
                                             type="text"
                                             class="form-control"
@@ -193,7 +207,15 @@
                                         ></span>
                                     </div>
                                     <div class="col-md-12 form-group">
-                                        <label for="">TOKEN</label>
+                                        <label for=""
+                                            >Account Secret
+                                            <a
+                                                href="https://dashboard.nexmo.com/settings"
+                                                target="_blank"
+                                                ><i
+                                                    class="fa fa-info-circle"
+                                                ></i></a
+                                        ></label>
                                         <input
                                             type="text"
                                             class="form-control"
@@ -210,7 +232,15 @@
                                         ></span>
                                     </div>
                                     <div class="col-md-12 form-group">
-                                        <label for="">FROM</label>
+                                        <label for=""
+                                            >FROM
+                                            <a
+                                                href="https://dashboard.nexmo.com/messages/sandbox"
+                                                target="_blank"
+                                                ><i
+                                                    class="fa fa-info-circle"
+                                                ></i></a
+                                        ></label>
                                         <input
                                             type="text"
                                             class="form-control"
@@ -228,9 +258,14 @@
                                     </div>
                                     <div class="col-md-12 form-group">
                                         <label for=""
-                                            >URL PARA PODER RECEPCIONAR
-                                            MENSAJES</label
-                                        >
+                                            >FRASE PARA UNIRSE
+                                            <a
+                                                href="https://dashboard.nexmo.com/messages/sandbox"
+                                                target="_blank"
+                                                ><i
+                                                    class="fa fa-info-circle"
+                                                ></i></a
+                                        ></label>
                                         <input
                                             type="text"
                                             class="form-control"

@@ -233,7 +233,7 @@ class CampaniaController extends Controller
     {
         DB::beginTransaction();
         try {
-            Campania::realizaEnvioCampania($campania, true, false);
+            Campania::realizaEnvioCampania($campania, true, true);
             DB::commit();
             return response()->JSON([
                 'sw' => true,

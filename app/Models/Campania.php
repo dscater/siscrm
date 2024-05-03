@@ -95,8 +95,8 @@ class Campania extends Model
             $catalogo = $campania->catalogo;
             $array_multimedias = [];
             foreach ($catalogo->catalogo_detalles as $cd) {
-                $array_multimedias[] = "https://img.freepik.com/foto-gratis/colores-arremolinados-interactuan-danza-fluida-sobre-lienzo-que-muestra-tonos-vibrantes-patrones-dinamicos-que-capturan-caos-belleza-arte-abstracto_157027-2892.jpg";
-                // $array_multimedias[] = $cd->producto->url_imagen;
+                // $array_multimedias[] = "https://idegrafico.com/wp-content/uploads/2017/03/Las-imagenes-raw-son-los-negativos-digitales.jpg";
+                $array_multimedias[] = $cd->producto->url_imagen;
             }
         }
         if ($campania->tipo_cliente != 'TODOS') {
@@ -166,8 +166,7 @@ class Campania extends Model
                 if ($sw_whatsapp) {
                     // ENVIO WHATSAPP
                     foreach ($fonos as $value) {
-                        EnviarWhatsappController::enviarMensajeMultimedia("Your appointment is coming up on July 21 at 3PM", trim($value), $array_multimedias);
-                        // EnviarWhatsappController::enviarMensajeMultimedia($mensaje, trim($value), $array_multimedias);
+                        EnviarWhatsappController::enviarMensajeMultimedia($mensaje, trim($value), $array_multimedias);
                         // registrar envio
                         $existe_envio = CampaniaEnvio::where("fecha_envio", $fecha_actual)
                             ->where("campania_id", $campania->id)
@@ -217,8 +216,7 @@ class Campania extends Model
                 if ($sw_whatsapp) {
                     // ENVIO WHATSAPP
                     foreach ($fonos as $value) {
-                        EnviarWhatsappController::enviarMensaje("Your appointment is coming up on July 21 at 3PM", trim($value));
-                        // EnviarWhatsappController::enviarMensaje($mensaje, trim($value));
+                        EnviarWhatsappController::enviarMensaje($mensaje, trim($value));
                         // registrar envio
                         $existe_envio = CampaniaEnvio::where("fecha_envio", $fecha_actual)
                             ->where("campania_id", $campania->id)

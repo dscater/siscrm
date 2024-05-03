@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 30-04-2024 a las 17:10:04
+-- Tiempo de generación: 03-05-2024 a las 20:34:12
 -- Versión del servidor: 8.0.30
--- Versión de PHP: 7.4.19
+-- Versión de PHP: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -70,8 +70,8 @@ CREATE TABLE `campanias` (
 --
 
 INSERT INTO `campanias` (`id`, `nombre`, `fecha_ini`, `fecha_fin`, `tipo`, `tipo_cliente`, `filtro_cliente`, `producto_id`, `cantidad_compra`, `descripcion`, `catalogo_id`, `fecha_registro`, `created_at`, `updated_at`) VALUES
-(6, 'CAMPAÑA #1', '2024-04-28', '2024-04-29', 'GIFTCARD', 'TODOS', '', NULL, NULL, 'DESCRIPCION CAMPAÑA #1 TODOS LOS CLIENTES MOD', NULL, '2024-04-28', '2024-04-28 17:17:04', '2024-04-28 17:19:18'),
-(7, 'CAMPAÑA #2', '2024-04-28', '2024-04-29', 'CATÁLOGO', 'PERSONALIZADO', 'PRODUCTO COMPRADO', 7, NULL, 'DESC. CAMPAÑA #2', 1, '2024-04-28', '2024-04-28 17:19:53', '2024-04-30 14:10:45'),
+(6, 'CAMPAÑA #1', '2024-04-28', '2024-05-05', 'GIFTCARD', 'TODOS', '', NULL, NULL, 'DESCRIPCION CAMPAÑA #1 TODOS LOS CLIENTES MOD', NULL, '2024-04-28', '2024-04-28 17:17:04', '2024-05-03 20:11:55'),
+(7, 'CAMPAÑA #2', '2024-04-28', '2024-05-05', 'CATÁLOGO', 'PERSONALIZADO', 'PRODUCTO COMPRADO', 7, NULL, 'DESC. CAMPAÑA #2', 1, '2024-04-28', '2024-04-28 17:19:53', '2024-05-03 20:19:24'),
 (8, 'CAMPAÑA #3', '2024-04-28', '2024-04-29', 'CATÁLOGO', 'PERSONALIZADO', 'PRODUCTO COMPRADO', 3, NULL, 'DESCRIPCION CAMP 3', 2, '2024-04-28', '2024-04-28 17:21:37', '2024-04-30 14:08:34'),
 (9, 'CAMPAÑA 4', '2024-04-28', '2024-04-29', 'RECORDATORIO', 'PERSONALIZADO', 'CANTIDAD COMPRA', NULL, 3.00, 'DESC CAMP 4', NULL, '2024-04-28', '2024-04-28 17:23:27', '2024-04-28 17:23:28'),
 (11, 'CAMPAÑA 5', '2024-04-28', '2024-04-29', 'RECORDATORIO', 'PERSONALIZADO', 'CLIENTES ESPECIFICOS', NULL, NULL, 'DESC. CAMPAÑA 5', NULL, '2024-04-28', '2024-04-28 17:24:49', '2024-04-28 17:24:49');
@@ -148,7 +148,9 @@ CREATE TABLE `campania_envios` (
 INSERT INTO `campania_envios` (`id`, `campania_id`, `campania_automatico_id`, `fecha_envio`, `total_fisicos`, `total_ecommerce`, `created_at`, `updated_at`) VALUES
 (1, 6, NULL, '2024-04-28', 12, 6, '2024-04-28 21:00:31', '2024-04-28 21:06:08'),
 (2, 6, NULL, '2024-04-29', 6, 3, '2024-04-29 16:11:10', '2024-04-29 16:42:44'),
-(3, 7, NULL, '2024-04-29', 0, 2, '2024-04-29 16:12:19', '2024-04-29 16:45:43');
+(3, 7, NULL, '2024-04-29', 0, 2, '2024-04-29 16:12:19', '2024-04-29 16:45:43'),
+(4, 6, NULL, '2024-05-03', 11, 5, '2024-05-03 20:12:06', '2024-05-03 20:33:58'),
+(5, 7, NULL, '2024-05-03', 6, 3, '2024-05-03 20:22:07', '2024-05-03 20:30:04');
 
 -- --------------------------------------------------------
 
@@ -245,7 +247,7 @@ CREATE TABLE `clientes` (
 INSERT INTO `clientes` (`id`, `nombre`, `ci`, `ci_exp`, `nit`, `fono`, `correo`, `dir`, `user_id`, `tipo`, `fecha_registro`, `created_at`, `updated_at`) VALUES
 (1, 'PEDRO MARTINEZ', '231231', 'LP', '', '', 'pedro@gmail.com', 'LOS OLIVOS', 3, 'FISICO', '2023-04-26', '2023-04-26 20:00:10', '2024-04-29 16:17:22'),
 (2, 'MARIA GONZALES CASAS', '1231231', 'CB', '34324111', '666666; 7777777', 'maria@gmail.com', 'LOS OLIVOS', 7, 'FISICO', '2023-04-26', '2023-04-26 20:05:20', '2024-04-29 16:17:16'),
-(6, 'PABLO SANCHEZ', '3223423', 'LP', '', '', 'pablo@gmail.com', '', 9, 'FISICO', '2024-04-25', '2024-04-25 16:20:39', '2024-04-29 16:17:12'),
+(6, 'PABLO SANCHEZ', '3223423', 'LP', '', '77575383', 'pablo@gmail.com', '', 9, 'FISICO', '2024-04-25', '2024-04-25 16:20:39', '2024-04-29 16:17:12'),
 (7, 'MARCOS MAMANI', '434334', 'LP', '8888888888', '73594451', 'victorgonzalo.as@gmail.com', 'LOS OLIVOS', 10, 'ECOMMERCE', '2024-04-26', '2024-04-26 16:17:30', '2024-04-26 16:17:30'),
 (8, 'SARA GONZALES', '32233', 'LP', '2323232', '', 'sara@gmail.com', 'LOS OLIVOS', 11, 'ECOMMERCE', '2024-04-30', '2024-04-30 16:38:31', '2024-04-30 16:38:31');
 
@@ -417,7 +419,7 @@ CREATE TABLE `envio_whatsapps` (
 --
 
 INSERT INTO `envio_whatsapps` (`id`, `sid`, `token`, `from`, `url_phone`, `created_at`, `updated_at`) VALUES
-(1, 'AC8ab64e3e5f4dd2722cd39eae1bacbc6d', 'f37a2144e208998f7c2af04bfcef2274', 'whatsapp:+14155238886', 'http://wa.me/+14155238886?text=join%20flow-fast', NULL, '2024-04-27 19:47:26');
+(1, 'cc391a2f', 'X3YWsIkHDjFs4gxR', '14157386102', 'Join ion ooze', NULL, '2024-05-03 20:18:16');
 
 -- --------------------------------------------------------
 
@@ -653,7 +655,10 @@ INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `dato
 (182, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ LA CONFIGURACIÓN DEL SISTEMA', 'actividad: ACTIVIDAD<br/>alias: SISCRM<br/>ciudad: LA PAZ<br/>correo: VICTORGONZALO.AS@GMAIL.COM<br/>created_at: <br/>dir: LA PAZ<br/>facebook: https://facebook.com<br/>fono: 222222<br/>id: 1<br/>instagram: https://instagram.com<br/>logo: 1682712649_logo.jpg<br/>mision: MISION. THERE ARE MANY VARIATIONS OF PASSAGES OF LOREM IPSUM AVAILABLE, BUT THE MAJORITY HAVE SUFFERED ALTERATION IN SOME FORM, BY INJECTED HUMOUR, OR RANDOMISED WORDS WHICH DON\'T LOOK EVEN SLIGHTLY BELIEVABLE. IF YOU ARE GOING TO USE A PASSAGE OF LOREM IPSUM, YOU NEED TO BE SURE THERE ISN\'T ANYTHING EMBARRASSING HIDDEN IN THE MIDDLE OF TEXT<br/>mision_img: 1714488027_mision_img.jpg<br/>nit: 10000000000<br/>nombre_sistema: SISTEMA DE INVENTARIO Y VENTAS<br/>nosotros: NOSOTROS.THERE ARE MANY VARIATIONS OF PASSAGES OF LOREM IPSUM AVAILABLE, BUT THE MAJORITY HAVE SUFFERED ALTERATION IN SOME FORM, BY INJECTED HUMOUR, OR RANDOMISED WORDS WHICH DON\'T LOOK EVEN SLIGHTLY BELIEVABLE. IF YOU ARE GOING TO USE A PASSAGE OF LOREM IPSUM, YOU NEED TO BE SURE THERE ISN\'T ANYTHING EMBARRASSING HIDDEN IN THE MIDDLE OF TEXT<br/>nosotros_img: 1714488027_nosotros_img.jpg<br/>razon_social: EMPRESA PRUEBA S.A.<br/>servicios: SERVICIOS. THERE ARE MANY VARIATIONS OF PASSAGES OF LOREM IPSUM AVAILABLE, BUT THE MAJORITY HAVE SUFFERED ALTERATION IN SOME FORM, BY INJECTED HUMOUR, OR RANDOMISED WORDS WHICH DON\'T LOOK EVEN SLIGHTLY BELIEVABLE. IF YOU ARE GOING TO USE A PASSAGE OF LOREM IPSUM, YOU NEED TO BE SURE THERE ISN\'T ANYTHING EMBARRASSING HIDDEN IN THE MIDDLE OF TEXT<br/>servicios_img: 1714488423_servicios_img.jpg<br/>twitter: https://twitter.com<br/>ubicacion: <iframe src=\"https://www.google.com/maps/embed?pb=!1m21!1m12!1m3!1d15302.44340797871!2d-68.13196529479978!3d-16.495230895308648!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m6!3e0!4m0!4m3!3m2!1d-16.497514656468287!2d-68.12797416816427!5e0!3m2!1ses-419!2sbo!4v1697748242821!5m2!1ses-419!2sbo\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe><br/>updated_at: 2024-04-30 12:00:56<br/>vision: VISION. THERE ARE MANY VARIATIONS OF PASSAGES OF LOREM IPSUM AVAILABLE, BUT THE MAJORITY HAVE SUFFERED ALTERATION IN SOME FORM, BY INJECTED HUMOUR, OR RANDOMISED WORDS WHICH DON\'T LOOK EVEN SLIGHTLY BELIEVABLE. IF YOU ARE GOING TO USE A PASSAGE OF LOREM IPSUM, YOU NEED TO BE SURE THERE ISN\'T ANYTHING EMBARRASSING HIDDEN IN THE MIDDLE OF TEXT<br/>vision_img: 1714488027_vision_img.jpg<br/>web: <br/>youtube: https://youtube.com<br/>', 'actividad: ACTIVIDAD<br/>alias: SISCRM<br/>ciudad: LA PAZ<br/>correo: SISCRM@GMAIL.COM<br/>created_at: <br/>dir: LA PAZ<br/>facebook: https://facebook.com<br/>fono: 222222<br/>id: 1<br/>instagram: https://instagram.com<br/>logo: 1682712649_logo.jpg<br/>mision: MISION. THERE ARE MANY VARIATIONS OF PASSAGES OF LOREM IPSUM AVAILABLE, BUT THE MAJORITY HAVE SUFFERED ALTERATION IN SOME FORM, BY INJECTED HUMOUR, OR RANDOMISED WORDS WHICH DON\'T LOOK EVEN SLIGHTLY BELIEVABLE. IF YOU ARE GOING TO USE A PASSAGE OF LOREM IPSUM, YOU NEED TO BE SURE THERE ISN\'T ANYTHING EMBARRASSING HIDDEN IN THE MIDDLE OF TEXT<br/>mision_img: 1714488027_mision_img.jpg<br/>nit: 10000000000<br/>nombre_sistema: SISTEMA DE INVENTARIO Y VENTAS<br/>nosotros: NOSOTROS.THERE ARE MANY VARIATIONS OF PASSAGES OF LOREM IPSUM AVAILABLE, BUT THE MAJORITY HAVE SUFFERED ALTERATION IN SOME FORM, BY INJECTED HUMOUR, OR RANDOMISED WORDS WHICH DON\'T LOOK EVEN SLIGHTLY BELIEVABLE. IF YOU ARE GOING TO USE A PASSAGE OF LOREM IPSUM, YOU NEED TO BE SURE THERE ISN\'T ANYTHING EMBARRASSING HIDDEN IN THE MIDDLE OF TEXT<br/>nosotros_img: 1714488027_nosotros_img.jpg<br/>razon_social: EMPRESA PRUEBA S.A.<br/>servicios: SERVICIOS. THERE ARE MANY VARIATIONS OF PASSAGES OF LOREM IPSUM AVAILABLE, BUT THE MAJORITY HAVE SUFFERED ALTERATION IN SOME FORM, BY INJECTED HUMOUR, OR RANDOMISED WORDS WHICH DON\'T LOOK EVEN SLIGHTLY BELIEVABLE. IF YOU ARE GOING TO USE A PASSAGE OF LOREM IPSUM, YOU NEED TO BE SURE THERE ISN\'T ANYTHING EMBARRASSING HIDDEN IN THE MIDDLE OF TEXT<br/>servicios_img: 1714488423_servicios_img.jpg<br/>twitter: https://twitter.com<br/>ubicacion: <iframe src=\"https://www.google.com/maps/embed?pb=!1m21!1m12!1m3!1d15302.44340797871!2d-68.13196529479978!3d-16.495230895308648!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m6!3e0!4m0!4m3!3m2!1d-16.497514656468287!2d-68.12797416816427!5e0!3m2!1ses-419!2sbo!4v1697748242821!5m2!1ses-419!2sbo\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe><br/>updated_at: 2024-04-30 12:02:18<br/>vision: VISION. THERE ARE MANY VARIATIONS OF PASSAGES OF LOREM IPSUM AVAILABLE, BUT THE MAJORITY HAVE SUFFERED ALTERATION IN SOME FORM, BY INJECTED HUMOUR, OR RANDOMISED WORDS WHICH DON\'T LOOK EVEN SLIGHTLY BELIEVABLE. IF YOU ARE GOING TO USE A PASSAGE OF LOREM IPSUM, YOU NEED TO BE SURE THERE ISN\'T ANYTHING EMBARRASSING HIDDEN IN THE MIDDLE OF TEXT<br/>vision_img: 1714488027_vision_img.jpg<br/>web: <br/>youtube: https://youtube.com<br/>', 'CONFIGURACIÓN', '2024-04-30', '12:02:18', '2024-04-30 16:02:18', '2024-04-30 16:02:18'),
 (183, 10, 'CREACIÓN', 'EL USUARIO  REGISTRO UNA ORDEN DE PEDIDO', 'celular: 666666666<br/>codigo: ORD.2<br/>comprobante: C:\\USERS\\VICTO\\APPDATA\\LOCAL\\TEMP\\PHP907F.TMP<br/>configuracion_pago_id: 1<br/>created_at: 2024-04-30 12:28:52<br/>cupon: C001<br/>descuento: 105.28<br/>entrega: DOMICILIO<br/>estado: PEDIDO PENDIENTE<br/>fecha_registro: 2024-04-30<br/>id: 2<br/>lat: -16.496059<br/>lng: -68.133345<br/>nro: 2<br/>total: 112.00<br/>total_final: 6.72<br/>updated_at: 2024-04-30 12:28:52<br/>user_id: 10<br/>', NULL, 'ORDEN DE PEDIDOS', '2024-04-30', '12:28:52', '2024-04-30 16:28:52', '2024-04-30 16:28:52'),
 (184, 11, 'CREACIÓN', 'EL USUARIO  REGISTRO UNA ORDEN DE PEDIDO', 'celular: 67676767<br/>codigo: ORD.3<br/>comprobante: C:\\USERS\\VICTO\\APPDATA\\LOCAL\\TEMP\\PHP9552.TMP<br/>configuracion_pago_id: 2<br/>created_at: 2024-04-30 12:39:49<br/>cupon: C001<br/>descuento: 0.06<br/>entrega: TIENDA<br/>estado: PEDIDO PENDIENTE<br/>fecha_registro: 2024-04-30<br/>id: 3<br/>lat: -16.498088388840433<br/>lng: -68.13366216194534<br/>nro: 3<br/>total: 82.00<br/>total_final: 77.08<br/>updated_at: 2024-04-30 12:39:49<br/>user_id: 11<br/>', NULL, 'ORDEN DE PEDIDOS', '2024-04-30', '12:39:49', '2024-04-30 16:39:49', '2024-04-30 16:39:49'),
-(185, 1, 'MODIFICACIÓN', 'EL USUARIO  MODIFICÓ UNA ORDEN DE PEDIDO', 'celular: 666666666<br/>codigo: ORD.2<br/>comprobante: 1714494532_2.pdf<br/>configuracion_pago_id: 1<br/>created_at: 2024-04-30 12:28:52<br/>cupon: C001<br/>descuento: 6<br/>entrega: DOMICILIO<br/>estado: PEDIDO PENDIENTE<br/>fecha_registro: 2024-04-30<br/>id: 2<br/>lat: -16.496059<br/>lng: -68.133345<br/>nro: 2<br/>total: 112.00<br/>total_final: 105.28<br/>updated_at: 2024-04-30 12:28:52<br/>user_id: 10<br/>', 'celular: 666666666<br/>codigo: ORD.2<br/>comprobante: 1714494532_2.pdf<br/>configuracion_pago_id: 1<br/>created_at: 2024-04-30 12:28:52<br/>cupon: C001<br/>descuento: 6<br/>entrega: DOMICILIO<br/>estado: ORDEN PROCESADA<br/>fecha_registro: 2024-04-30<br/>id: 2<br/>lat: -16.496059<br/>lng: -68.133345<br/>nro: 2<br/>total: 112.00<br/>total_final: 105.28<br/>updated_at: 2024-04-30 12:41:36<br/>user_id: 10<br/>', 'ORDEN DE PEDIDOS', '2024-04-30', '12:41:40', '2024-04-30 16:41:40', '2024-04-30 16:41:40');
+(185, 1, 'MODIFICACIÓN', 'EL USUARIO  MODIFICÓ UNA ORDEN DE PEDIDO', 'celular: 666666666<br/>codigo: ORD.2<br/>comprobante: 1714494532_2.pdf<br/>configuracion_pago_id: 1<br/>created_at: 2024-04-30 12:28:52<br/>cupon: C001<br/>descuento: 6<br/>entrega: DOMICILIO<br/>estado: PEDIDO PENDIENTE<br/>fecha_registro: 2024-04-30<br/>id: 2<br/>lat: -16.496059<br/>lng: -68.133345<br/>nro: 2<br/>total: 112.00<br/>total_final: 105.28<br/>updated_at: 2024-04-30 12:28:52<br/>user_id: 10<br/>', 'celular: 666666666<br/>codigo: ORD.2<br/>comprobante: 1714494532_2.pdf<br/>configuracion_pago_id: 1<br/>created_at: 2024-04-30 12:28:52<br/>cupon: C001<br/>descuento: 6<br/>entrega: DOMICILIO<br/>estado: ORDEN PROCESADA<br/>fecha_registro: 2024-04-30<br/>id: 2<br/>lat: -16.496059<br/>lng: -68.133345<br/>nro: 2<br/>total: 112.00<br/>total_final: 105.28<br/>updated_at: 2024-04-30 12:41:36<br/>user_id: 10<br/>', 'ORDEN DE PEDIDOS', '2024-04-30', '12:41:40', '2024-04-30 16:41:40', '2024-04-30 16:41:40'),
+(186, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CAMPAÑA', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:17:04<br/>descripcion: DESCRIPCION CAMPAÑA #1 TODOS LOS CLIENTES MOD<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 6<br/>nombre: CAMPAÑA #1<br/>producto_id: <br/>tipo: GIFTCARD<br/>tipo_cliente: TODOS<br/>updated_at: 2024-04-28 13:19:18<br/>', 'cantidad_compra: <br/>catalogo_id: <br/>created_at: 2024-04-28 13:17:04<br/>descripcion: DESCRIPCION CAMPAÑA #1 TODOS LOS CLIENTES MOD<br/>fecha_fin: 2024-05-05<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: <br/>id: 6<br/>nombre: CAMPAÑA #1<br/>producto_id: <br/>tipo: GIFTCARD<br/>tipo_cliente: TODOS<br/>updated_at: 2024-05-03 16:11:55<br/>', 'CAMPAÑAS', '2024-05-03', '16:11:55', '2024-05-03 20:11:55', '2024-05-03 20:11:55');
+INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `datos_original`, `datos_nuevo`, `modulo`, `fecha`, `hora`, `created_at`, `updated_at`) VALUES
+(187, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CAMPAÑA', 'cantidad_compra: <br/>catalogo_id: 1<br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-04-29<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: PRODUCTO COMPRADO<br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: 7<br/>tipo: CATÁLOGO<br/>tipo_cliente: PERSONALIZADO<br/>updated_at: 2024-04-30 10:10:45<br/>', 'cantidad_compra: <br/>catalogo_id: 1<br/>created_at: 2024-04-28 13:19:53<br/>descripcion: DESC. CAMPAÑA #2<br/>fecha_fin: 2024-05-05<br/>fecha_ini: 2024-04-28<br/>fecha_registro: 2024-04-28<br/>filtro_cliente: PRODUCTO COMPRADO<br/>id: 7<br/>nombre: CAMPAÑA #2<br/>producto_id: 7<br/>tipo: CATÁLOGO<br/>tipo_cliente: PERSONALIZADO<br/>updated_at: 2024-05-03 16:19:24<br/>', 'CAMPAÑAS', '2024-05-03', '16:19:24', '2024-05-03 20:19:24', '2024-05-03 20:19:24');
 
 -- --------------------------------------------------------
 
@@ -1317,7 +1322,7 @@ ALTER TABLE `campania_detalles`
 -- AUTO_INCREMENT de la tabla `campania_envios`
 --
 ALTER TABLE `campania_envios`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `catalogos`
@@ -1389,7 +1394,7 @@ ALTER TABLE `fecha_stocks`
 -- AUTO_INCREMENT de la tabla `historial_accions`
 --
 ALTER TABLE `historial_accions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=186;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=188;
 
 --
 -- AUTO_INCREMENT de la tabla `ingreso_productos`
