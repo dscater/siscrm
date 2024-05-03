@@ -32,8 +32,8 @@ class CampaniaController extends Controller
         "producto_id.required" => "Este campo es obligatorio",
         "cantidad_compra.required" => "Este campo es obligatorio",
         "cantidad_compra.min" => "El valor minimo es de :min",
-        "campania_detalles.required" => "Este campo es obligatorio",
-        "campania_detalles.min" => "Debes seleccionar al menos :min cliente",
+        "campania_clientes.required" => "Este campo es obligatorio",
+        "campania_clientes.min" => "Debes seleccionar al menos :min cliente",
     ];
 
     public function index(Request $request)
@@ -56,7 +56,7 @@ class CampaniaController extends Controller
                 $this->validacion["cantidad_compra"] = "required|numeric|min:1";
             }
             if ($request->filtro_cliente == 'CLIENTES ESPECIFICOS') {
-                $this->validacion["campania_detalles"] = "required|min:1";
+                $this->validacion["campania_clientes"] = "required|min:1";
             }
         }
 
@@ -128,7 +128,7 @@ class CampaniaController extends Controller
                 $this->validacion["cantidad_compra"] = "required|numeric|min:1";
             }
             if ($request->filtro_cliente == 'CLIENTES ESPECIFICOS') {
-                $this->validacion["campania_detalles"] = "required|min:1";
+                $this->validacion["campania_clientes"] = "required|min:1";
             }
         }
 

@@ -95,8 +95,8 @@ class Campania extends Model
             $catalogo = $campania->catalogo;
             $array_multimedias = [];
             foreach ($catalogo->catalogo_detalles as $cd) {
-                // $array_multimedias[] = "https://idegrafico.com/wp-content/uploads/2017/03/Las-imagenes-raw-son-los-negativos-digitales.jpg";
-                $array_multimedias[] = $cd->producto->url_imagen;
+                $array_multimedias[] = "https://idegrafico.com/wp-content/uploads/2017/03/Las-imagenes-raw-son-los-negativos-digitales.jpg";
+                // $array_multimedias[] = $cd->producto->url_imagen;
             }
         }
         if ($campania->tipo_cliente != 'TODOS') {
