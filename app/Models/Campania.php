@@ -102,10 +102,10 @@ class Campania extends Model
                 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVu4co9FEDyLSjRECZDpXym6Rw8FsERldC-8I9iwYkJujP2oifzsxCgtsZG8HASdzVCPA&usqp=CAU",
             ];
             foreach ($catalogo->catalogo_detalles as $key => $cd) {
-                // if ($key < 4) {
-                //     $array_multimedias[] = $imgs_prueba[$key];
-                // }
-                $array_multimedias[] = $cd->producto->url_imagen;
+                if ($key < 4) {
+                    $array_multimedias[] = $imgs_prueba[$key];
+                }
+                // $array_multimedias[] = $cd->producto->url_imagen;
             }
         }
         if ($campania->tipo_cliente != 'TODOS') {
