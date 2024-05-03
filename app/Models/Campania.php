@@ -94,9 +94,18 @@ class Campania extends Model
         if ($campania->tipo == 'CATÁLOGO') {
             $catalogo = $campania->catalogo;
             $array_multimedias = [];
-            foreach ($catalogo->catalogo_detalles as $cd) {
-                $array_multimedias[] = "https://idegrafico.com/wp-content/uploads/2017/03/Las-imagenes-raw-son-los-negativos-digitales.jpg";
-                // $array_multimedias[] = $cd->producto->url_imagen;
+
+            $imgs_prueba = [
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCCV18NN1R_hI6tRjrv3i_88CkUZ-Uv8ODWKw56KE68saS-jfV4ccIswtFr73hIZUElYU&usqp=CAU",
+                "https://idegrafico.com/wp-content/uploads/2017/03/Las-imagenes-raw-son-los-negativos-digitales.jpg",
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCCV18NN1R_hI6tRjrv3i_88CkUZ-Uv8ODWKw56KE68saS-jfV4ccIswtFr73hIZUElYU&usqp=CAU",
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVu4co9FEDyLSjRECZDpXym6Rw8FsERldC-8I9iwYkJujP2oifzsxCgtsZG8HASdzVCPA&usqp=CAU",
+            ];
+            foreach ($catalogo->catalogo_detalles as $key => $cd) {
+                if ($key < 4) {
+                    $array_multimedias[] = $imgs_prueba[$key];
+                }
+                // $array_multimedias[] = $cd->producto->nombre;
             }
         }
         if ($campania->tipo_cliente != 'TODOS') {
@@ -105,7 +114,8 @@ class Campania extends Model
             } elseif ($campania->tipo_cliente == 'FISICO') {
                 $clientes_enviar = Cliente::where("tipo", "FISICO")->get();
             } elseif ($campania->tipo_cliente == 'PERSONALIZADO') {
-                if ($campania->filtro_cliente = 'PRODUCTO COMPRADO') {
+                Log::debug($campania->filtro_cliente);
+                if ($campania->filtro_cliente == 'PRODUCTO COMPRADO') {
                     $ventas = Venta::select("ventas.id", "ventas.cliente_id")
                         ->join("detalle_ventas", "detalle_ventas.venta_id", "ventas.id")
                         ->where("producto_id", $campania->producto_id)
@@ -117,7 +127,7 @@ class Campania extends Model
                             $clientes_enviar[] = $item_v->cliente;
                         }
                     }
-                } elseif ($campania->filtro_cliente = 'CANTIDAD COMPRA') {
+                } elseif ($campania->filtro_cliente == 'CANTIDAD COMPRA') {
                     $clientes = Cliente::all();
                     foreach ($clientes as $c) {
                         $cantidad_comprada =  Venta::join("detalle_ventas", "detalle_ventas.venta_id", "ventas.id")
@@ -127,7 +137,7 @@ class Campania extends Model
                             $clientes_enviar[] = $c;
                         }
                     }
-                } elseif ($campania->filtro_cliente = 'CLIENTES ESPECIFICOS') {
+                } elseif ($campania->filtro_cliente == 'CLIENTES ESPECIFICOS') {
                     $id_clientes = CampaniaDetalle::where("campania_id", $campania->id)->pluck("cliente_id");
                     $clientes_enviar = Cliente::whereIn("id", $id_clientes)->get();
                 }

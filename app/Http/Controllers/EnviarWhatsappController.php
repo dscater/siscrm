@@ -13,20 +13,6 @@ class EnviarWhatsappController extends Controller
     {
         $envio_whatsapp = EnvioWhatsapp::first();
         if ($envio_whatsapp) {
-            // enviar el mensaje de twillio
-            // $sid = $envio_whatsapp->sid;
-            // $from = $envio_whatsapp->from;
-            // $token = $envio_whatsapp->token;
-            // $twilio = new Client($sid, $token);
-            // $message = $twilio->messages
-            //     ->create(
-            //         "whatsapp:+591$numero", // to
-            //         array(
-            //             "from" => $from,
-            //             "body" => "Your appointment is coming up on July 21 at 3PM"
-            //         )
-            //     );
-
             // VONAGE-NEXMO
             $apiKey = $envio_whatsapp->sid;
             $apiSecret = $envio_whatsapp->token;
@@ -68,6 +54,7 @@ class EnviarWhatsappController extends Controller
 
             foreach ($array_multimedia as $am) {
                 self::enviarImagenes($am, $numero);
+                sleep(1);
             }
 
             return true;
