@@ -88,7 +88,8 @@
                                                     #cell(sucursal_id)="row"
                                                 >
                                                     {{
-                                                        row.item.sucursal.razon_social
+                                                        row.item.sucursal
+                                                            .razon_social
                                                     }}
                                                 </template>
                                                 <template
@@ -224,7 +225,7 @@ export default {
                     sortable: true,
                 },
                 {
-                    key: "nombre_contacto",
+                    key: "full_name",
                     label: "Nombre Contacto",
                     sortable: true,
                 },
@@ -254,6 +255,8 @@ export default {
                 dir: "",
                 fono: [],
                 nombre_contacto: "",
+                paterno: "",
+                materno: "",
                 descripcion: "",
             },
             currentPage: 1,
@@ -278,13 +281,21 @@ export default {
         // Seleccionar Opciones de Tabla
         editarRegistro(item) {
             this.oProveedor.id = item.id;
-            this.oProveedor.razon_social = item.razon_social ? item.razon_social : "";
+            this.oProveedor.razon_social = item.razon_social
+                ? item.razon_social
+                : "";
             this.oProveedor.nit = item.nit ? item.nit : "";
             this.oProveedor.dir = item.dir ? item.dir : "";
             this.oProveedor.fono = item.fono ? item.fono.split("; ") : "";
 
             this.oProveedor.nombre_contacto = item.nombre_contacto
                 ? item.nombre_contacto
+                : "";
+            this.oProveedor.paterno = item.paterno
+                ? item.paterno
+                : "";
+            this.oProveedor.materno = item.materno
+                ? item.materno
                 : "";
             this.oProveedor.descripcion = item.descripcion
                 ? item.descripcion
@@ -381,6 +392,8 @@ export default {
             this.oProveedor.dir = "";
             this.oProveedor.fono = [];
             this.oProveedor.nombre_contacto = "";
+            this.oProveedor.paterno = "";
+            this.oProveedor.materno = "";
             this.oProveedor.descripcion = "";
         },
         formatoFecha(date) {

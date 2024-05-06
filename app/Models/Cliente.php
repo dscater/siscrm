@@ -11,6 +11,7 @@ class Cliente extends Model
 
     protected $fillable = [
         "nombre",
+        "apellidos",
         "ci",
         "ci_exp",
         "nit",
@@ -22,7 +23,12 @@ class Cliente extends Model
         "fecha_registro",
     ];
 
-    protected $appends = ["full_ci"];
+    protected $appends = ["full_name", "full_ci"];
+
+    public function getFullNameAttribute()
+    {
+        return $this->nombre . ($this->apellidos ? ' ' . $this->apellidos : '');
+    }
 
     public function getFullCiAttribute()
     {

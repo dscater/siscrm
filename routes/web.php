@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\ConfiguracionPagoController;
+use App\Http\Controllers\CuponController;
 use App\Http\Controllers\EnviarWhatsappController;
 use App\Http\Controllers\EnvioCorreoController;
 use App\Http\Controllers\EnvioWhatsappController;
@@ -58,6 +59,9 @@ Route::post("correo_portal", [EnvioCorreoController::class, 'correo_portal'])->n
 // LOGIN
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
+
+
+Route::post('/verifica_captcha', [LoginController::class, 'verifica_captcha']);
 
 // REGISTRO
 Route::get('/administracion/registro', [RegistroController::class, 'registro'])->name("registro");
@@ -160,6 +164,11 @@ Route::middleware(['auth'])->group(function () {
             ["index", "store", "update", "show", "destroy"]
         );
 
+        // CONFIGURACION PAGOS
+        Route::resource("cupons", CuponController::class)->only(
+            ["index", "store", "update", "show", "destroy"]
+        );
+
         // OTRAS CONFIGURACIONES
         Route::resource("otra_configuracion", OtraConfiguracionController::class)->only(
             ["index", "store"]
@@ -167,6 +176,7 @@ Route::middleware(['auth'])->group(function () {
 
         // ORDEN PEDIDOS
         Route::patch("orden_pedidos/actualiza_estado/{orden_pedido}", [OrdenPedidoController::class, 'actualiza_estado'])->name("orden_pedidos.actualiza_estado");
+        Route::patch("orden_pedidos/habilitar/{orden_pedido}", [OrdenPedidoController::class, 'habilitar'])->name("orden_pedidos.habilitar");
         Route::post("registraOrden", [OrdenPedidoController::class, 'registraOrden'])->name("orden_pedidos.registraOrden");
         Route::resource("orden_pedidos", OrdenPedidoController::class)->only(
             ["index", "store", "update", "show", "destroy"]

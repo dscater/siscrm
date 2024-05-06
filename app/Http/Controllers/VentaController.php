@@ -100,7 +100,7 @@ class VentaController extends Controller
         DB::beginTransaction();
         try {
             $datos_original = HistorialAccion::getDetalleRegistro($venta, "ventas");
-
+            unset($request["orden_pedido_id"]);
             $request["estado"] = "CANCELADO";
             $venta->update(array_map("mb_strtoupper", $request->except("detalle_ventas", "eliminados", "cliente", "user")));
             $detalle_ventas = $request->detalle_ventas;

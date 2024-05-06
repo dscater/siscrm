@@ -63,9 +63,26 @@
                                                 empty-filtered-text="Sin resultados"
                                                 :filter="filter"
                                             >
-                                            <template #cell(descuento)="row">
-                                                {{ row.item.descuento }}%
-                                            </template>
+                                                <template #cell(status)="row">
+                                                    <span
+                                                        class="badge"
+                                                        :class="[
+                                                            row.item.status == 1
+                                                                ? 'badge-success'
+                                                                : 'badge-danger',
+                                                        ]"
+                                                        >{{
+                                                            row.item.status == 1
+                                                                ? "ORDEN VÁLIDA"
+                                                                : "ORDEN ANULADA"
+                                                        }}</span
+                                                    >
+                                                </template>
+                                                <template
+                                                    #cell(descuento)="row"
+                                                >
+                                                    {{ row.item.descuento }}%
+                                                </template>
                                                 <template #cell(accion)="row">
                                                     <div
                                                         class="row justify-content-center flex-column"
@@ -160,6 +177,11 @@ export default {
                 {
                     key: "fecha_registro_t",
                     label: "Fecha de registro",
+                    sortable: true,
+                },
+                {
+                    key: "status",
+                    label: "Estado Registro",
                     sortable: true,
                 },
                 { key: "accion", label: "Acción" },

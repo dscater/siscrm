@@ -23,12 +23,12 @@
                 <div class="modal-body">
                     <form>
                         <div class="row">
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <label
                                     :class="{
                                         'text-danger': errors.nombre,
                                     }"
-                                    >Nombre Completo*</label
+                                    >Nombres*</label
                                 >
                                 <el-input
                                     placeholder="Nombre"
@@ -41,6 +41,26 @@
                                     class="error invalid-feedback"
                                     v-if="errors.nombre"
                                     v-text="errors.nombre[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger': errors.apellidos,
+                                    }"
+                                    >Apellidos*</label
+                                >
+                                <el-input
+                                    placeholder="Apellidos*"
+                                    :class="{ 'is-invalid': errors.apellidos }"
+                                    v-model="cliente.apellidos"
+                                    clearable
+                                >
+                                </el-input>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.apellidos"
+                                    v-text="errors.apellidos[0]"
                                 ></span>
                             </div>
                             <div class="form-group col-md-6">
@@ -139,7 +159,7 @@
                                     :class="{
                                         'text-danger': errors.correo,
                                     }"
-                                    >Correo electrónico</label
+                                    >Correo electrónico*</label
                                 >
                                 <el-input
                                     placeholder="Correo electrónico"
@@ -172,6 +192,82 @@
                                     class="error invalid-feedback"
                                     v-if="errors.dir"
                                     v-text="errors.dir[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger': errors.password,
+                                    }"
+                                    >Contraseña</label
+                                >
+                                <div class="input-group">
+                                    <input
+                                        placeholder="Contraseña"
+                                        :type="
+                                            mostrar_password
+                                                ? 'text'
+                                                : 'password'
+                                        "
+                                        class="form-control"
+                                        :class="{
+                                            'is-invalid': errors.password,
+                                        }"
+                                        v-model="cliente.password"
+                                        clearable
+                                    />
+                                    <div class="input-group-append">
+                                        <button
+                                            class="btn btn-primary"
+                                            type="button"
+                                            @click="
+                                                mostrar_password =
+                                                    !mostrar_password
+                                            "
+                                        >
+                                            <i
+                                                class="fa"
+                                                :class="
+                                                    mostrar_password
+                                                        ? 'fa-eye'
+                                                        : 'fa-eye-slash'
+                                                "
+                                            ></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <span
+                                    class="error invalid-feedback"
+                                    :class="errors.password ? 'd-block' : ''"
+                                    v-if="errors.password"
+                                    v-text="errors.password[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger': errors.acceso,
+                                    }"
+                                    >Acceso*</label
+                                >
+                                <el-switch
+                                    :class="{
+                                        'is-invalid': errors.acceso,
+                                    }"
+                                    style="display: block"
+                                    v-model="cliente.acceso"
+                                    active-color="#13ce66"
+                                    inactive-color="#ff4949"
+                                    active-text="HABILITADO"
+                                    inactive-text="DESHABILITADO"
+                                    active-value="1"
+                                    inactive-value="0"
+                                >
+                                </el-switch>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.acceso"
+                                    v-text="errors.acceso[0]"
                                 ></span>
                             </div>
                         </div>
@@ -215,13 +311,15 @@ export default {
             default: {
                 id: 0,
                 nombre: "",
+                apellidos: "",
                 ci: "",
                 ci_exp: "",
                 nit: "",
-                fono_array: [],
-                fono: "",
+                fono: [],
                 correo: "",
                 dir: "",
+                password: "",
+                acceso: "0",
             },
         },
     },
@@ -270,6 +368,7 @@ export default {
             listTipos: ["ADMINISTRADOR", "SUPERVISOR", "CAJA"],
             listCajas: [],
             errors: [],
+            mostrar_password: false,
         };
     },
     mounted() {
@@ -291,6 +390,10 @@ export default {
                     "nombre",
                     this.cliente.nombre ? this.cliente.nombre : ""
                 );
+                formdata.append(
+                    "apellidos",
+                    this.cliente.apellidos ? this.cliente.apellidos : ""
+                );
                 formdata.append("ci", this.cliente.ci ? this.cliente.ci : "");
                 formdata.append(
                     "ci_exp",
@@ -302,9 +405,7 @@ export default {
                 );
                 formdata.append(
                     "fono",
-                    this.cliente.fono_array
-                        ? this.cliente.fono_array.join("; ")
-                        : ""
+                    this.cliente.fono ? this.cliente.fono.join("; ") : ""
                 );
                 formdata.append(
                     "correo",
@@ -313,6 +414,14 @@ export default {
                 formdata.append(
                     "dir",
                     this.cliente.dir ? this.cliente.dir : ""
+                );
+                formdata.append(
+                    "password",
+                    this.cliente.password ? this.cliente.password : ""
+                );
+                formdata.append(
+                    "acceso",
+                    this.cliente.acceso ? this.cliente.acceso : ""
                 );
                 if (this.accion == "edit") {
                     url = "/admin/clientes/" + this.cliente.id;
@@ -379,12 +488,15 @@ export default {
         limpiaCliente() {
             this.errors = [];
             this.cliente.nombre = "";
+            this.cliente.apellidos = "";
             this.cliente.ci = "";
             this.cliente.ci_exp = "";
             this.cliente.nit = "";
             this.cliente.fono = [];
             this.cliente.correo = "";
             this.cliente.dir = "";
+            this.cliente.password = "";
+            this.cliente.acceso = "0";
         },
     },
 };

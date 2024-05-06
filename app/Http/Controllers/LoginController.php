@@ -4,14 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Campania;
 use App\Models\CampaniaAutomatica;
+use App\Models\Configuracion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
 class LoginController extends Controller
 {
     public function login(Request $request)
     {
+
+        $request->validate([
+            "captcha" => "required",
+            "usuario" => "required",
+            "password" => "required"
+        ]);
+
         $usuario = $request->usuario;
         $password = $request->password;
         $res = Auth::attempt(['usuario' => $usuario, 'password' => $password]);
@@ -33,6 +42,19 @@ class LoginController extends Controller
             }
         }
         return response()->JSON([], 401);
+    }
+
+
+    public function verifica_captcha(Request $request)
+    {
+        $configuracion = Configuracion::first();
+
+        $response = Http::asForm()->post("https://www.google.com/recaptcha/api/siteverify", [
+            // "secret" => '6LfLgEAkAAAAAEUx6mam_35HPbm5DUl0u4bfHKay',
+            "secret" => $configuracion->captcha_servidor,
+            "response" => $request->input("g-recaptcha-response")
+        ])->object();
+        return response()->JSON($response);
     }
 
     public function logout()

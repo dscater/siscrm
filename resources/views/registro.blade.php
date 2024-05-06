@@ -20,8 +20,16 @@
 
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="stylesheet" href="{{ mix('css/plantilla.css') }}">
+
+
+    @php
+        $api = App\Models\ApiMap::first();
+        $configuracion = App\Models\Configuracion::first();
+    @endphp
+
     <script>
         var main_url = "{{ url('') }}";
+        key_captcha_local = "{{ $configuracion->captcha_local }}";
     </script>
 </head>
 

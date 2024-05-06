@@ -6,6 +6,17 @@
     --transparente: #000000bd;
 }
 
+.contenedor_captcha {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.btn-pedido:disabled {
+    cursor: not-allowed !important;
+    background-color: gray;
+}
+
 .bg-azul {
     background-color: #2198e7;
     color: white !important;

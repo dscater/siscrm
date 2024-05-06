@@ -83,6 +83,11 @@ class UserController extends Controller
             'categorias.edit',
             'categorias.destroy',
 
+            'cupons.index',
+            'cupons.create',
+            'cupons.edit',
+            'cupons.destroy',
+
             'tipo_ingresos.index',
             'tipo_ingresos.create',
             'tipo_ingresos.edit',

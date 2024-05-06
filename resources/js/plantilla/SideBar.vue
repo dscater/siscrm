@@ -505,6 +505,18 @@
                             <p>Otras Configuraciones</p>
                         </router-link>
                     </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('cupons.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'cupons.index' }"
+                            class="nav-link"
+                        >
+                            <i class="nav-icon fas fa-list-alt"></i>
+                            <p>Cupones</p>
+                        </router-link>
+                    </li>
                     <li class="nav-item">
                         <router-link
                             exact

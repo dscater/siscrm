@@ -4,7 +4,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Clientes</h1>
+                        <h1>Cupones</h1>
                     </div>
                 </div>
             </div>
@@ -20,13 +20,13 @@
                                         <button
                                             v-if="
                                                 permisos.includes(
-                                                    'clientes.create'
+                                                    'cupons.create'
                                                 )
                                             "
                                             class="btn btn-primary btn-flat btn-block"
                                             @click="
                                                 abreModal('nuevo');
-                                                limpiaCliente();
+                                                limpiaCupon();
                                             "
                                         >
                                             <i class="fa fa-plus"></i>
@@ -84,33 +84,12 @@
                                                 empty-filtered-text="Sin resultados"
                                                 :filter="filter"
                                             >
-                                                <template #cell(acceso)="row">
-                                                    <span
-                                                        class="badge badge-success"
-                                                        v-if="
-                                                            row.item.user
-                                                                .acceso == 1
-                                                        "
-                                                    >
-                                                        HABILITADO
-                                                    </span>
-                                                    <span
-                                                        v-else
-                                                        class="badge badge-danger"
-                                                    >
-                                                        DESHABILITADO
-                                                    </span>
-                                                </template>
                                                 <template
-                                                    #cell(fecha_registro)="row"
+                                                    #cell(descuento)="row"
                                                 >
-                                                    {{
-                                                        formatoFecha(
-                                                            row.item
-                                                                .fecha_registro
-                                                        )
-                                                    }}
+                                                    {{ row.item.descuento }}%
                                                 </template>
+
                                                 <template #cell(accion)="row">
                                                     <div
                                                         class="row justify-content-between"
@@ -138,10 +117,10 @@
                                                             class="btn-flat btn-block"
                                                             title="Eliminar registro"
                                                             @click="
-                                                                eliminaCliente(
+                                                                eliminaCupon(
                                                                     row.item.id,
                                                                     row.item
-                                                                        .nombre
+                                                                        .texto
                                                                 )
                                                             "
                                                         >
@@ -192,9 +171,9 @@
         <Nuevo
             :muestra_modal="muestra_modal"
             :accion="modal_accion"
-            :cliente="oCliente"
+            :cupon="oCupon"
             @close="muestra_modal = false"
-            @envioModal="getClientes"
+            @envioModal="getCupons"
         ></Nuevo>
     </div>
 </template>
@@ -212,20 +191,10 @@ export default {
             listRegistros: [],
             showOverlay: false,
             fields: [
+                { key: "texto", label: "Texto Cupón", sortable: true },
                 {
-                    key: "full_name",
-                    label: "Nombre(s) y Apellidos",
-                    sortable: true,
-                },
-                { key: "full_ci", label: "C.I.", sortable: true },
-                { key: "nit", label: "Nit", sortable: true },
-                { key: "fono", label: "Teléfono/Celular" },
-                { key: "correo", label: "Correo electrónico" },
-                { key: "dir", label: "Dirección" },
-                { key: "acceso", label: "Acceso" },
-                {
-                    key: "fecha_registro",
-                    label: "Fecha de registro",
+                    key: "descuento",
+                    label: "Porcentajde de Descuento",
                     sortable: true,
                 },
                 { key: "accion", label: "Acción" },
@@ -237,18 +206,9 @@ export default {
             }),
             muestra_modal: false,
             modal_accion: "nuevo",
-            oCliente: {
+            oCupon: {
                 id: 0,
-                nombre: "",
-                apellidos: "",
-                ci: "",
-                ci_exp: "",
-                nit: "",
-                fono: [],
-                correo: "",
-                dir: "",
-                password: "",
-                acceso: "0",
+                texto: "",
             },
             currentPage: 1,
             perPage: 5,
@@ -266,34 +226,24 @@ export default {
     },
     mounted() {
         this.loadingWindow.close();
-        this.getClientes();
+        this.getCupons();
     },
     methods: {
         // Seleccionar Opciones de Tabla
         editarRegistro(item) {
-            this.oCliente.id = item.id;
-            this.oCliente.nombre = item.nombre ? item.nombre : "";
-            this.oCliente.apellidos = item.apellidos ? item.apellidos : "";
-            this.oCliente.ci = item.ci ? item.ci : "";
-            this.oCliente.ci_exp = item.ci_exp ? item.ci_exp : "";
-            this.oCliente.nit = item.nit ? item.nit : "";
-            this.oCliente.fono = item.fono ? item.fono.split("; ") : [];
-            this.oCliente.correo = item.correo ? item.correo : "";
-            this.oCliente.dir = item.dir ? item.dir : "";
-            this.oCliente.acceso = item.user
-                ? item.user.acceso
-                    ? "" + item.user.acceso
-                    : "0"
-                : "0";
+            this.oCupon.id = item.id;
+            this.oCupon.texto = item.texto ? item.texto : "";
+            this.oCupon.descuento = item.descuento ? item.descuento : "";
+
             this.modal_accion = "edit";
             this.muestra_modal = true;
         },
 
-        // Listar Clientes
-        getClientes() {
+        // Listar Cupons
+        getCupons() {
             this.showOverlay = true;
             this.muestra_modal = false;
-            let url = "/admin/clientes";
+            let url = "/admin/cupons";
             if (this.pagina != 0) {
                 url += "?page=" + this.pagina;
             }
@@ -303,14 +253,14 @@ export default {
                 })
                 .then((res) => {
                     this.showOverlay = false;
-                    this.listRegistros = res.data.clientes;
+                    this.listRegistros = res.data.cupons;
                     this.totalRows = res.data.total;
                 });
         },
-        eliminaCliente(id, descripcion) {
+        eliminaCupon(id, descuento) {
             Swal.fire({
                 title: "¿Quierés eliminar este registro?",
-                html: `<strong>${descripcion}</strong>`,
+                html: `<strong>${descuento}</strong>`,
                 showCancelButton: true,
                 confirmButtonColor: "#149FDA",
                 confirmButtonText: "Si, eliminar",
@@ -320,11 +270,11 @@ export default {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     axios
-                        .post("/admin/clientes/" + id, {
+                        .post("/admin/cupons/" + id, {
                             _method: "DELETE",
                         })
                         .then((res) => {
-                            this.getClientes();
+                            this.getCupons();
                             this.filter = "";
                             Swal.fire({
                                 icon: "success",
@@ -359,11 +309,11 @@ export default {
                 }
             });
         },
-        abreModal(tipo_accion = "nuevo", cliente = null) {
+        abreModal(tipo_accion = "nuevo", cupon = null) {
             this.muestra_modal = true;
             this.modal_accion = tipo_accion;
-            if (cliente) {
-                this.oCliente = cliente;
+            if (cupon) {
+                this.oCupon = cupon;
             }
         },
         onFiltered(filteredItems) {
@@ -371,17 +321,9 @@ export default {
             this.totalRows = filteredItems.length;
             this.currentPage = 1;
         },
-        limpiaCliente() {
-            this.oCliente.nombre = "";
-            this.oCliente.apellidos = "";
-            this.oCliente.ci = "";
-            this.oCliente.ci_exp = "";
-            this.oCliente.nit = "";
-            this.oCliente.fono = [];
-            this.oCliente.correo = "";
-            this.oCliente.dir = "";
-            this.oCliente.password = "";
-            this.oCliente.acceso = "0";
+        limpiaCupon() {
+            this.oCupon.texto = "";
+            this.oCupon.descuento = "";
         },
         formatoFecha(date) {
             return this.$moment(String(date)).format("DD/MM/YYYY");

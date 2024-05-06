@@ -14,7 +14,12 @@ class Producto extends Model
         "stock_min", "stock_actual", "imagen", "categoria_id", "fecha_registro",
     ];
 
-    protected $appends = ["url_imagen"];
+    protected $appends = ["url_imagen", "fecha_registro_t"];
+
+    public function getFechaRegistroTAttribute()
+    {
+        return date("d/m/Y", strtotime($this->fecha_registro));
+    }
 
     public function getUrlImagenAttribute()
     {

@@ -17,7 +17,11 @@ class ProveedorController extends Controller
         'fono' => 'required',
     ];
 
-    public $mensajes = [];
+    public $mensajes = [
+        "razon_social.required" => "Este campo es obligatorio",
+        "fono.required" => "Este campo es obligatorio",
+        "nit.max" => "Solo puedes ingresar como maximo :max caracteres",
+    ];
 
     public function index(Request $request)
     {
@@ -27,6 +31,10 @@ class ProveedorController extends Controller
 
     public function store(Request $request)
     {
+        if (isset($request->nit) && trim($request->nit) != '') {
+            $this->validacion["nit"] = "required|max:12";
+        }
+
         $request->validate($this->validacion, $this->mensajes);
 
         DB::beginTransaction();
@@ -63,6 +71,11 @@ class ProveedorController extends Controller
 
     public function update(Request $request, Proveedor $proveedor)
     {
+
+        if (isset($request->nit) && trim($request->nit) != '') {
+            $this->validacion["nit"] = "required|max:12";
+        }
+
         $request->validate($this->validacion, $this->mensajes);
 
         DB::beginTransaction();

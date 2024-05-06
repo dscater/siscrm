@@ -28,10 +28,12 @@
     </script>
     @php
         $api = App\Models\ApiMap::first();
+        $configuracion = App\Models\Configuracion::first();
     @endphp
     @if ($api)
         <script>
             mapa_id = "{{ $api->map_id }}";
+            key_captcha_local = "{{ $configuracion->captcha_local }}";
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key={{ $api->google_maps }}"></script>
     @else

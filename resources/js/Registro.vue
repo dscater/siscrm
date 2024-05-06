@@ -217,6 +217,27 @@
                             </div>
                         </div>
 
+                        <div class="row mb-2">
+                            <div
+                                class="col-12 text-center contenedor_captcha"
+                                :class="{
+                                    'is-invalid': errors.captcha,
+                                }"
+                            >
+                                <vue-recaptcha
+                                    :sitekey="key_secret"
+                                    ref="recaptcha"
+                                    @verify="verificaCaptcha"
+                                    @error="errorCaptcha"
+                                >
+                                </vue-recaptcha>
+                                <span
+                                    class="error invalid-feedback d-block"
+                                    v-if="errors.captcha"
+                                    v-text="errors.captcha[0]"
+                                ></span>
+                            </div>
+                        </div>
                         <div class="row">
                             <!-- /.col -->
                             <div class="col-md-6 form-group mx-auto">
@@ -224,6 +245,7 @@
                                     type="button"
                                     class="btn btn-primary btn-block btn-flat font-weight-bold"
                                     @click.prevent="registro()"
+                                    :disabled="btnDisabled"
                                     v-loading.fullscreen.lock="
                                         fullscreenLoading
                                     "
@@ -258,7 +280,9 @@
 </template>
 
 <script>
+import { VueRecaptcha } from "vue-recaptcha";
 export default {
+    components: { VueRecaptcha },
     props: {
         empresa: { String, default: "Nombre Empresa" },
         logo: {
@@ -303,9 +327,36 @@ export default {
             errors: [],
             listTipos: ["EMPRESA", "INVERSIONISTA"],
             fullscreenLoading: false,
+            key_secret: key_captcha_local,
+            captcha: null,
+            btnDisabled: true,
         };
     },
     methods: {
+        errorCaptcha() {},
+        verificaCaptcha(datos) {
+            let config = {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            };
+            let formdata = new FormData();
+            formdata.append("secret", this.key_secret);
+            formdata.append("g-recaptcha-response", datos);
+            axios
+                .post("/verifica_captcha", formdata, config)
+                .then((response) => {
+                    if (response.data.success) {
+                        this.captcha = response.data.success;
+                        this.btnDisabled = false;
+                    } else {
+                        this.btnDisabled = true;
+                    }
+                })
+                .catch((error) => {
+                    this.btnDisabled = true;
+                });
+        },
         registro() {
             this.fullscreenLoading = true;
             let config = {
@@ -318,21 +369,32 @@ export default {
                 "nombre",
                 this.form_registro.nombre ? this.form_registro.nombre : ""
             );
-            formdata.append("ci", this.form_registro.ci ? this.form_registro.ci : "");
+            formdata.append(
+                "ci",
+                this.form_registro.ci ? this.form_registro.ci : ""
+            );
             formdata.append(
                 "ci_exp",
                 this.form_registro.ci_exp ? this.form_registro.ci_exp : ""
             );
-            formdata.append("nit", this.form_registro.nit ? this.form_registro.nit : "");
+            formdata.append(
+                "nit",
+                this.form_registro.nit ? this.form_registro.nit : ""
+            );
             formdata.append(
                 "fono",
-                this.form_registro.fono ? this.form_registro.fono.join("; ") : ""
+                this.form_registro.fono
+                    ? this.form_registro.fono.join("; ")
+                    : ""
             );
             formdata.append(
                 "correo",
                 this.form_registro.correo ? this.form_registro.correo : ""
             );
-            formdata.append("dir", this.form_registro.dir ? this.form_registro.dir : "");
+            formdata.append(
+                "dir",
+                this.form_registro.dir ? this.form_registro.dir : ""
+            );
             formdata.append(
                 "password",
                 this.form_registro.password ? this.form_registro.password : ""
@@ -343,6 +405,10 @@ export default {
                     ? this.form_registro.password_confirmation
                     : ""
             );
+
+            if (this.captcha) {
+                formdata.append("captcha", this.captcha);
+            }
             axios
                 .post(main_url + "/administracion/registro", formdata, config)
                 .then((res) => {
@@ -410,6 +476,7 @@ export default {
 .login-page.registro .login-box form label {
     color: white;
 }
+
 @media screen (max-width: 800px) {
     .login-page.registro .login-box {
         min-width: 95%;

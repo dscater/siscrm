@@ -32,7 +32,9 @@
                                 >
                                 <el-input
                                     placeholder="Razón social"
-                                    :class="{ 'is-invalid': errors.razon_social }"
+                                    :class="{
+                                        'is-invalid': errors.razon_social,
+                                    }"
                                     v-model="proveedor.razon_social"
                                     clearable
                                 >
@@ -130,6 +132,50 @@
                             <div class="form-group col-md-6">
                                 <label
                                     :class="{
+                                        'text-danger': errors.paterno,
+                                    }"
+                                    >Ap. Paterno</label
+                                >
+                                <el-input
+                                    placeholder="Ap. Paterno"
+                                    :class="{
+                                        'is-invalid': errors.paterno,
+                                    }"
+                                    v-model="proveedor.paterno"
+                                    clearable
+                                >
+                                </el-input>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.paterno"
+                                    v-text="errors.paterno[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger': errors.materno,
+                                    }"
+                                    >Ap. Materno</label
+                                >
+                                <el-input
+                                    placeholder="Ap. Materno"
+                                    :class="{
+                                        'is-invalid': errors.materno,
+                                    }"
+                                    v-model="proveedor.materno"
+                                    clearable
+                                >
+                                </el-input>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.materno"
+                                    v-text="errors.materno[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
                                         'text-danger': errors.descripcion,
                                     }"
                                     >Descripción</label
@@ -196,6 +242,8 @@ export default {
                 dir: "",
                 fono: [],
                 nombre_contacto: "",
+                paterno: "",
+                materno: "",
                 descripcion: "",
             },
         },
@@ -251,7 +299,9 @@ export default {
                 let formdata = new FormData();
                 formdata.append(
                     "razon_social",
-                    this.proveedor.razon_social ? this.proveedor.razon_social : ""
+                    this.proveedor.razon_social
+                        ? this.proveedor.razon_social
+                        : ""
                 );
                 formdata.append(
                     "nit",
@@ -270,6 +320,14 @@ export default {
                     this.proveedor.nombre_contacto
                         ? this.proveedor.nombre_contacto
                         : ""
+                );
+                formdata.append(
+                    "paterno",
+                    this.proveedor.paterno ? this.proveedor.paterno : ""
+                );
+                formdata.append(
+                    "materno",
+                    this.proveedor.materno ? this.proveedor.materno : ""
                 );
                 formdata.append(
                     "descripcion",
@@ -355,6 +413,8 @@ export default {
             this.proveedor.dir = "";
             this.proveedor.fono = [];
             this.proveedor.nombre_contacto = "";
+            this.proveedor.paterno = "";
+            this.proveedor.materno = "";
             this.proveedor.descripcion = "";
         },
     },

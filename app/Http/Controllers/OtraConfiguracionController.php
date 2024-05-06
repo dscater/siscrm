@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ApiMap;
+use App\Models\Configuracion;
 use App\Models\Cupon;
 use App\Models\EnvioCorreo;
 use App\Models\EnvioWhatsapp;
@@ -17,12 +18,14 @@ class OtraConfiguracionController extends Controller
         $envio_correo = EnvioCorreo::first();
         $envio_whatsapp = EnvioWhatsapp::first();
         $cupon = Cupon::first();
+        $configuracion = Configuracion::first();
 
         return response()->JSON([
             "api_map" => $api_map,
             "envio_correo" => $envio_correo,
             "envio_whatsapp" => $envio_whatsapp,
             "cupon" => $cupon,
+            "configuracion" => $configuracion
         ]);
     }
 
@@ -43,6 +46,8 @@ class OtraConfiguracionController extends Controller
             "token" => "required",
             "from" => "required",
             "url_phone" => "required",
+            "captcha_local" => "required",
+            "captcha_servidor" => "required",
         ];
         $mensajes =  [
             'google_maps.required' => 'Este campo es obligatorio',
@@ -58,6 +63,8 @@ class OtraConfiguracionController extends Controller
             'token.required' => 'Este campo es obligatorio',
             'from.required' => 'Este campo es obligatorio',
             'url_phone.required' => 'Este campo es obligatorio',
+            'captcha_local.required' => 'Este campo es obligatorio',
+            'captcha_servidor.required' => 'Este campo es obligatorio',
         ];
 
         $request->validate($validacion, $mensajes);
@@ -74,7 +81,7 @@ class OtraConfiguracionController extends Controller
             $api_map = ApiMap::first();
             $envio_correo = EnvioCorreo::first();
             $envio_whatsapp = EnvioWhatsapp::first();
-            $cupon = Cupon::first();
+            $configuracion = Configuracion::first();
             if ($api_map) {
                 $api_map->update([
                     "google_maps" => $request->google_maps,
@@ -126,17 +133,10 @@ class OtraConfiguracionController extends Controller
                 ]);
             }
 
-
-            if ($cupon) {
-                $cupon->update([
-                    "texto" => mb_strtoupper($request->texto),
-                    "descuento" => $request->descuento,
-                ]);
-            } else {
-                $cupon = Cupon::create([
-                    "texto" => mb_strtoupper($request->texto),
-                    "descuento" => $request->descuento,
-                ]);
+            if ($configuracion) {
+                $configuracion->captcha_local = $request->captcha_local;
+                $configuracion->captcha_servidor = $request->captcha_servidor;
+                $configuracion->save();
             }
 
             DB::commit();
@@ -146,7 +146,7 @@ class OtraConfiguracionController extends Controller
                 'api_map' => $api_map,
                 'envio_correo' => $envio_correo,
                 'envio_whatsapp' => $envio_whatsapp,
-                'cupon' => $cupon,
+                'configuracion' => $configuracion,
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();

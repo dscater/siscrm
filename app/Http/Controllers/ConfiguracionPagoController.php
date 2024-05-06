@@ -12,8 +12,8 @@ use Illuminate\Support\Facades\DB;
 class ConfiguracionPagoController extends Controller
 {
     public $validacion = [
-        'banco' => 'required|min:2',
-        'nro_cuenta' => 'required|min:2',
+        'banco' => 'required|min:3',
+        'nro_cuenta' => 'required|min:2|regex:/^[0-9-]+$/',
     ];
 
     public $mensajes = [];

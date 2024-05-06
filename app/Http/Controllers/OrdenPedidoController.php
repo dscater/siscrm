@@ -17,7 +17,6 @@ class OrdenPedidoController extends Controller
     public $validacion = [
         "productos" => "required|array|min:1",
         "configuracion_pago_id" => "required",
-        "celular" => "required",
         "comprobante" => "required",
     ];
 
@@ -34,9 +33,9 @@ class OrdenPedidoController extends Controller
 
         $orden_pedidos = [];
         if (Auth::user()->tipo == 'CLIENTE') {
-            $orden_pedidos = OrdenPedido::with(["user"])->where("user_id", Auth::user()->id)->get();
+            $orden_pedidos = OrdenPedido::with(["user"])->where("user_id", Auth::user()->id)->orderby("created_at", "desc")->get();
         } else {
-            $orden_pedidos = OrdenPedido::with(["user"])->get();
+            $orden_pedidos = OrdenPedido::with(["user"])->orderby("created_at", "desc")->get();
         }
 
         return response()->JSON(['orden_pedidos' => $orden_pedidos, 'total' => count($orden_pedidos)], 200);
@@ -59,13 +58,14 @@ class OrdenPedidoController extends Controller
             $cupon = Cupon::where("texto", $request->cupon)->get()->first();
             $p_descuento = 0;
             $request["descuento"] = 0;
+            $monto_descuento = 0;
             if ($cupon) {
                 // calcular descuento
                 $p_descuento = (float)$cupon->descuento / 100;
                 $monto_descuento  = (float)$request["total"] * $p_descuento;
-                $total_con_descuento = (float)$request["total"] - ($monto_descuento);
                 $request["descuento"] = $cupon->descuento;
             }
+            $total_con_descuento = (float)$request["total"] - ($monto_descuento);
             $request["total_final"] = $total_con_descuento;
 
             $nueva_orden_pedido = OrdenPedido::create(array_map('mb_strtoupper', $request->except("productos", "cantidades", "precios", "precio_total")));
@@ -287,17 +287,18 @@ class OrdenPedidoController extends Controller
     {
         DB::beginTransaction();
         try {
-            $antiguo = $orden_pedido->comprobante;
-            if ($antiguo != 'default.png') {
-                \File::delete(public_path() . '/imgs/comprobantes/' . $antiguo);
-            }
-            $orden_pedido->orden_detalles()->delete();
+            // $antiguo = $orden_pedido->comprobante;
+            // if ($antiguo != 'default.png') {
+            //     \File::delete(public_path() . '/imgs/comprobantes/' . $antiguo);
+            // }
+            // $orden_pedido->orden_detalles()->delete();
             $datos_original = HistorialAccion::getDetalleRegistro($orden_pedido, "orden_pedidos");
-            $orden_pedido->delete();
+            $orden_pedido->status = 0;
+            $orden_pedido->save();
             HistorialAccion::create([
                 'user_id' => Auth::user()->id,
                 'accion' => 'ELIMINACIÓN',
-                'descripcion' => 'EL USUARIO ' . Auth::user()->orden_pedido . ' ELIMINÓ UNA ORDEN DE PEDIDO',
+                'descripcion' => 'EL USUARIO ' . Auth::user()->orden_pedido . ' ANULÓ UNA ORDEN DE PEDIDO',
                 'datos_original' => $datos_original,
                 'modulo' => 'ORDEN DE PEDIDOS',
                 'fecha' => date('Y-m-d'),
@@ -306,7 +307,37 @@ class OrdenPedidoController extends Controller
             DB::commit();
             return response()->JSON([
                 'sw' => true,
-                'message' => 'El registro se eliminó correctamente'
+                'message' => 'El registro se anuló correctamente'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->JSON([
+                'sw' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function habilitar(OrdenPedido $orden_pedido)
+    {
+        DB::beginTransaction();
+        try {
+            $datos_original = HistorialAccion::getDetalleRegistro($orden_pedido, "orden_pedidos");
+            $orden_pedido->status = 1;
+            $orden_pedido->save();
+            HistorialAccion::create([
+                'user_id' => Auth::user()->id,
+                'accion' => 'ELIMINACIÓN',
+                'descripcion' => 'EL USUARIO ' . Auth::user()->orden_pedido . ' HABILITO UNA ORDEN DE PEDIDO',
+                'datos_original' => $datos_original,
+                'modulo' => 'ORDEN DE PEDIDOS',
+                'fecha' => date('Y-m-d'),
+                'hora' => date('H:i:s')
+            ]);
+            DB::commit();
+            return response()->JSON([
+                'sw' => true,
+                'message' => 'El registro se habilito correctamente'
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();

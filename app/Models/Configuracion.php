@@ -21,6 +21,8 @@ class Configuracion extends Model
         "twitter",
         "youtube",
         "ubicacion",
+        "captcha_local",
+        "captcha_servidor"
     ];
 
     protected $appends = ['path_image', "url_servicios_img", "url_mision_img", "url_vision_img", "url_nosotros_img"];

@@ -24,6 +24,7 @@ class OrdenPedido extends Model
         "total_final",
         "estado",
         "user_id",
+        "status",
         "fecha_registro",
     ];
 

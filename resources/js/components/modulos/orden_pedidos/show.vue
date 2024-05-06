@@ -66,7 +66,9 @@
                                         Celular:
                                     </div>
                                     <div class="col-6 col-md-4">
-                                        {{ oOrdenPedido.celular }}
+                                        {{
+                                            oOrdenPedido.user?.cliente?.celular
+                                        }}
                                     </div>
                                     <div
                                         class="col-6 col-md-2 text-right font-weight-bold"
@@ -77,7 +79,10 @@
                                         {{ oOrdenPedido.entrega }}
                                     </div>
                                 </div>
-                                <div class="row mb-2">
+                                <div
+                                    class="row mb-2"
+                                    v-if="oOrdenPedido.entrega == 'DOMICILIO'"
+                                >
                                     <div
                                         class="col-6 col-md-2 text-right font-weight-bold"
                                     >
@@ -196,6 +201,7 @@
                                     v-if="
                                         oOrdenPedido.estado ==
                                             'PEDIDO PENDIENTE' &&
+                                        oOrdenPedido.status != 0 &&
                                         oUser &&
                                         (oUser.tipo == 'ADMINISTRADOR' ||
                                             oUser.tipo == 'VENDEDOR')
@@ -217,8 +223,31 @@
                                             class="btn btn-danger btn-block btn-flat"
                                             @click="eliminarOrdenPedido"
                                         >
-                                            <i class="fa fa-trash"></i> Eliminar
+                                            <i class="fa fa-ban"></i> Anular
                                             Orden
+                                        </button>
+                                    </div>
+                                </div>
+                                <div
+                                    class="row mb-2"
+                                    v-if="
+                                        oOrdenPedido.status == 0 &&
+                                        oUser &&
+                                        oUser.tipo == 'ADMINISTRADOR'
+                                    "
+                                >
+                                    <div
+                                        class="col-6 col-md-2 text-right font-weight-bold"
+                                    >
+                                        Acciones:
+                                    </div>
+                                    <div class="col-6 col-md-10">
+                                        <button
+                                            class="btn btn-success btn-block btn-flat"
+                                            @click="rehabilitar"
+                                        >
+                                            <i class="fa fa-check"></i>
+                                            Rehabilitar Orden
                                         </button>
                                     </div>
                                 </div>
@@ -302,10 +331,12 @@ export default {
         getOrdenPedido() {
             axios.get("/admin/orden_pedidos/" + this.id).then((response) => {
                 this.oOrdenPedido = response.data.orden_pedido;
-                this.cargaMapaGoogle(
-                    this.oOrdenPedido.lat,
-                    this.oOrdenPedido.lng
-                );
+                if (this.oOrdenPedido.entrega == "DOMICILIO") {
+                    this.cargaMapaGoogle(
+                        this.oOrdenPedido.lat,
+                        this.oOrdenPedido.lng
+                    );
+                }
             });
         },
         actualizarEstado() {
@@ -370,10 +401,10 @@ export default {
         },
         eliminarOrdenPedido() {
             Swal.fire({
-                title: "¿Quierés eliminar este registro?",
+                title: "¿Quierés anular este registro?",
                 showCancelButton: true,
                 confirmButtonColor: "#c82333",
-                confirmButtonText: "Si, eliminar",
+                confirmButtonText: "Si, anular",
                 cancelButtonText: "No, cancelar",
                 denyButtonText: `No, cancelar`,
             }).then((result) => {
@@ -383,6 +414,62 @@ export default {
                         .post("/admin/orden_pedidos/" + this.oOrdenPedido.id, {
                             _method: "DELETE",
                         })
+                        .then((res) => {
+                            this.getOrdenPedido();
+
+                            Swal.fire({
+                                icon: "success",
+                                title: res.data.message,
+                                showConfirmButton: false,
+                                timer: 1500,
+                            });
+                            this.$router.push({ name: "orden_pedidos.index" });
+                        })
+                        .catch((error) => {
+                            if (error.response) {
+                                if (error.response.status === 422) {
+                                    this.errors = error.response.data.errors;
+                                }
+                                if (
+                                    error.response.status === 420 ||
+                                    error.response.status === 419 ||
+                                    error.response.status === 401
+                                ) {
+                                    window.location = "/";
+                                }
+                                if (error.response.status === 500) {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Error",
+                                        html: error.response.data.message,
+                                        showConfirmButton: false,
+                                        timer: 2000,
+                                    });
+                                }
+                            }
+                        });
+                }
+            });
+        },
+        rehabilitar() {
+            Swal.fire({
+                title: "¿Quierés volver a habilitar este registro?",
+                showCancelButton: true,
+                confirmButtonColor: "#149fda",
+                confirmButtonText: "Si, habilitar",
+                cancelButtonText: "No, cancelar",
+                denyButtonText: `No, cancelar`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    axios
+                        .post(
+                            "/admin/orden_pedidos/habilitar/" +
+                                this.oOrdenPedido.id,
+                            {
+                                _method: "PATCH",
+                            }
+                        )
                         .then((res) => {
                             this.getOrdenPedido();
 

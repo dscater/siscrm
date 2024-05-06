@@ -194,7 +194,30 @@
                                     class="w-100"
                                 />
                             </div>
-                            <div class="col-12 mt-3">
+                            <div class="form-group col-md-12">
+                                <label class="">Entrega*</label>
+                                <select
+                                    type="text"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid': errors.entrega,
+                                    }"
+                                    v-model="oPedido.entrega"
+                                >
+                                    <option value="">- Seleccione -</option>
+                                    <option value="DOMICILIO">DOMICILIO</option>
+                                    <option value="TIENDA">TIENDA</option>
+                                </select>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.entrega"
+                                    v-text="errors.entrega[0]"
+                                ></span>
+                            </div>
+                            <div
+                                class="col-12 mt-3"
+                                v-show="oPedido.entrega == 'DOMICILIO'"
+                            >
                                 <label class="">Selecciona tu ubicación:</label>
                                 <div id="google_map"></div>
                             </div>
@@ -218,26 +241,6 @@
                                 ></span>
                             </div>
                             <div class="form-group col-md-12">
-                                <label class="">Entrega*</label>
-                                <select
-                                    type="text"
-                                    class="form-control"
-                                    :class="{
-                                        'is-invalid': errors.entrega,
-                                    }"
-                                    v-model="oPedido.entrega"
-                                >
-                                    <option value="">- Seleccione -</option>
-                                    <option value="DOMICILIO">DOMICILIO</option>
-                                    <option value="TIENDA">TIENDA</option>
-                                </select>
-                                <span
-                                    class="error invalid-feedback"
-                                    v-if="errors.entrega"
-                                    v-text="errors.entrega[0]"
-                                ></span>
-                            </div>
-                            <div class="form-group col-md-12">
                                 <label class=""
                                     >Cupón de descuento (opcional)</label
                                 >
@@ -255,7 +258,7 @@
                                     v-text="errors.cupon[0]"
                                 ></span>
                             </div>
-                            <div class="form-group col-md-12">
+                            <!-- <div class="form-group col-md-12">
                                 <label class="">Teléfono/Celular*</label>
                                 <input
                                     type="text"
@@ -270,7 +273,7 @@
                                     v-if="errors.celular"
                                     v-text="errors.celular[0]"
                                 ></span>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div
@@ -288,11 +291,38 @@
                         </div>
 
                         <template v-if="oUser && oUser.tipo == 'CLIENTE'">
+                            <div class="row mb-2">
+                                <div
+                                    class="col-12 text-center contenedor_captcha"
+                                    :class="{
+                                        'is-invalid': errors.captcha,
+                                    }"
+                                >
+                                    <vue-recaptcha
+                                        :sitekey="key_secret"
+                                        ref="recaptcha"
+                                        @verify="verificaCaptcha"
+                                        @error="errorCaptcha"
+                                    >
+                                    </vue-recaptcha>
+                                    <span
+                                        class="error invalid-feedback d-block"
+                                        v-if="errors.captcha"
+                                        v-text="errors.captcha[0]"
+                                    ></span>
+                                </div>
+                            </div>
+
                             <button
                                 v-if="oPedido.detalle_pedidos.length > 0"
-                                class="flex-c-m stext-101 cl2 size-116 bg-info text-white bor14 hov-btn1 p-lr-15 trans-04 pointer mt-3"
+                                class="btn btn-block pt-2 pb-2 disabled btn-pedido"
+                                :class="[
+                                    btnDisabled
+                                        ? 'btn-default'
+                                        : 'btn-primary bg-cyan',
+                                ]"
                                 @click="prepararEnvio()"
-                                :disabled="enviando"
+                                :disabled="enviando || btnDisabled"
                                 v-text="txtBoton"
                             ></button>
                         </template>
@@ -318,7 +348,9 @@
     </section>
 </template>
 <script>
+import { VueRecaptcha } from "vue-recaptcha";
 export default {
+    components: { VueRecaptcha },
     data() {
         return {
             fullscreenLoading: true,
@@ -341,10 +373,16 @@ export default {
             marker_map: null,
             banco_actual: null,
             oUser: null,
+            key_secret: key_captcha_local,
+            captcha: null,
+            btnDisabled: true,
         };
     },
     computed: {
         txtBoton() {
+            if (this.btnDisabled) {
+                return "Selecciona el captcha para continuar";
+            }
             if (this.enviando) {
                 return "ENVIANDO...";
             }
@@ -361,6 +399,30 @@ export default {
         $(".js-sidebar").removeClass("show-sidebar");
     },
     methods: {
+        errorCaptcha() {},
+        verificaCaptcha(datos) {
+            let config = {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            };
+            let formdata = new FormData();
+            formdata.append("secret", this.key_secret);
+            formdata.append("g-recaptcha-response", datos);
+            axios
+                .post("/verifica_captcha", formdata, config)
+                .then((response) => {
+                    if (response.data.success) {
+                        this.captcha = response.data.success;
+                        this.btnDisabled = false;
+                    } else {
+                        this.btnDisabled = true;
+                    }
+                })
+                .catch((error) => {
+                    this.btnDisabled = true;
+                });
+        },
         getAuth() {
             axios.get(main_url + "/auth").then((response) => {
                 this.oUser = response.data;

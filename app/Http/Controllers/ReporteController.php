@@ -134,6 +134,11 @@ class ReporteController extends Controller
                 'fecha_fin' => 'required|date',
             ]);
         }
+        if ($filtro == 'Canal de ventas') {
+            $request->validate([
+                'canal' => 'required',
+            ]);
+        }
 
         $ventas = Venta::all();
         if ($filtro != 'todos') {
@@ -145,6 +150,9 @@ class ReporteController extends Controller
             }
             if ($filtro == 'Rango de fechas') {
                 $ventas = Venta::whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])->get();
+            }
+            if ($filtro == 'Canal de ventas') {
+                $ventas = Venta::where("tipo", [$request->canal])->get();
             }
         }
         $pdf = PDF::loadView('reportes.ventas', compact('ventas'))->setPaper('legal', 'portrait');
@@ -324,7 +332,7 @@ class ReporteController extends Controller
                 "fecha_ini" => "required|date",
                 "fecha_fin" => "required|date",
             ]);
-            
+
             $aux_fecha_ini = $fecha_ini;
             while ($aux_fecha_ini <= $fecha_fin) {
                 $categories[] = $aux_fecha_ini;

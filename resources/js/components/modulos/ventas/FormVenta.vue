@@ -44,7 +44,7 @@
                                                 v-for="item in listClientes"
                                                 :key="item.id"
                                                 :value="item.id"
-                                                :label="item.nombre"
+                                                :label="item.full_name"
                                             >
                                             </el-option>
                                         </el-select>
@@ -70,18 +70,15 @@
                                                 <tr>
                                                     <td
                                                         data-col="Nombre Completo: "
-                                                        v-text
                                                     >
-                                                        {{ oCliente.nombre }}
+                                                        {{ oCliente.full_name }}
                                                     </td>
                                                     <td
                                                         data-col="Número C.I. o Nit: "
                                                     >
                                                         <select
                                                             class="form-control"
-                                                            v-model="
-                                                                venta.nit
-                                                            "
+                                                            v-model="venta.nit"
                                                         >
                                                             <option value="0">
                                                                 0
@@ -271,10 +268,7 @@
                                 </thead>
                                 <tbody>
                                     <tr
-                                        v-if="
-                                            venta.detalle_ventas.length >
-                                            0
-                                        "
+                                        v-if="venta.detalle_ventas.length > 0"
                                         v-for="(
                                             item, index
                                         ) in venta.detalle_ventas"
@@ -306,12 +300,7 @@
                                             </button>
                                         </td>
                                     </tr>
-                                    <tr
-                                        v-if="
-                                            venta.detalle_ventas.length ==
-                                            0
-                                        "
-                                    >
+                                    <tr v-if="venta.detalle_ventas.length == 0">
                                         <td
                                             colspan="5"
                                             class="text-center text-gray font-weight-bold"
@@ -472,7 +461,7 @@ export default {
             if (newVal.id != 0) {
                 this.getClientes();
                 this.getCliente();
-                this.getCajas();
+                // this.getCajas();
             }
         },
     },
@@ -721,11 +710,7 @@ export default {
                 responseType: "blob",
             };
             axios
-                .post(
-                    "/admin/ventas/pdf/" + this.venta.id,
-                    null,
-                    config
-                )
+                .post("/admin/ventas/pdf/" + this.venta.id, null, config)
                 .then((res) => {
                     this.errors = [];
                     this.enviando = false;
@@ -807,8 +792,7 @@ export default {
                                 ? this.venta.descuento
                                 : 0
                         ) / 100;
-                    let descuento =
-                        parseFloat(this.venta.total) * p_descuento;
+                    let descuento = parseFloat(this.venta.total) * p_descuento;
                     this.venta.total_final = parseFloat(
                         parseFloat(this.venta.total) - descuento
                     ).toFixed(2);

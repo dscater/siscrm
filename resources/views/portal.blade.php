@@ -23,7 +23,11 @@
 
     @php
         $api = App\Models\ApiMap::first();
+        $configuracion = App\Models\Configuracion::first();
     @endphp
+    <script>
+        key_captcha_local = "{{ $configuracion->captcha_local }}";
+    </script>
     @if ($api)
         <script>
             mapa_id = "{{ $api->map_id }}";

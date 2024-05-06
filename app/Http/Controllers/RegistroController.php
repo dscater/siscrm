@@ -20,6 +20,7 @@ class RegistroController extends Controller
     {
         $request->validate(
             [
+                "captcha" => "required",
                 'nombre' => 'required',
                 'ci' => 'required',
                 'ci_exp' => 'required',
@@ -27,6 +28,7 @@ class RegistroController extends Controller
                 'password' => 'required|string|min:8|confirmed'
             ],
             [
+                "captcha.required" => "Este campo es obligatorio",
                 "nombre.required" => "Este campo es obligatorio",
                 "ci.required" => "Este campo es obligatorio",
                 "ci_exp.required" => "Este campo es obligatorio",

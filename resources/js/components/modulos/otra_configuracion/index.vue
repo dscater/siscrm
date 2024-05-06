@@ -282,44 +282,55 @@
                                         ></span>
                                     </div>
                                 </div>
-                                <h4>Cupón de descuento</h4>
+                                <h4>
+                                    Configuracion Captcha
+                                    <a
+                                        href="https://www.google.com/recaptcha/admin/create"
+                                        target="_blank"
+                                        ><i class="fa fa-circle"></i
+                                    ></a>
+                                </h4>
                                 <div class="row">
                                     <div class="col-md-12 form-group">
-                                        <label for="">Texto Cupón:</label>
+                                        <label for=""
+                                            >Clave local (Sitio Web):</label
+                                        >
                                         <input
                                             type="text"
                                             class="form-control"
                                             :class="{
-                                                'is-invalid': errors.texto,
+                                                'is-invalid':
+                                                    errors.captcha_local,
                                             }"
-                                            v-model="oConfiguracion.texto"
+                                            v-model="
+                                                oConfiguracion.captcha_local
+                                            "
                                         />
 
                                         <span
                                             class="error invalid-feedback"
-                                            v-if="errors.texto"
-                                            v-text="errors.texto[0]"
+                                            v-if="errors.captcha_local"
+                                            v-text="errors.captcha_local[0]"
                                         ></span>
                                     </div>
                                     <div class="col-md-12 form-group">
-                                        <label for=""
-                                            >Porcentaje de descuento
-                                            (0-100%)</label
-                                        >
+                                        <label for="">Clave servidor:</label>
                                         <input
-                                            type="number"
+                                            type="text"
                                             class="form-control"
-                                            step="0.01"
                                             :class="{
-                                                'is-invalid': errors.descuento,
+                                                'is-invalid':
+                                                    errors.captcha_servidor,
                                             }"
-                                            v-model="oConfiguracion.descuento"
+                                            v-model="
+                                                oConfiguracion.captcha_servidor
+                                            "
                                         />
 
                                         <span
                                             class="error invalid-feedback"
-                                            v-if="errors.descuento"
-                                            v-text="errors.descuento[0]"
+                                            v-if="errors.captcha_servidor"
+                                            v-text="errors.captcha_servidor[0]"
                                         ></span>
                                     </div>
                                 </div>
@@ -418,6 +429,12 @@ export default {
                 if (res.data.cupon) {
                     this.oConfiguracion.texto = res.data.cupon.texto;
                     this.oConfiguracion.descuento = res.data.cupon.descuento;
+                }
+                if (res.data.configuracion) {
+                    this.oConfiguracion.captcha_local =
+                        res.data.configuracion.captcha_local;
+                    this.oConfiguracion.captcha_servidor =
+                        res.data.configuracion.captcha_servidor;
                 }
             });
         },

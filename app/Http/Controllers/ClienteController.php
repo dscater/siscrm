@@ -14,18 +14,23 @@ class ClienteController extends Controller
 {
     public $validacion = [
         'nombre' => 'required',
-        'ci' => 'required',
+        'apellidos' => 'required',
+        'ci' => 'required|max:12',
         'ci_exp' => 'required',
     ];
 
     public $mensajes = [
         "nombre.required" => "Este campo es obligatorio",
+        "apellidos.required" => "Este campo es obligatorio",
         "ci.required" => "Este campo es obligatorio",
         "ci_exp.required" => "Este campo es obligatorio",
         "correo.required" => "Este campo es obligatorio",
         "correo.unique" => "Este correo ya se encuentra registrado",
+        "correo.regex" => "Formato de correo no valido",
         "password.required" => "Este campo es obligatorio",
-        "password.min" => "Debes ingresar como minimo 8 caracteres",
+        "password.min" => "Debes ingresar como minimo :min caracteres",
+        "ci.max" => "Debes ingresar como maximo :max caracteres",
+        "nit.max" => "Debes ingresar como maximo :max caracteres",
     ];
 
     public function index(Request $request)
@@ -36,8 +41,13 @@ class ClienteController extends Controller
 
     public function store(Request $request)
     {
-        $this->validacion["correo"] = "required|unique:clientes,correo";
+        $this->validacion["correo"] = "required|unique:clientes,correo|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
         $this->validacion["password"] = "required|min:8";
+
+        if (isset($request->nit) && $request->nit != '') {
+            $this->validacion["nit"] = "max:12";
+        }
+
         $request->validate($this->validacion, $this->mensajes);
 
         DB::beginTransaction();
@@ -52,6 +62,7 @@ class ClienteController extends Controller
             $user = User::create(array_map("mb_strtoupper", [
                 "usuario" => $nuevo_cliente->correo,
                 "nombre" => $nuevo_cliente->nombre,
+                "paterno" => $nuevo_cliente->apellidos,
                 "ci" => $nuevo_cliente->ci,
                 "ci_exp" => $nuevo_cliente->ci_exp,
                 "dir" => $nuevo_cliente->dir,
@@ -101,7 +112,7 @@ class ClienteController extends Controller
     public function update(Request $request, Cliente $cliente)
     {
 
-        $this->validacion["correo"] = "required|unique:clientes,correo," . $cliente->id;
+        $this->validacion["correo"] = "required|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/|unique:clientes,correo," . $cliente->id;
         if (!$cliente->user) {
             $this->validacion["password"] = "required|min:8";
         }
@@ -122,6 +133,7 @@ class ClienteController extends Controller
                 $user = User::create(array_map("mb_strtoupper", [
                     "usuario" => $cliente->correo,
                     "nombre" => $cliente->nombre,
+                    "paterno" => $cliente->apellidos,
                     "ci" => $cliente->ci,
                     "ci_exp" => $cliente->ci_exp,
                     "dir" => $cliente->dir,
@@ -142,6 +154,7 @@ class ClienteController extends Controller
                 $cliente->user()->update(array_map("mb_strtoupper", [
                     "usuario" => $cliente->correo,
                     "nombre" => $cliente->nombre,
+                    "paterno" => $cliente->apellidos,
                     "ci" => $cliente->ci,
                     "ci_exp" => $cliente->ci_exp,
                     "dir" => $cliente->dir,

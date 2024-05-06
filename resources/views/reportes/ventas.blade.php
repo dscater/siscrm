@@ -191,11 +191,15 @@
                 </tr>
                 <tr>
                     <th class="izquierda">Cliente:</th>
-                    <th class="izquierda" colspan="3">{{ $venta->cliente->nombre }}</th>
+                    <th class="izquierda" colspan="3">{{ $venta->cliente->full_name }}</th>
                 </tr>
                 <tr>
                     <th class="izquierda">Nit:</th>
                     <th class="izquierda" colspan="3">{{ $venta->nit }}</th>
+                </tr>
+                <tr>
+                    <th class="izquierda">Canal de venta:</th>
+                    <th class="izquierda" colspan="3">{{ $venta->tipo }}</th>
                 </tr>
                 <tr>
                     <th class="izquierda">

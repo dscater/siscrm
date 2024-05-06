@@ -87,6 +87,21 @@
                                                 empty-filtered-text="Sin resultados"
                                                 :filter="filter"
                                             >
+                                                <template
+                                                    #head(fecha_registro_t)="data"
+                                                >
+                                                    {{ data.label }}
+                                                    <span
+                                                        style="cursor: pointer"
+                                                        @click="
+                                                            actualizaOrden()
+                                                        "
+                                                        v-html="
+                                                            getOrderFechaIcon
+                                                        "
+                                                    ></span>
+                                                </template>
+
                                                 <template #cell(imagen)="row">
                                                     <img
                                                         :src="
@@ -202,6 +217,14 @@ export default {
     components: {
         Nuevo,
     },
+    computed: {
+        getOrderFechaIcon() {
+            if (this.orderFecha == "asc") {
+                return `<i class="fa fa-sort-amount-down-alt"></i>`;
+            }
+            return `<i class="fa fa-sort-amount-up"></i>`;
+        },
+    },
     data() {
         return {
             permisos: localStorage.getItem("permisos"),
@@ -209,6 +232,10 @@ export default {
             listRegistros: [],
             showOverlay: false,
             fields: [
+                {
+                    key: "fecha_registro_t",
+                    label: "Fecha de Registro",
+                },
                 {
                     key: "codigo_almacen",
                     label: "Código Almacén",
@@ -244,6 +271,7 @@ export default {
                 imagen: null,
                 categoria_id: "",
             },
+            orderFecha: "asc",
             page: 1,
             currentPage: 1,
             perPage: 5,
@@ -301,7 +329,10 @@ export default {
             }
             axios
                 .get(url, {
-                    params: { per_page: this.per_page },
+                    params: {
+                        per_page: this.per_page,
+                        orderFecha: this.orderFecha,
+                    },
                 })
                 .then((res) => {
                     this.showOverlay = false;
@@ -310,6 +341,14 @@ export default {
                 });
         },
 
+        actualizaOrden() {
+            if (this.orderFecha == "asc") {
+                this.orderFecha = "desc";
+            } else {
+                this.orderFecha = "asc";
+            }
+            this.listaProductos();
+        },
         eliminaProducto(id, descripcion) {
             Swal.fire({
                 title: "¿Quierés eliminar este registro?",

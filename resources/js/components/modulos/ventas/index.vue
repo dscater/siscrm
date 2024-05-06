@@ -220,7 +220,7 @@ export default {
                     sortable: true,
                 },
                 {
-                    key: "cliente.nombre",
+                    key: "cliente.full_name",
                     label: "Cliente",
                     sortable: true,
                 },
@@ -230,6 +230,11 @@ export default {
                 {
                     key: "fecha_registro",
                     label: "Fecha de registro",
+                    sortable: true,
+                },
+                {
+                    key: "tipo",
+                    label: "Canal",
                     sortable: true,
                 },
                 { key: "accion", label: "Acción" },

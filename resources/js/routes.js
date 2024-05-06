@@ -115,6 +115,14 @@ export default new Router({
                 .default,
         },
 
+        // cupons
+        {
+            path: "/administracion/cupons",
+            name: "cupons.index",
+            component: require("./components/modulos/cupons/index.vue")
+                .default,
+        },
+
         // tipo ingresos
         {
             path: "/administracion/tipo_ingresos",

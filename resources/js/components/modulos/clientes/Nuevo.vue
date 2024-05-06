@@ -23,12 +23,12 @@
                 <div class="modal-body">
                     <form>
                         <div class="row">
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <label
                                     :class="{
                                         'text-danger': errors.nombre,
                                     }"
-                                    >Nombre Completo*</label
+                                    >Nombres*</label
                                 >
                                 <el-input
                                     placeholder="Nombre"
@@ -41,6 +41,26 @@
                                     class="error invalid-feedback"
                                     v-if="errors.nombre"
                                     v-text="errors.nombre[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger': errors.apellidos,
+                                    }"
+                                    >Apellidos*</label
+                                >
+                                <el-input
+                                    placeholder="Apellidos*"
+                                    :class="{ 'is-invalid': errors.apellidos }"
+                                    v-model="cliente.apellidos"
+                                    clearable
+                                >
+                                </el-input>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.apellidos"
+                                    v-text="errors.apellidos[0]"
                                 ></span>
                             </div>
                             <div class="form-group col-md-6">
@@ -139,7 +159,7 @@
                                     :class="{
                                         'text-danger': errors.correo,
                                     }"
-                                    >Correo electrónico</label
+                                    >Correo electrónico*</label
                                 >
                                 <el-input
                                     placeholder="Correo electrónico"
@@ -291,6 +311,7 @@ export default {
             default: {
                 id: 0,
                 nombre: "",
+                apellidos: "",
                 ci: "",
                 ci_exp: "",
                 nit: "",
@@ -378,6 +399,10 @@ export default {
                 formdata.append(
                     "nombre",
                     this.cliente.nombre ? this.cliente.nombre : ""
+                );
+                formdata.append(
+                    "apellidos",
+                    this.cliente.apellidos ? this.cliente.apellidos : ""
                 );
                 formdata.append("ci", this.cliente.ci ? this.cliente.ci : "");
                 formdata.append(
@@ -473,6 +498,7 @@ export default {
         limpiaCliente() {
             this.errors = [];
             this.cliente.nombre = "";
+            this.cliente.apellidos = "";
             this.cliente.ci = "";
             this.cliente.ci_exp = "";
             this.cliente.nit = "";

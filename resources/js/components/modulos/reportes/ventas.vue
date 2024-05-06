@@ -54,6 +54,46 @@
                                                 class="form-group col-md-12"
                                                 v-if="
                                                     oReporte.filtro ==
+                                                    'Canal de ventas'
+                                                "
+                                            >
+                                                <label
+                                                    :class="{
+                                                        'text-danger':
+                                                            errors.filtro,
+                                                    }"
+                                                    >Seleccione*</label
+                                                >
+                                                <el-select
+                                                    v-model="oReporte.canal"
+                                                    placeholder="Seleccione"
+                                                    class="d-block"
+                                                    :class="{
+                                                        'is-invalid':
+                                                            errors.canal,
+                                                    }"
+                                                >
+                                                    <el-option
+                                                        v-for="item in [
+                                                            'FISICO',
+                                                            'ECOMMERCE',
+                                                        ]"
+                                                        :key="item"
+                                                        :label="item"
+                                                        :value="item"
+                                                    >
+                                                    </el-option>
+                                                </el-select>
+                                                <span
+                                                    class="error invalid-feedback"
+                                                    v-if="errors.canal"
+                                                    v-text="errors.canal[0]"
+                                                ></span>
+                                            </div>
+                                            <div
+                                                class="form-group col-md-12"
+                                                v-if="
+                                                    oReporte.filtro ==
                                                     'Producto'
                                                 "
                                             >
@@ -188,6 +228,7 @@ export default {
             oReporte: {
                 filtro: "Todos",
                 lugar_id: "",
+                canal: "FISICO",
                 producto_id: "",
                 fecha_ini: "",
                 fecha_fin: "",
@@ -195,7 +236,12 @@ export default {
             aFechas: [],
             enviando: false,
             textoBtn: "Generar Reporte",
-            listFiltro: ["Todos", "Producto", "Rango de fechas"],
+            listFiltro: [
+                "Todos",
+                "Canal de ventas",
+                "Producto",
+                "Rango de fechas",
+            ],
             listProductos: [],
             aux_lista_productos: [],
             loading_buscador: false,

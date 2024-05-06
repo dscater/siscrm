@@ -33,10 +33,20 @@ class ProductoController extends Controller
 
     public function index(Request $request)
     {
-        $productos = Producto::with("categoria")->orderBy("productos.codigo_almacen", "ASC")
-            ->orderBy("productos.codigo_producto", "ASC")
-            ->orderBy("productos.nombre", "ASC")
-            ->get();
+
+        $productos = [];
+        if (isset($request->orderFecha)) {
+            $productos = Producto::with("categoria")
+                ->orderBy("fecha_registro", $request->orderFecha)
+                ->get();
+        } else {
+            $productos = Producto::with("categoria")->orderBy("productos.codigo_almacen", "ASC")
+                ->orderBy("productos.codigo_producto", "ASC")
+                ->orderBy("productos.nombre", "ASC")
+                ->get();
+        }
+
+
         return response()->JSON(['productos' => $productos, 'total' => count($productos)], 200);
     }
 

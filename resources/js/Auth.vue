@@ -55,6 +55,29 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row mb-2">
+                            <div
+                                class="col-12 text-center contenedor_captcha"
+                                :class="{
+                                    'is-invalid': errors.captcha,
+                                }"
+                            >
+                                <vue-recaptcha
+                                    :sitekey="key_secret"
+                                    ref="recaptcha"
+                                    @verify="verificaCaptcha"
+                                    @error="errorCaptcha"
+                                >
+                                </vue-recaptcha>
+                                <span
+                                    class="error invalid-feedback d-block"
+                                    v-if="errors.captcha"
+                                    v-text="errors.captcha[0]"
+                                ></span>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <!-- /.col -->
                             <div class="col-12">
@@ -62,6 +85,7 @@
                                     type="button"
                                     class="btn btn-primary btn-block btn-flat font-weight-bold"
                                     @click.prevent="login()"
+                                    :disabled="btnDisabled"
                                     v-loading.fullscreen.lock="
                                         fullscreenLoading
                                     "
@@ -102,7 +126,9 @@
 </template>
 
 <script>
+import { VueRecaptcha } from "vue-recaptcha";
 export default {
+    components: { VueRecaptcha },
     props: {
         empresa: { String, default: "Nombre Empresa" },
         logo: {
@@ -129,15 +155,44 @@ export default {
             password: "",
             error: false,
             fullscreenLoading: false,
+            key_secret: key_captcha_local,
+            captcha: null,
+            btnDisabled: true,
+            errors: [],
         };
     },
     methods: {
+        errorCaptcha() {},
+        verificaCaptcha(datos) {
+            let config = {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            };
+            let formdata = new FormData();
+            formdata.append("secret", this.key_secret);
+            formdata.append("g-recaptcha-response", datos);
+            axios
+                .post("/verifica_captcha", formdata, config)
+                .then((response) => {
+                    if (response.data.success) {
+                        this.captcha = response.data.success;
+                        this.btnDisabled = false;
+                    } else {
+                        this.btnDisabled = true;
+                    }
+                })
+                .catch((error) => {
+                    this.btnDisabled = true;
+                });
+        },
         login() {
             this.fullscreenLoading = true;
             axios
                 .post("/login", {
                     usuario: this.usuario,
                     password: this.password,
+                    captcha: this.captcha ? this.captcha : "",
                 })
                 .then((res) => {
                     let user = res.data.user;
@@ -160,6 +215,16 @@ export default {
                             this.error = true;
                         }
                         this.password = "";
+                    }
+                    if (error.response.status === 422) {
+                        this.errors = error.response.data.errors;
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: error.response.data?.message,
+                            showConfirmButton: false,
+                            timer: 2500,
+                        });
                     }
                     this.fullscreenLoading = false;
                 });
