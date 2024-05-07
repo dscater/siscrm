@@ -1,8 +1,6 @@
 <template>
     <div>
         <HeaderDos :configuracion="oConfiguracion"></HeaderDos>
-        <Sidebar></Sidebar>
-        <CarritoLateral></CarritoLateral>
         <transition name="fade" mode="out-in">
             <router-view></router-view>
         </transition>
@@ -12,7 +10,6 @@
             :empresa="oConfiguracion.alias ? oConfiguracion.alias : 'Empresa'"
         ></Footer>
 
-        <ModalProducto></ModalProducto>
         <!-- Back to top -->
         <div class="btn-back-to-top" id="myBtn">
             <span class="symbol-btn-back-to-top">
@@ -35,7 +32,6 @@ export default {
         Sidebar,
         CarritoLateral,
         Footer,
-        ModalProducto,
     },
     props: {
         logo: {

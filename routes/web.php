@@ -36,10 +36,16 @@ Route::get('/pruebas', [EnvioCorreoController::class, 'pruebas'])->name("pruebas
 
 // productos
 Route::get('portal/listaProductos', [ProductoController::class, 'listaProductos']);
+Route::get('portal/productosPopulares', [ProductoController::class, 'productosPopulares']);
+Route::get('portal/nuevosProductos', [ProductoController::class, 'nuevosProductos']);
 Route::get('portal/getProducto/{producto}', [ProductoController::class, 'show']);
 
 // catalogos
 Route::get('portal/getCategorias', [CategoriaController::class, 'index']);
+
+// 
+Route::get("veririca_cupon", [CuponController::class, 'veririca_cupon'])->name("veririca_cupon");
+
 
 // VACIAR CACHE
 Route::get('/cache_clear', function () {

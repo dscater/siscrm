@@ -18,11 +18,30 @@
     background-color: var(--principal) !important;
 }
 
-.titulo-seccion{
+.bg-transparente {
+    background-color: var(--transparente);
+}
+
+.section-title .categories li.active a {
+    color: rgb(29, 161, 117)!important;
+    font-weight: bold!important;
+}
+
+.titulo-seccion {
     height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.product-img {
+    height: 290px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-img {
 }
 
 .text-xs {

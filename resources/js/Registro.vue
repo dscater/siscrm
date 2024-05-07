@@ -21,7 +21,7 @@
                                     :class="{
                                         'text-danger': errors.nombre,
                                     }"
-                                    >Nombre Completo*</label
+                                    >Nombre(s)*</label
                                 >
                                 <el-input
                                     placeholder="Nombre"
@@ -34,6 +34,26 @@
                                     class="error invalid-feedback"
                                     v-if="errors.nombre"
                                     v-text="errors.nombre[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger': errors.apellidos,
+                                    }"
+                                    >Apellidos*</label
+                                >
+                                <el-input
+                                    placeholder="Nombre"
+                                    :class="{ 'is-invalid': errors.apellidos }"
+                                    v-model="form_registro.apellidos"
+                                    clearable
+                                >
+                                </el-input>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.apellidos"
+                                    v-text="errors.apellidos[0]"
                                 ></span>
                             </div>
                             <div class="form-group col-md-6">

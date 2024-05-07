@@ -25,47 +25,55 @@ mix.setPublicPath("./")
     )
     .styles(
         [
-            "resources/assets/css/all.min.css",
-            "resources/assets/css/portal/material-design-iconic-font.min.css",
-            "resources/assets/css/portal/icon-font.min.css",
-            "resources/assets/css/portal/animate.css",
-            "resources/assets/css/portal/hamburgers.min.css",
-            "resources/assets/css/portal/animsition.min.css",
-            "resources/assets/css/portal/select2.min.css",
-            "resources/assets/css/portal/daterangepicker.css",
-            "resources/assets/css/portal/slick.css",
+            "resources/assets/css/portal/normalize.css",
+            "resources/assets/css/portal/bootstrap.min.css",
+            "resources/assets/css/portal/evara-font.css",
+            "resources/assets/css/portal/uicons-regular-straight.css",
+            "resources/assets/css/portal/jquery-ui.css",
             "resources/assets/css/portal/magnific-popup.css",
+            "resources/assets/css/portal/select2.min.css",
+            "resources/assets/css/portal/slick.css",
             "resources/assets/css/portal/perfect-scrollbar.css",
-            "resources/assets/css/portal/util.css",
             "resources/assets/css/portal/main.css",
+            "resources/assets/css/all.min.css",
             "resources/assets/css/portal.css",
         ],
         "./css/portal.css"
     )
-    .scripts(["resources/assets/js/jquery-3.2.1.min.js"], "./js/jquery.js")
+    .scripts(["resources/assets/js/jquery-3.6.0.min.js"], "./js/jquery.js")
     .scripts(
         ["resources/assets/js/adminlte.min.js", "resources/assets/js/demo.js"],
         "./js/plantilla.js"
     )
     .scripts(
         [
-            "resources/assets/js/portal/animsition.min.js",
+            "resources/assets/js/portal/modernizr-3.6.0.min.js",
+            "resources/assets/js/portal/jquery-migrate-3.3.0.min.js",
+            "resources/assets/js/portal/bootstrap.bundle.min.js",
+            "resources/assets/js/portal/slick.js",
+            "resources/assets/js/portal/jquery.syotimer.min.js",
+            "resources/assets/js/portal/wow.js",
+            "resources/assets/js/portal/jquery-ui.js",
+            "resources/assets/js/portal/perfect-scrollbar.js",
+            "resources/assets/js/portal/magnific-popup.js",
             "resources/assets/js/portal/select2.min.js",
-            "resources/assets/js/portal/moment.min.js",
-            "resources/assets/js/portal/daterangepicker.js",
-            "resources/assets/js/portal/slick.min.js",
-            "resources/assets/js/portal/parallax100.js",
-            "resources/assets/js/portal/jquery.magnific-popup.min.js",
-            "resources/assets/js/portal/isotope.pkgd.min.js",
-            "resources/assets/js/portal/perfect-scrollbar.min.js",
-            "resources/assets/js/portal/wow.min.js",
+            "resources/assets/js/portal/waypoints.js",
+            "resources/assets/js/portal/counterup.js",
+            "resources/assets/js/portal/jquery.countdown.min.js",
+            "resources/assets/js/portal/images-loaded.js",
+            "resources/assets/js/portal/isotope.js",
+            "resources/assets/js/portal/select2.min.js",
+            "resources/assets/js/portal/scrollup.js",
+            "resources/assets/js/portal/jquery.vticker-min.js",
+            "resources/assets/js/portal/jquery.theia.sticky.js",
+            "resources/assets/js/portal/jquery.elevatezoom.js",
         ],
         "./js/portal.js"
     )
     .scripts(
         [
-            "resources/assets/js/portal/slick-custom.js",
             "resources/assets/js/portal/main.js",
+            "resources/assets/js/portal/shop.js",
         ],
         "./js/portal_custom.js"
     )

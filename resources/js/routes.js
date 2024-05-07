@@ -14,6 +14,12 @@ export default new Router({
             name: "portal.inicio",
             component: require("./portal/Inicio.vue").default,
         },
+        // NOSOTROS
+        {
+            path: "/nosotros",
+            name: "portal.nosotros",
+            component: require("./portal/Nosotros.vue").default,
+        },
         // PRODUCTOS
         {
             path: "/productos",
@@ -27,7 +33,12 @@ export default new Router({
             name: "portal.carrito",
             component: require("./portal/Carrito.vue").default,
         },
-
+        // GUIA
+        {
+            path: "/guia",
+            name: "portal.guia",
+            component: require("./portal/Guia.vue").default,
+        },
         // CONTACTOS
         {
             path: "/contactos",
@@ -119,8 +130,7 @@ export default new Router({
         {
             path: "/administracion/cupons",
             name: "cupons.index",
-            component: require("./components/modulos/cupons/index.vue")
-                .default,
+            component: require("./components/modulos/cupons/index.vue").default,
         },
 
         // tipo ingresos

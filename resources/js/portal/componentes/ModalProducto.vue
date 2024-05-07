@@ -1,139 +1,126 @@
 <template>
     <!-- Modal1 -->
     <div
-        class="wrap-modal1 js-modal1 p-t-60 p-b-20"
-        :class="[muestra ? 'show-modal1' : '']"
+        class="modal fade custom-modal"
+        :class="[muestra ? 'show bg-transparente' : '']"
+        :style="muestra ? 'display:block;' : ''"
     >
-        <div class="overlay-modal1 js-hide-modal1" @click="cerrar"></div>
-
-        <div class="container">
-            <div class="bg-dark p-t-60 p-b-30 p-lr-15-lg how-pos3-parent">
+        <div class="modal-dialog">
+            <div class="modal-content">
                 <button
-                    class="how-pos3 hov3 trans-04 js-hide-modal1"
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
                     @click="cerrar"
-                >
-                    <img src="images/icons/icon-close.png" alt="CLOSE" />
-                </button>
-                <div
-                    class="row"
-                    v-if="cargando_producto == false && oProducto.id != 0"
-                >
-                    <div class="col-md-6 col-lg-7 p-b-30">
-                        <div class="p-l-25 p-r-30 p-lr-0-lg">
-                            <div class="wrap-slick3 d-block bg-dark">
+                ></button>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="detail-gallery">
+                                <!-- <span class="zoom-icon"
+                                    ><i class="fi-rs-search"></i
+                                ></span> -->
+                                <!-- MAIN SLIDES -->
                                 <div
-                                    class="wrap-slick3-arrows flex-sb-m flex-w"
-                                ></div>
-                                <div class="slick3 gallery-lb">
-                                    <div
-                                        class="item-slick3"
-                                        :data-thumb="oProducto.url_imagen"
-                                    >
-                                        <div class="wrap-pic-w pos-relative">
-                                            <img
-                                                :src="oProducto.url_imagen"
-                                                alt="IMG-PRODUCT"
-                                            />
-
-                                            <a
-                                                class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                                                :href="oProducto.url_imagen"
-                                            >
-                                                <i class="fa fa-expand"></i>
-                                            </a>
-                                        </div>
-                                    </div>
+                                    class="product-image-slider slick-initialized slick-slider"
+                                >
+                                    <img
+                                        :src="oProducto.url_imagen"
+                                        alt="Imagen"
+                                    />
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="detail-info">
+                                <h3 class="title-detail mt-30">
+                                    {{ oProducto.nombre }}
+                                </h3>
 
-                    <div class="col-md-6 col-lg-5 p-b-30">
-                        <div class="p-r-50 p-t-5 p-lr-0-lg">
-                            .
-                            <div class="card">
-                                <div class="card-body bg-dark">
-                                    <h4
-                                        class="mtext-105 cl2 js-name-detail text-warning p-b-14 font-weight-bold"
+                                <div class="clearfix product-price-cover">
+                                    <div
+                                        class="product-price primary-color float-left"
                                     >
-                                        {{ oProducto.nombre }}
-                                    </h4>
-                                    <span
-                                        class="text-md cl0 js-name-detail rounded p-3 bg-dark d-block mb-2 border border-warning"
-                                    >
+                                        <ins
+                                            ><span class="text-brand"
+                                                >Bs.
+                                                {{ oProducto.precio }}</span
+                                            ></ins
+                                        >
+                                        <!-- <ins
+                                            ><span
+                                                class="old-price font-md ml-15"
+                                                >$200.00</span
+                                            ></ins
+                                        >
+                                        <span
+                                            class="save-price font-md color3 ml-15"
+                                            >25% Off</span
+                                        > -->
+                                    </div>
+                                </div>
+                                <div
+                                    class="bt-1 border-color-1 mt-15 mb-15"
+                                ></div>
+                                <div class="short-desc mb-30">
+                                    <p class="font-sm">
+                                        {{ oProducto.descripcion }}
+                                    </p>
+                                </div>
+                                <div
+                                    class="bt-1 border-color-1 mt-30 mb-30"
+                                ></div>
+                                <div class="detail-extralink">
+                                    <div class="detail-qty border radius">
+                                        <a
+                                            href="#"
+                                            class="qty-down"
+                                            @click.prevent="restaCantidad"
+                                            ><i
+                                                class="fi-rs-angle-small-down"
+                                            ></i
+                                        ></a>
+                                        <span class="qty-val">{{
+                                            cantidad_agregar
+                                        }}</span>
+                                        <a
+                                            href="#"
+                                            class="qty-up"
+                                            @click.prevent="sumaCantidad"
+                                            ><i class="fi-rs-angle-small-up"></i
+                                        ></a>
+                                    </div>
+                                    <div class="product-extra-link2">
+                                        <button
+                                            type="button"
+                                            class="button button-add-to-cart"
+                                            @click="agregarCarrito"
+                                        >
+                                            Añadir al carrito
+                                        </button>
+                                    </div>
+                                </div>
+                                <ul
+                                    class="product-meta font-xs color-grey mt-50"
+                                >
+                                    <li class="mb-5">
+                                        Categoría:
                                         {{ oProducto.categoria.nombre }}
-                                    </span>
-
-                                    <span
-                                        class="text-md cl0 rounded p-3 bg-warning d-block font-weight-bold"
-                                    >
-                                        Bs. {{ oProducto.precio }}
-                                    </span>
-
-                                    <p class="stext-104 cl12 p-t-23">
-                                        <span class="mtext-106"
+                                    </li>
+                                    <li>
+                                        Disponibles:<span
+                                            class="in-stock text-success ml-5"
                                             >{{
                                                 oProducto.stock_actual
                                             }}
-                                            Unidad(es) disponibles</span
+                                            unidades disponibles</span
                                         >
-                                    </p>
-
-                                    <p class="stext-102 cl12 p-t-23">
-                                        {{ oProducto.descripcion }}
-                                    </p>
-
-                                    <!--  -->
-                                    <div class="p-t-33">
-                                        <div class="contenedor_agregar_carrito">
-                                            <div
-                                                class="wrap-num-product flex-w m-r-20 m-tb-10"
-                                            >
-                                                <div
-                                                    class="bg-white btn-num-product-down cl8 trans-04 flex-c-m"
-                                                    @click="restaCantidad"
-                                                >
-                                                    <i
-                                                        class="fs-16 zmdi zmdi-minus"
-                                                    ></i>
-                                                </div>
-
-                                                <input
-                                                    class="mtext-104 cl3 txt-center num-product"
-                                                    type="number"
-                                                    name="num-product"
-                                                    min="1"
-                                                    value="1"
-                                                    @keyup="validaCantidad"
-                                                    v-model="cantidad_agregar"
-                                                />
-
-                                                <div
-                                                    class="bg-white btn-num-product-up cl8 trans-04 flex-c-m"
-                                                    @click="sumaCantidad"
-                                                >
-                                                    <i
-                                                        class="fs-16 zmdi zmdi-plus"
-                                                    ></i>
-                                                </div>
-                                            </div>
-
-                                            <button
-                                                class="stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail"
-                                                @click="agregarCarrito"
-                                            >
-                                                Añadir al carrito
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                                    </li>
+                                </ul>
                             </div>
+                            <!-- Detail Info -->
                         </div>
-                    </div>
-                </div>
-                <div class="row" v-else>
-                    <div class="col-md-12">
-                        <h4 class="w-100 text-center">CARGANDO PRODUCTO...</h4>
                     </div>
                 </div>
             </div>
@@ -163,6 +150,8 @@ export default {
         mostrar_modal(newVal) {
             this.muestra = newVal;
             if (this.id != 0) {
+                console.log("asdasd");
+                $("body").addClass("modal-open");
                 this.cantidad_agregar = 1;
                 this.getProducto();
             }
@@ -271,7 +260,6 @@ export default {
                 });
             });
         },
-
         validaCantidad() {
             if (this.oProducto.id != 0) {
                 if (this.cantidad_agregar > this.oProducto.stock_actual) {

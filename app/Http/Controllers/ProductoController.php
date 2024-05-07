@@ -8,6 +8,7 @@ use App\Models\DetalleVenta;
 use App\Models\HistorialAccion;
 use App\Models\IngresoProducto;
 use App\Models\KardexProducto;
+use App\Models\OrdenDetalle;
 use App\Models\Producto;
 use App\Models\SalidaProducto;
 use App\Models\SucursalStock;
@@ -110,6 +111,29 @@ class ProductoController extends Controller
             'total' => count($productos),
             "per_page" => $per_page
         ], 200);
+    }
+
+    public function productosPopulares(Request $request)
+    {
+
+        $populares = DB::select("SELECT producto_id, SUM(cantidad)as total_cantidad FROM detalle_ventas GROUP BY producto_id ORDER BY total_cantidad desc LIMIT 12");
+
+        $id_productos = [];
+        foreach ($populares as $value) {
+            $id_productos[] = $value->producto_id;
+        }
+
+        $productos = Producto::with(["categoria"])->whereIn("id", $id_productos)->get();
+        return response()->JSON([
+            "productos" => $productos,
+        ]);
+    }
+    public function nuevosProductos(Request $request)
+    {
+        $productos = Producto::with(["categoria"])->orderBy("created_at", "desc")->get()->take(12);
+        return response()->JSON([
+            "productos" => $productos,
+        ]);
     }
 
     public function excel(Request $request)

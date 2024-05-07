@@ -30,9 +30,7 @@
                     </li>
 
                     <li class="p-b-13">
-                        <a href="#" class="stext-102 cl2 hov-cl1 trans-04">
-                            
-                        </a>
+                        <a href="#" class="stext-102 cl2 hov-cl1 trans-04"> </a>
                     </li>
 
                     <li class="p-b-13">
@@ -55,7 +53,7 @@
                 </ul>
 
                 <div class="sidebar-gallery w-full p-tb-30">
-                    <span class="mtext-101 cl5"> QHANA </span>
+                    <span class="mtext-101 cl5"> SISCRM </span>
 
                     <div class="flex-w flex-sb p-t-36 gallery-lb">
                         <!-- item gallery sidebar -->

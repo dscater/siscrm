@@ -11,9 +11,6 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/portal.css') }}">
     <style>
-        .contenedor_inicio {
-            background-color: var(--principal);
-        }
     </style>
     <script>
         var mapa_id = "MAP_ID";
@@ -27,6 +24,7 @@
     @endphp
     <script>
         key_captcha_local = "{{ $configuracion->captcha_local }}";
+        url_asset = "{{ asset('') }}";
     </script>
     @if ($api)
         <script>
@@ -55,74 +53,18 @@
     <script src="{{ asset('js/app.js') }}"></script>
     {{-- <script src="{{ asset('js/portal_custom.js') }}"></script> --}}
     <script>
-        // OPCIONAL
-        $('.js-addwish-b2').on('click', function(e) {
-            e.preventDefault();
-        });
+        /*---------------------
+                            Select active
+                        --------------------- */
+        $('.select-active').select2();
 
-        $('.js-addwish-b2').each(function() {
-            var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
-            $(this).on('click', function() {
-                swal(nameProduct, "is added to wishlist !", "success");
-
-                $(this).addClass('js-addedwish-b2');
-                $(this).off('click');
-            });
-        });
-
-        $('.js-addwish-detail').each(function() {
-            var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
-
-            $(this).on('click', function() {
-                swal(nameProduct, "is added to wishlist !", "success");
-
-                $(this).addClass('js-addedwish-detail');
-                $(this).off('click');
-            });
-        });
-
-        /*---------------------------------------------*/
-
-        $('.js-addcart-detail').each(function() {
-            var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
-            $(this).on('click', function() {
-                swal(nameProduct, "is added to cart !", "success");
-            });
-        });
-        // FIN OPCIONAL
-
-        $(".js-select2").each(function() {
-            $(this).select2({
-                minimumResultsForSearch: 20,
-                dropdownParent: $(this).next('.dropDownSelect2')
-            });
-        })
-
-        // $('.parallax100').parallax100();
-
-        // $('.gallery-lb').each(function() { // the containers for all your galleries
-        //     $(this).magnificPopup({
-        //         delegate: 'a', // the selector for gallery item
-        //         type: 'image',
-        //         gallery: {
-        //             enabled: true
-        //         },
-        //         mainClass: 'mfp-fade'
-        //     });
-        // });
-
-        $('.js-pscroll').each(function() {
-            $(this).css('position', 'relative');
-            $(this).css('overflow', 'hidden');
-            var ps = new PerfectScrollbar(this, {
-                wheelSpeed: 1,
-                scrollingThreshold: 1000,
-                wheelPropagation: false,
-            });
-
-            $(window).on('resize', function() {
-                ps.update();
-            })
+        /*--- VSticker ----*/
+        $('#news-flash').vTicker({
+            speed: 500,
+            pause: 3000,
+            animation: 'fade',
+            mousePause: false,
+            showItems: 1
         });
     </script>
 </body>

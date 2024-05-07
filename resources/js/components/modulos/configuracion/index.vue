@@ -186,7 +186,7 @@
                                                 <i
                                                     class="el-icon-document"
                                                 ></i>
-                                                file_nosotros
+                                                Nosotros
                                             </template>
                                             <p>
                                                 {{ oConfiguracion.nosotros }}

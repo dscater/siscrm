@@ -11,7 +11,7 @@
     <style>
         #app {
             background-color: none;
-            background-image: url("/imgs/login.jpg");
+            background-image: url("/imgs/login.webp");
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;

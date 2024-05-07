@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 06-05-2024 a las 20:52:27
+-- Tiempo de generación: 07-05-2024 a las 18:53:48
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 7.4.19
 
@@ -695,7 +695,8 @@ INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `dato
 (211, 1, 'ELIMINACIÓN', 'EL USUARIO  HABILITO UNA ORDEN DE PEDIDO', 'celular: <br/>codigo: ORD.4<br/>comprobante: 1715026205_4.pdf<br/>configuracion_pago_id: 1<br/>created_at: 2024-05-06 16:10:05<br/>cupon: <br/>descuento: 0<br/>entrega: TIENDA<br/>estado: PEDIDO PENDIENTE<br/>fecha_registro: 2024-05-06<br/>id: 4<br/>lat: -16.496059<br/>lng: -68.133345<br/>nro: 4<br/>status: 0<br/>total: 12.00<br/>total_final: 12.00<br/>updated_at: 2024-05-06 16:22:31<br/>user_id: 15<br/>', NULL, 'ORDEN DE PEDIDOS', '2024-05-06', '16:26:30', '2024-05-06 20:26:30', '2024-05-06 20:26:30'),
 (212, 1, 'ELIMINACIÓN', 'EL USUARIO  ANULÓ UNA ORDEN DE PEDIDO', 'celular: <br/>codigo: ORD.4<br/>comprobante: 1715026205_4.pdf<br/>configuracion_pago_id: 1<br/>created_at: 2024-05-06 16:10:05<br/>cupon: <br/>descuento: 0<br/>entrega: TIENDA<br/>estado: PEDIDO PENDIENTE<br/>fecha_registro: 2024-05-06<br/>id: 4<br/>lat: -16.496059<br/>lng: -68.133345<br/>nro: 4<br/>status: 1<br/>total: 12.00<br/>total_final: 12.00<br/>updated_at: 2024-05-06 16:26:30<br/>user_id: 15<br/>', NULL, 'ORDEN DE PEDIDOS', '2024-05-06', '16:26:44', '2024-05-06 20:26:44', '2024-05-06 20:26:44'),
 (213, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CUPON', 'created_at: 2024-04-30 12:13:32<br/>descuento: 6<br/>id: 1<br/>texto: C001<br/>updated_at: 2024-04-30 12:14:05<br/>', 'created_at: 2024-04-30 12:13:32<br/>descuento: 5<br/>id: 1<br/>texto: C001<br/>updated_at: 2024-05-06 16:34:53<br/>', 'CUPONES', '2024-05-06', '16:34:53', '2024-05-06 20:34:53', '2024-05-06 20:34:53'),
-(214, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN CUPON', 'created_at: 2024-05-06 16:35:08<br/>descuento: 1<br/>id: 2<br/>texto: C002<br/>updated_at: 2024-05-06 16:35:08<br/>', NULL, 'CUPONES', '2024-05-06', '16:35:08', '2024-05-06 20:35:08', '2024-05-06 20:35:08');
+(214, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN CUPON', 'created_at: 2024-05-06 16:35:08<br/>descuento: 1<br/>id: 2<br/>texto: C002<br/>updated_at: 2024-05-06 16:35:08<br/>', NULL, 'CUPONES', '2024-05-06', '16:35:08', '2024-05-06 20:35:08', '2024-05-06 20:35:08'),
+(215, 10, 'CREACIÓN', 'EL USUARIO  REGISTRO UNA ORDEN DE PEDIDO', 'celular: <br/>codigo: ORD.5<br/>comprobante: C:\\USERS\\VICTO\\APPDATA\\LOCAL\\TEMP\\PHPB402.TMP<br/>configuracion_pago_id: 1<br/>created_at: 2024-05-07 14:12:07<br/>cupon: C001<br/>descuento: 5<br/>entrega: DOMICILIO<br/>estado: PEDIDO PENDIENTE<br/>fecha_registro: 2024-05-07<br/>id: 5<br/>lat: -16.4969333667204<br/>lng: -68.13183491643645<br/>nro: 5<br/>status: <br/>total: 94.00<br/>total_final: 89.3<br/>updated_at: 2024-05-07 14:12:07<br/>user_id: 10<br/>', NULL, 'ORDEN DE PEDIDOS', '2024-05-07', '14:12:07', '2024-05-07 18:12:07', '2024-05-07 18:12:07');
 
 -- --------------------------------------------------------
 
@@ -841,7 +842,9 @@ INSERT INTO `orden_detalles` (`id`, `orden_pedido_id`, `producto_id`, `cantidad`
 (4, 2, 3, 1.00, 100.00, 100.00, '2024-04-30 16:28:52', '2024-04-30 16:28:52'),
 (5, 3, 7, 1.00, 12.00, 12.00, '2024-04-30 16:39:49', '2024-04-30 16:39:49'),
 (6, 3, 2, 2.00, 35.00, 70.00, '2024-04-30 16:39:49', '2024-04-30 16:39:49'),
-(7, 4, 7, 1.00, 12.00, 12.00, '2024-05-06 20:10:05', '2024-05-06 20:10:05');
+(7, 4, 7, 1.00, 12.00, 12.00, '2024-05-06 20:10:05', '2024-05-06 20:10:05'),
+(8, 5, 2, 2.00, 35.00, 70.00, '2024-05-07 18:12:07', '2024-05-07 18:12:07'),
+(9, 5, 7, 2.00, 12.00, 24.00, '2024-05-07 18:12:07', '2024-05-07 18:12:07');
 
 -- --------------------------------------------------------
 
@@ -879,7 +882,8 @@ INSERT INTO `orden_pedidos` (`id`, `codigo`, `nro`, `configuracion_pago_id`, `ce
 (1, 'ORD.1', 1, 1, '73594451', '1714246060_1.pdf', '-16.496059', '-68.133345', 212.00, 'TIENDA', NULL, 0.00, 212.00, 'ORDEN PROCESADA', 10, '2024-04-27', 1, '2024-04-27 19:27:40', '2024-04-27 19:40:42'),
 (2, 'ORD.2', 2, 1, '666666666', '1714494532_2.pdf', '-16.496059', '-68.133345', 112.00, 'DOMICILIO', 'C001', 6.00, 105.28, 'ORDEN PROCESADA', 10, '2024-04-30', 1, '2024-04-30 16:28:52', '2024-04-30 16:41:36'),
 (3, 'ORD.3', 3, 2, '67676767', '1714495189_3.pdf', '-16.498088388840433', '-68.13366216194534', 82.00, 'TIENDA', 'C001', 6.00, 77.08, 'PEDIDO PENDIENTE', 11, '2024-04-30', 1, '2024-04-30 16:39:49', '2024-04-30 16:39:49'),
-(4, 'ORD.4', 4, 1, '', '1715026205_4.pdf', '-16.496059', '-68.133345', 12.00, 'TIENDA', '', 0.00, 12.00, 'PEDIDO PENDIENTE', 15, '2024-05-06', 0, '2024-05-06 20:10:05', '2024-05-06 20:26:44');
+(4, 'ORD.4', 4, 1, '', '1715026205_4.pdf', '-16.496059', '-68.133345', 12.00, 'TIENDA', '', 0.00, 12.00, 'PEDIDO PENDIENTE', 15, '2024-05-06', 0, '2024-05-06 20:10:05', '2024-05-06 20:26:44'),
+(5, 'ORD.5', 5, 1, '', '1715105527_5.pdf', '-16.4969333667204', '-68.13183491643645', 94.00, 'DOMICILIO', 'C001', 5.00, 89.30, 'PEDIDO PENDIENTE', 10, '2024-05-07', 1, '2024-05-07 18:12:07', '2024-05-07 18:12:07');
 
 -- --------------------------------------------------------
 
@@ -1440,7 +1444,7 @@ ALTER TABLE `fecha_stocks`
 -- AUTO_INCREMENT de la tabla `historial_accions`
 --
 ALTER TABLE `historial_accions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=215;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=216;
 
 --
 -- AUTO_INCREMENT de la tabla `ingreso_productos`
@@ -1464,13 +1468,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT de la tabla `orden_detalles`
 --
 ALTER TABLE `orden_detalles`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `orden_pedidos`
 --
 ALTER TABLE `orden_pedidos`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `personal_access_tokens`

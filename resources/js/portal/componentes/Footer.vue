@@ -1,82 +1,154 @@
 <template>
-    <!-- Footer -->
-    <footer class="bg3 p-t-75 p-b-32">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6 col-lg-3 p-b-50 offset-md-3">
-                    <h4 class="stext-301 cl0 p-b-30">
-                        {{ oConfiguracion.razon_social }}
-                    </h4>
-
-                    <p class="stext-107 cl7 size-201 text-justify">
-                        {{ oConfiguracion.servicios }}
-                    </p>
-
-                    <div class="p-t-27">
-                        <a
-                            :href="oConfiguracion?.twitter"
-                            target="_blank"
-                            class="fs-18 cl7 hov-cl1 trans-04 m-r-16"
-                        >
-                            <i class="fab fa-twitter fa-lg"></i>
-                        </a>
-                        <a
-                            :href="oConfiguracion?.facebook"
-                            target="_blank"
-                            class="fs-18 cl7 hov-cl1 trans-04 m-r-16"
-                        >
-                            <i class="fab fa-facebook fa-lg"></i>
-                        </a>
-                        <a
-                            :href="oConfiguracion?.youtube"
-                            target="_blank"
-                            class="fs-18 cl7 hov-cl1 trans-04 m-r-16"
-                        >
-                            <i class="fab fa-youtube fa-lg"></i>
-                        </a>
-                        <a
-                            :href="oConfiguracion?.instagram"
-                            target="_blank"
-                            class="fs-18 cl7 hov-cl1 trans-04 m-r-16"
-                        >
-                            <i class="fab fa-instagram fa-lg"></i>
-                        </a>
+    <div>
+        <footer class="main">
+            <section class="section-padding footer-mid">
+                <div class="container pt-15 pb-20">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 offset-md-2">
+                            <div class="widget-about font-md mb-md-5 mb-lg-0">
+                                <div
+                                    class="logo logo-width-1 wow fadeIn animated"
+                                >
+                                    <a href="index.html"
+                                        ><img
+                                            :src="oConfiguracion.path_image"
+                                            alt="logo"
+                                    /></a>
+                                </div>
+                                <h5
+                                    class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated"
+                                >
+                                    Contactos
+                                </h5>
+                                <p class="wow fadeIn animated">
+                                    <strong>Dirección: </strong
+                                    >{{ oConfiguracion.dir }}
+                                </p>
+                                <p class="wow fadeIn animated">
+                                    <strong>Teléfono: </strong
+                                    >{{ oConfiguracion.fono }}
+                                </p>
+                                <h5
+                                    class="mb-10 mt-30 fw-600 text-grey-4 wow fadeIn animated"
+                                >
+                                    Siguenos
+                                </h5>
+                                <div
+                                    class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0"
+                                >
+                                    <a
+                                        :href="oConfiguracion.facebook"
+                                        target="_blank"
+                                        ><img
+                                            :src="
+                                                url_assets +
+                                                '/imgs/theme/icons/icon-facebook.svg'
+                                            "
+                                            alt=""
+                                    /></a>
+                                    <a
+                                        :href="oConfiguracion.twitter"
+                                        target="_blank"
+                                        ><img
+                                            :src="
+                                                url_assets +
+                                                '/imgs/theme/icons/icon-twitter.svg'
+                                            "
+                                            alt=""
+                                    /></a>
+                                    <a
+                                        :href="oConfiguracion.instagram"
+                                        target="_blank"
+                                        ><img
+                                            :src="
+                                                url_assets +
+                                                '/imgs/theme/icons/icon-instagram.svg'
+                                            "
+                                            alt=""
+                                    /></a>
+                                    <a
+                                        :href="oConfiguracion.youtube"
+                                        target="_blank"
+                                        ><img
+                                            :src="
+                                                url_assets +
+                                                '/imgs/theme/icons/icon-youtube.svg'
+                                            "
+                                            alt=""
+                                    /></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-3">
+                            <h5 class="widget-title wow fadeIn animated">
+                                Sobre Nosotros
+                            </h5>
+                            <ul
+                                class="footer-list wow fadeIn animated mb-sm-5 mb-md-0"
+                            >
+                                <li><a href="#">Nosotros</a></li>
+                                <li><a href="#">Productos</a></li>
+                                <li><a href="#">Contactos</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-2 col-md-3">
+                            <h5 class="widget-title wow fadeIn animated">
+                                Mi cuenta
+                            </h5>
+                            <ul class="footer-list wow fadeIn animated">
+                                <li><a href="/administracion">Ingresar</a></li>
+                                <li>
+                                    <router-link
+                                        :to="{ name: 'portal.carrito' }"
+                                        >Mi carrito</router-link
+                                    >
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-
-                <div class="col-sm-6 col-lg-3 p-b-50">
-                    <img
-                        v-if="oConfiguracion.url_servicios_img"
-                        :src="oConfiguracion.url_servicios_img"
-                        alt="Logo"
-                        width="100%"
-                    />
+            </section>
+            <div class="container pb-20 wow fadeIn animated">
+                <div class="row">
+                    <div class="col-12 mb-20">
+                        <div class="footer-bottom"></div>
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="float-md-left font-sm text-muted mb-0">
+                            &copy; {{ new Date().getFullYear() }},
+                            <strong class="text-brand">{{
+                                oConfiguracion.razon_social
+                            }}</strong>
+                        </p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p
+                            class="text-lg-end text-start font-sm text-muted mb-0"
+                        >
+                            . Todos los derechos reservados
+                        </p>
+                    </div>
                 </div>
             </div>
-
-            <div class="p-t-40">
-                <p class="stext-107 cl6 txt-center">
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    Copyright &copy; {{ getAnioActual() }} Todos los derechos
-                    reservados |
-                    <a href="" class="text-warning">{{ empresa }}</a>
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                </p>
-                <p class="stext-107 cl6 txt-center oculto">
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    Copyright &copy; {{ getAnioActual() }} All rights reserved |
-                    Made with
-                    <i class="fa fa-heart-o" aria-hidden="true"></i> by
-                    <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                    &amp; distributed by
-                    <a href="https://themewagon.com" target="_blank"
-                        >ThemeWagon</a
-                    >
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                </p>
+        </footer>
+        <!-- Preloader Start -->
+        <div id="preloader-active">
+            <div
+                class="preloader d-flex align-items-center justify-content-center"
+            >
+                <div class="preloader-inner position-relative">
+                    <div class="text-center">
+                        <h5 class="mb-10">Cargando</h5>
+                        <div class="loader">
+                            <div class="bar bar1"></div>
+                            <div class="bar bar2"></div>
+                            <div class="bar bar3"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </footer>
+    </div>
 </template>
 <script>
 export default {
@@ -110,11 +182,20 @@ export default {
                 youtube: "",
                 ubicacion: "",
             },
+            url_assets: url_asset,
         };
     },
     mounted() {
         this.getInfoRedSocial();
         this.getConfiguracion();
+        // Page loading
+        $(window).on("load", function () {
+            $("#preloader-active").delay(450).fadeOut("slow");
+            $("body").delay(450).css({
+                overflow: "visible",
+            });
+            $("#onloadModal").modal("show");
+        });
     },
     methods: {
         getInfoRedSocial() {

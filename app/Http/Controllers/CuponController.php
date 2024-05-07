@@ -101,6 +101,23 @@ class CuponController extends Controller
         }
     }
 
+    public function veririca_cupon(Request $request)
+    {
+        $cupon = Cupon::where("texto", $request->texto_cupon)->get()->first();
+
+        if ($cupon) {
+            return response()->JSON([
+                "sw" => true,
+                "cupon" => $cupon,
+            ]);
+        }
+
+        return response()->JSON([
+            "cupon" => null,
+            "sw" => false
+        ]);
+    }
+
     public function show(Cupon $cupon)
     {
         return response()->JSON([

@@ -22,6 +22,7 @@ class RegistroController extends Controller
             [
                 "captcha" => "required",
                 'nombre' => 'required',
+                'apellidos' => 'required',
                 'ci' => 'required',
                 'ci_exp' => 'required',
                 'correo' => 'required|unique:clientes,correo',
@@ -30,6 +31,7 @@ class RegistroController extends Controller
             [
                 "captcha.required" => "Este campo es obligatorio",
                 "nombre.required" => "Este campo es obligatorio",
+                "apellidos.required" => "Este campo es obligatorio",
                 "ci.required" => "Este campo es obligatorio",
                 "ci_exp.required" => "Este campo es obligatorio",
                 "correo.required" => "Este campo es obligatorio",
@@ -55,6 +57,7 @@ class RegistroController extends Controller
             $user = User::create(array_map("mb_strtoupper", [
                 "usuario" => $nuevo_cliente->correo,
                 "nombre" => $nuevo_cliente->nombre,
+                "apellidos" => $nuevo_cliente->apellidos,
                 "ci" => $nuevo_cliente->ci,
                 "ci_exp" => $nuevo_cliente->ci_exp,
                 "dir" => $nuevo_cliente->dir,
