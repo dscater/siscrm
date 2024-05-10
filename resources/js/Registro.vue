@@ -324,6 +324,7 @@ export default {
             form_registro: {
                 id: 0,
                 nombre: "",
+                apellidos: "",
                 ci: "",
                 ci_exp: "",
                 nit: "",
@@ -388,6 +389,10 @@ export default {
             formdata.append(
                 "nombre",
                 this.form_registro.nombre ? this.form_registro.nombre : ""
+            );
+            formdata.append(
+                "apellidos",
+                this.form_registro.apellidos ? this.form_registro.apellidos : ""
             );
             formdata.append(
                 "ci",
