@@ -162,7 +162,7 @@ class OrdenPedidoController extends Controller
 
     public function show(OrdenPedido $orden_pedido)
     {
-        $orden_pedido  = $orden_pedido->load(["user", "orden_detalles.producto", "configuracion_pago"]);
+        $orden_pedido  = $orden_pedido->load(["user.cliente", "orden_detalles.producto", "configuracion_pago"]);
         return response()->JSON([
             "orden_pedido" => $orden_pedido,
         ]);

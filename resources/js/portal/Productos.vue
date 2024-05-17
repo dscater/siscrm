@@ -220,7 +220,7 @@
                     <!--pagination-->
                     <div
                         class="row mt-5"
-                        v-if="!loading && listProductos.length > 0"
+                        v-if="listProductos.length > 0"
                     >
                         <div
                             class="col-md-12 pb-3 paginacion_portal pagination"
@@ -353,6 +353,11 @@ export default {
                 logo: "",
             },
         };
+    },
+    watch: {
+        currentPage(newVal) {
+            this.getProductos(newVal);
+        },
     },
     mounted() {
         let self = this;

@@ -280,7 +280,7 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $usuarios = User::where('id', '!=', 1)->get();
+        $usuarios = User::where("tipo", "!=", "CLIENTE")->where('id', '!=', 1)->get();
         return response()->JSON(['usuarios' => $usuarios, 'total' => count($usuarios)], 200);
     }
 
@@ -529,7 +529,7 @@ class UserController extends Controller
         if (in_array('usuarios.index', $this->permisos[$tipo])) {
             $array_infos[] = [
                 'label' => 'Usuarios',
-                'cantidad' => count(User::where('id', '!=', 1)->get()),
+                'cantidad' => count(User::where("tipo", "!=", "CLIENTE")->where('id', '!=', 1)->get()),
                 'color' => 'bg-info',
                 'icon' => 'fas fa-users',
             ];
@@ -537,7 +537,7 @@ class UserController extends Controller
         if (in_array('clientes.index', $this->permisos[$tipo])) {
             $array_infos[] = [
                 'label' => 'Clientes',
-                'cantidad' => count(User::where('id', '!=', 1)->get()),
+                'cantidad' => count(User::where("tipo", "CLIENTE")->where('id', '!=', 1)->get()),
                 'color' => 'bg-success',
                 'icon' => 'fas fa-users',
             ];

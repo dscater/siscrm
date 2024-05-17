@@ -67,7 +67,7 @@
                                     </div>
                                     <div class="col-6 col-md-4">
                                         {{
-                                            oOrdenPedido.user?.cliente?.celular
+                                            oOrdenPedido.user?.cliente?.fono
                                         }}
                                     </div>
                                     <div

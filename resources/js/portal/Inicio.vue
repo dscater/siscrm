@@ -107,14 +107,14 @@
                                     </div>
                                     <div class="product-content-wrap">
                                         <div class="product-category">
-                                            <a href="shop-grid-right.html">{{
+                                            <span>{{
                                                 item.categoria.nombre
-                                            }}</a>
+                                            }}</span>
                                         </div>
                                         <h2>
-                                            <a href="shop-product-right.html">{{
+                                            <span>{{
                                                 item.nombre
-                                            }}</a>
+                                            }}</span>
                                         </h2>
                                         <div class="product-price">
                                             <span>Bs. {{ item.precio }} </span>
